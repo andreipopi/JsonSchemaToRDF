@@ -11,7 +11,7 @@ var writer = new N3.Writer({ prefixes: {
         foaf: 'http://xmlns.com/foaf/0.1/',
         owl: 'http://www.w3.org/2002/07/owl#'
     } });
-var aDocument = node_node_node('http://json-schema.org/draft-07/schema', 'a', 'foaf:Document');
+var aDocument = node_node_node('http://json-schema.org/draft-07/schema', 'rdf:type', 'foaf:Document');
 writer.addQuad(aDocument);
 var descriptionQuad = node_node_literal('http://json-schema.org/draft-07/schema', 'rdfs:comment', jsonSchema.description);
 writer.addQuad(descriptionQuad);
@@ -43,7 +43,7 @@ for (var _i = 0, _a = Object.keys(jsonSchema.properties.data.properties.bikes.it
     var oneOf = '';
     switch (bikeProp) {
         case 'bike_id': {
-            console.log('its a match');
+            console.log('It’s a match');
             description = jsonSchema.properties.data.properties.bikes.items.properties.bike_id.description;
             type = jsonSchema.properties.data.properties.bikes.items.properties.bike_id.type;
             break;
@@ -75,14 +75,14 @@ for (var _i = 0, _a = Object.keys(jsonSchema.properties.data.properties.bikes.it
     console.log(bikeProp);
     // We create necessary quads and add them to the writer
     if (bikeProp == 'bike_id' || bikeProp == "lat" || bikeProp == "lon") {
-        var typeQuad = node_literal_literal(bikeProp, 'a', type);
+        var typeQuad = node_node_literal(bikeProp, 'rdf:type', type);
         writer.addQuad(typeQuad);
     }
     else {
-        var typeQuad = node_literal_literal(bikeProp, 'owl:oneOf', oneOf);
+        var typeQuad = node_node_node(bikeProp, 'owl:oneOf', oneOf);
         writer.addQuad(typeQuad);
     }
-    var descriptionQuad_1 = node_literal_literal(bikeProp, 'rdfs:comment', description);
+    var descriptionQuad_1 = node_node_literal(bikeProp, 'rdfs:comment', description);
     writer.addQuad(descriptionQuad_1);
 }
 var fs = require('fs');

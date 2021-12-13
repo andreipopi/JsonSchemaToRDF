@@ -13,7 +13,7 @@ const writer = new N3.Writer({ prefixes: {
     foaf: 'http://xmlns.com/foaf/0.1/', 
     owl:  'http://www.w3.org/2002/07/owl#'}});
 
-const aDocument = node_node_node('http://json-schema.org/draft-07/schema', 'a', 'foaf:Document');
+const aDocument = node_node_node('http://json-schema.org/draft-07/schema', 'rdf:type', 'foaf:Document');
 writer.addQuad(aDocument);
 const descriptionQuad = node_node_literal('http://json-schema.org/draft-07/schema', 'rdfs:comment', jsonSchema.description);
 writer.addQuad(descriptionQuad);
@@ -46,7 +46,7 @@ for (const bikeProp of Object.keys(jsonSchema.properties.data.properties.bikes.i
     let oneOf = '';
     switch (bikeProp) {
         case 'bike_id': {
-            console.log('its a match');
+            console.log('It’s a match');
             description = jsonSchema.properties.data.properties.bikes.items.properties.bike_id.description;
             type = jsonSchema.properties.data.properties.bikes.items.properties.bike_id.type;
             break;
@@ -65,11 +65,13 @@ for (const bikeProp of Object.keys(jsonSchema.properties.data.properties.bikes.i
         }
         case 'is_reserved': {
             description = jsonSchema.properties.data.properties.bikes.items.properties.is_reserved.description;
+            //PC: you need to create an rdf:List here
             oneOf = '(boolean number)';
             break;
         }
         case 'is_disabled': {
             description = jsonSchema.properties.data.properties.bikes.items.properties.is_disabled.description;
+            //PC: you need to create an rdf:List here
             oneOf = '(boolean number)';
             break;
         }
@@ -79,14 +81,14 @@ for (const bikeProp of Object.keys(jsonSchema.properties.data.properties.bikes.i
 
     // We create necessary quads and add them to the writer
     if (bikeProp == 'bike_id' || bikeProp == "lat" || bikeProp == "lon") {
-        const typeQuad = node_literal_literal(bikeProp, 'a', type);
+        const typeQuad = node_node_literal(bikeProp, 'rdf:type', type);
         writer.addQuad(typeQuad);
     }
     else {
-        const typeQuad = node_literal_literal(bikeProp, 'owl:oneOf', oneOf);
+        const typeQuad = node_node_node(bikeProp, 'owl:oneOf', oneOf);
         writer.addQuad(typeQuad);
     }
-    const descriptionQuad = node_literal_literal(bikeProp, 'rdfs:comment', description);
+    const descriptionQuad = node_node_literal(bikeProp, 'rdfs:comment', description);
     writer.addQuad(descriptionQuad);
 
 }

@@ -3,27 +3,19 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/>.
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
 
-<http://json-schema.org/draft-07/schema> <a> foaf:Document;
+<http://json-schema.org/draft-07/schema> rdf:type foaf:Document;
     rdfs:comment "Describes the vehicles that are available for rent (as of v2.1-RC2).";
     <contains> <data>.
-
 <data> <contains> <bikes>.
-
 <bikes> <madeOf> <bike>.
-
 <bike> <hasPropery> <bike_id>, <lat>, <lon>, <is_reserved>, <is_disabled>.
-
-<bike_id> "a" "string";
-    "rdfs:comment" "Rotating (as of v2.0) identifier of a vehicle.".
-
-<lat> "a" "number";
-    "rdfs:comment" "The latitude of the vehicle.".
-
-<lon> "a" "number";
-    "rdfs:comment" "The longitude of the vehicle.".
-
-<is_reserved> "owl:oneOf" "(boolean number)";
-    "rdfs:comment" "Is the vehicle currently reserved?".
-    
-<is_disabled> "owl:oneOf" "(boolean number)";
-    "rdfs:comment" "Is the vehicle currently disabled (broken)?".
+<bike_id> rdf:type "string";
+    rdfs:comment "Rotating (as of v2.0) identifier of a vehicle.".
+<lat> rdf:type "number";
+    rdfs:comment "The latitude of the vehicle.".
+<lon> rdf:type "number";
+    rdfs:comment "The longitude of the vehicle.".
+<is_reserved> owl:oneOf <(boolean number)>;
+    rdfs:comment "Is the vehicle currently reserved?".
+<is_disabled> owl:oneOf <(boolean number)>;
+    rdfs:comment "Is the vehicle currently disabled (broken)?".
