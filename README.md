@@ -1,5 +1,5 @@
 # JsonTurtleParser
-This component of the Data Publishing pipeline takes as input a json file and returns the equivalent .ttl file. 
+Takes as input a json file and returns the equivalent .ttl file; it is part of the Data Publishing pipeline.
 
 # Useful links:
 - mobility data bike sharing system json schemas: https://github.com/MobilityData/gbfs-json-schema
