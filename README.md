@@ -1,11 +1,18 @@
-# JsonTurtleParser
+# JSON Schema to RDF
 
-This is a basic component of the data publishing pipeline.
+Transforms a JSON Schema into RDF by describing a SHACL shape and an RDFS vocabulary
 
-# Useful links:
+## How to use
+
+ * Install dependencies using `npm install`
+ * Build the typescript using `npm run build`
+ * Run jsonschema2rdf by running `node jsonschema2rdf.js`
+
+## Useful links
 - mobility data bike sharing system json schemas: https://github.com/MobilityData/gbfs-json-schema
 
-# How to use:
-The main code can be foun din jsonTurtleParser.ts
+## Author
+
+Andrei Popescu <andrei.popescu@ugent.be>
 
 

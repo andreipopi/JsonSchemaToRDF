@@ -2,7 +2,6 @@
 // This is a simple json-ttl parser that takes as input a file of the shape of free_bike_status.json (info here: https://github.com/NABSA/gbfs/blob/master/gbfs.md#free_bike_statusjson , https://github.com/MobilityData/gbfs-json-schema)
 // and returns its ttl version. A fully general version of this is necessary to allow translation of different jsons.
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-import { json } from "stream/consumers";
 const jsonSchema = require("./files/free_bike_status.json");
 const N3 = require('n3');
 const { DataFactory } = N3;
