@@ -4,6 +4,7 @@ var jsonSchema = require("./files/free_bike_status.json");
 var N3 = require('n3');
 var DataFactory = N3.DataFactory;
 var namedNode = DataFactory.namedNode, literal = DataFactory.literal, defaultGraph = DataFactory.defaultGraph, quad = DataFactory.quad;
+// Write prefixes
 var writer = new N3.Writer({ prefixes: {
         rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
@@ -11,27 +12,27 @@ var writer = new N3.Writer({ prefixes: {
         owl: 'http://www.w3.org/2002/07/owl#'
     } });
 var aDocument = node_node_node('http://json-schema.org/draft-07/schema', 'a', 'foaf:Document');
-writer.addQuad(aDocument);
 var descriptionQuad = node_node_literal('http://json-schema.org/draft-07/schema', 'rdfs:comment', jsonSchema.description);
-writer.addQuad(descriptionQuad);
 var containsQuad = node_node_node('http://json-schema.org/draft-07/schema', 'contains', 'data');
-writer.addQuad(containsQuad);
 // Data includes set of bikes
 var includesBikes = node_node_node('data', 'contains', 'bikes');
-writer.addQuad(includesBikes);
 // Set of bikes is made of bike
 var madeOf = node_node_node('bikes', 'madeOf', 'bike');
-writer.addQuad(madeOf);
 // Bike has bike id, lat, lon, is reserved, is disabled
 var bikeHasID = node_node_node('bike', 'hasPropery', 'bike_id');
-writer.addQuad(bikeHasID);
 var bikeHasLat = node_node_node('bike', 'hasPropery', 'lat');
-writer.addQuad(bikeHasLat);
 var bikeHasLon = node_node_node('bike', 'hasPropery', 'lon');
-writer.addQuad(bikeHasLon);
 var bikeHasIsReserved = node_node_node('bike', 'hasPropery', 'is_reserved');
-writer.addQuad(bikeHasIsReserved);
 var bikeHasIsDisabled = node_node_node('bike', 'hasPropery', 'is_disabled');
+writer.addQuad(aDocument);
+writer.addQuad(descriptionQuad);
+writer.addQuad(containsQuad);
+writer.addQuad(includesBikes);
+writer.addQuad(madeOf);
+writer.addQuad(bikeHasID);
+writer.addQuad(bikeHasLat);
+writer.addQuad(bikeHasLon);
+writer.addQuad(bikeHasIsReserved);
 writer.addQuad(bikeHasIsDisabled);
 // Looping over the the properties of a bike
 for (var _i = 0, _a = Object.keys(jsonSchema.properties.data.properties.bikes.items.properties); _i < _a.length; _i++) {
@@ -105,10 +106,6 @@ function node_node_node(subj, pred, obj) {
 }
 function node_literal_literal(subj, pred, obj) {
     var myQuad = quad(namedNode(subj), literal(pred), literal(obj), defaultGraph());
-    return myQuad;
-}
-function node_literal_node(subj, pred, obj) {
-    var myQuad = quad(namedNode(subj), literal(pred), namedNode(obj), defaultGraph());
     return myQuad;
 }
 /** adds necessary prefixes to the .ttl file */

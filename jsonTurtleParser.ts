@@ -8,6 +8,7 @@ const N3 = require('n3');
 const { DataFactory } = N3;
 const { namedNode, literal, defaultGraph, quad } = DataFactory;
 
+// Write prefixes
 const writer = new N3.Writer({ prefixes: { 
     rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 
     rdfs: 'http://www.w3.org/2000/01/rdf-schema#', 
@@ -15,27 +16,28 @@ const writer = new N3.Writer({ prefixes: {
     owl:  'http://www.w3.org/2002/07/owl#'}});
 
 const aDocument = node_node_node('http://json-schema.org/draft-07/schema', 'a', 'foaf:Document');
-writer.addQuad(aDocument);
 const descriptionQuad = node_node_literal('http://json-schema.org/draft-07/schema', 'rdfs:comment', jsonSchema.description);
-writer.addQuad(descriptionQuad);
 const containsQuad = node_node_node('http://json-schema.org/draft-07/schema', 'contains', 'data');
-writer.addQuad(containsQuad);
 // Data includes set of bikes
 const includesBikes = node_node_node('data', 'contains', 'bikes');
-writer.addQuad(includesBikes);
 // Set of bikes is made of bike
 const madeOf = node_node_node('bikes', 'madeOf', 'bike');
-writer.addQuad(madeOf);
 // Bike has bike id, lat, lon, is reserved, is disabled
 const bikeHasID = node_node_node('bike', 'hasPropery', 'bike_id');
-writer.addQuad(bikeHasID);
 const bikeHasLat = node_node_node('bike', 'hasPropery', 'lat');
-writer.addQuad(bikeHasLat);
 const bikeHasLon = node_node_node('bike', 'hasPropery', 'lon');
-writer.addQuad(bikeHasLon);
 const bikeHasIsReserved = node_node_node('bike', 'hasPropery', 'is_reserved');
-writer.addQuad(bikeHasIsReserved);
 const bikeHasIsDisabled = node_node_node('bike', 'hasPropery', 'is_disabled');
+
+writer.addQuad(aDocument);
+writer.addQuad(descriptionQuad);
+writer.addQuad(containsQuad);
+writer.addQuad(includesBikes);
+writer.addQuad(madeOf);
+writer.addQuad(bikeHasID);
+writer.addQuad(bikeHasLat);
+writer.addQuad(bikeHasLon);
+writer.addQuad(bikeHasIsReserved);
 writer.addQuad(bikeHasIsDisabled);
 
 
@@ -128,16 +130,6 @@ function node_literal_literal (subj: string, pred:string, obj:string) {
         namedNode(subj),
         literal(pred),
         literal(obj),
-        defaultGraph(),
-      );
-    return myQuad;
-}
-
-function node_literal_node (subj: string, pred:string, obj:string) {
-    const myQuad = quad(
-        namedNode(subj),
-        literal(pred),
-        namedNode(obj),
         defaultGraph(),
       );
     return myQuad;
