@@ -1,14 +1,18 @@
-# JsonTurtleParser
-Takes as input a json file and returns the equivalent .ttl file; it is part of the Data Publishing pipeline.
+# JSON Schema to RDF
 
-# Useful links:
+Transforms a JSON Schema into RDF by describing a SHACL shape and an RDFS vocabulary
+
+## How to use
+
+ * Install dependencies using `npm install`
+ * Build the typescript using `npm run build`
+ * Run jsonschema2rdf by running `node jsonschema2rdf.js`
+
+## Useful links
 - mobility data bike sharing system json schemas: https://github.com/MobilityData/gbfs-json-schema
 
-# How to use:
-The code can be run from jsonTurtleParser.ts, and it requires a json as input (free_bike_status.json in the current scenario).
+## Author
 
-- tsc jsonTurtleParser.ts
-- node jsonTurtleParser.js
-- see the .ttl output file
+Andrei Popescu <andrei.popescu@ugent.be>
 
 

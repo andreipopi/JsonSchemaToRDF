@@ -4,5 +4,26 @@
   },
   "dependencies": {
     "n3": "^1.12.1"
-  }
+  },
+  "name": "jsonschema2rdf",
+  "description": "This is a basic component of the data publishing pipeline.",
+  "version": "0.0.1",
+  "main": "jsonschema2rdf.js",
+  "scripts": {
+    "build": "tsc jsonschema2rdf.ts",	  
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.ilabt.imec.be:apopescu/jsonturtleparser.git"
+  },
+  "keywords": [
+    "RDF",
+    "JSON",
+    "Schema",
+    "Shacl",
+    "RDFS"
+  ],
+  "author": "Andrei Popescu",
+  "license": "MIT"
 }
