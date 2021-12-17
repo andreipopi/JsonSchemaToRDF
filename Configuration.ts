@@ -1,45 +1,44 @@
-
-interface TermMapping{
-    key: string;
-    term: string;   
-}
-
 export class Configuration {
-    baseShaclURI = '/files/';
+    baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';
     baseRdfVocabURI = ''; 
     jsonTraverse = require('json-schema-traverse');
     jsonSchema = require('./files/station_information.json');
 
     // Mapping of available terms (manually defined in the constructor)
-    termsMapping: TermMapping[] = [];
-
-
     map = new Map<string, string>();
-
 
     constructor (){
         this.baseRdfVocabURI = 'https://w3id.org/gbfs/stations#';
 
-    
-        // We have a hardcoded map of existing terms, assuming that we have also checked new incoming jsonSchemas
+        // Step 0) We have a hardcoded map of existing terms, assuming that we have also checked new incoming jsonSchemas
         // Step 1) create Turtle for the basic structure of the json schema: $schema, $id, $description, $properties
         // Step 2) check the properties{} of the schema, which contains domain specific objects, e.g. stations, bikes, etc...
-        
-        // In step 1 and 2, we use the map to check what terms already exist
+        // In step 1 and 2, we will use the map to check what terms already exist
+
         this.map.set('description','dcterms/description');
-        this.map.set( 'last_updated', 'dcterms/modified' );
-        this.map.set( 'type', 'rdf:type');
-        this.map.set( 'station', 'dbpedialowl:Station');
+        this.map.set('last_updated', 'dcterms/modified' );
+        this.map.set('type', 'rdf:type');
+
+        // Station properties terms
         this.map.set('station_id','dcterms/identifier');
-
+        this.map.set( 'name', 'foaf:name');
+        this.map.set( 'short_name', 'rdf:label');
+        this.map.set( 'lat', 'geo_lat');
+        this.map.set( 'lon', 'geo:long');
+        this.map.set( 'address', 'new');
         this.map.set( 'cross_street', 'airs:locatedAtCrossStreet');
+        this.map.set( 'region_id', 'dbpedia-owl:region');
+        this.map.set( 'post_code', 'dbpedia-owl:postalCode');
+        this.map.set( 'rental_methods', 'new');
+        this.map.set( 'is_virtual_station', 'new');
+        this.map.set( 'station_area', 'new');
+        this.map.set( 'capacity', 'dbpedia-owl:capacity');
+        this.map.set( 'vehicle_capacity', 'new');
+        this.map.set( 'is_valet_station', 'new');
+        this.map.set( 'is_charging_station', 'new');
+        this.map.set( 'rental_uris', 'new');
+        this.map.set( 'vehicle_type_capacity', 'new');
 
-
-        //console.log(this.termsMapping['key']['term']);
-        //.......complete list!
-
-        //
-        
     };
     
     // Station_information file parsing
@@ -96,6 +95,6 @@ export class Configuration {
         return this.baseRdfVocabURI;
     };
     getTermMapping (){
-        return this.termsMapping;
+        return this.map;
     };
 }
