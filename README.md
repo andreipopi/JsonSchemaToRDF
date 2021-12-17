@@ -9,10 +9,14 @@ Transforms a JSON Schema into RDF by describing a SHACL shape and an RDFS vocabu
  * Run jsonschema2rdf by running `node main.js`
 
 ## Useful links
-- mobility data bike sharing system json schemas: https://github.com/MobilityData/gbfs-json-schema
+ * mobility data bike sharing system json schemas: https://github.com/MobilityData/gbfs-json-schema
 
 ## Author
-
 Andrei Popescu <andrei.popescu@ugent.be>
 
+## ToDos (might have cronological/logical dependencies)
+
+ * include types of terms in the map
+ * get required attributes for the main object of jsonschema
+    * write SHACL
 
