@@ -13,4 +13,9 @@
 @prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
-gtfsst:station w3c-ssn:hasProperty <alert_id>, rdf:type, <times>, <station_ids>, <region_ids>, schema:url, ebucore:summary, dcterms:description, dcterms:modified.
+<https://w3id.org/gbfs/stations> foaf:primaryTopic <https://w3id.org/gbfs/stations#>;
+    rdf:type foaf:Document;
+    rdfs:comment "Details including system operator, system location, year implemented, URL, contact info, time zone.";
+    vann:preferredNamespaceUri "https://w3id.org/gbfs/stations#";
+    <contains> gtfsst:station.
+gtfsst:station w3c-ssn:hasProperty dcterms:identifier, foaf:name, rdf:label, <geo_lat>, geo:long, <new>, airs:locatedAtCrossStreet, dbpedia-owl:region, dbpedia-owl:postalCode, <new>, <new>, <new>, dbpedia-owl:capacity, <new>, <new>, <new>, <new>, <new>.

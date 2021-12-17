@@ -1,18 +1,18 @@
 export class Configuration {
+    jsonSource = './files/station_information.json';
+    jsonSchema = require(this.jsonSource);
     baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';
     baseRdfVocabURI = ''; 
     jsonTraverse = require('json-schema-traverse');
-
-    jsonSource = './files/station_information.json';
-    jsonSchema = require(this.jsonSource);
-
     // Mapping of available terms (manually defined in the constructor)
     map = new Map<string, string>();
 
+    // Constructors
     constructor (){
         this.baseRdfVocabURI = 'https://w3id.org/gbfs/stations#';
-
+        // Configuration.ts
         // Step 0) We have a hardcoded map of existing terms, assuming that we have also checked new incoming jsonSchemas
+        // rdfVocabulary.ts
         // Step 1) create Turtle for the basic structure of the json schema: $schema, $id, $description, $properties
         // Step 2) check the properties{} of the schema, which contains domain specific objects, e.g. stations, bikes, etc...
         // In step 1 and 2, we will use the map to check what terms already exist
@@ -23,7 +23,6 @@ export class Configuration {
 
         this.map.set('url', 'schema:url');
         this.map.set('summary', 'ebucore:summary');
-
 
         // Station properties terms
         this.map.set('station_id','dcterms:identifier');

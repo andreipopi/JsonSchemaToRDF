@@ -6,14 +6,10 @@ import {RDFVocabulary} from './rdfVocabulary';
 const config = new Configuration();
 const rdfVocab = new RDFVocabulary(config.getTermMapping(), config.getJsonSource());
 
-//console.log(config.getTermMapping());
 console.log(config.getVocabURI());
-console.log(rdfVocab.getQuads);
 
-
-rdfVocab.addQuadsToStore();
-//rdfVocab.writeQuads();
-rdfVocab.parsePropertiesToQuads();
+rdfVocab.parseBasicsToQuads();
+rdfVocab.parseMainObjectPropertiesToQuads();
 
 // Create a shaclShape object
 // Create an RDFVocab object

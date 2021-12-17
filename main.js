@@ -6,11 +6,8 @@ var rdfVocabulary_1 = require("./rdfVocabulary");
 // Create a configuration object that will take care of preprocessing
 var config = new Configuration_1.Configuration();
 var rdfVocab = new rdfVocabulary_1.RDFVocabulary(config.getTermMapping(), config.getJsonSource());
-//console.log(config.getTermMapping());
 console.log(config.getVocabURI());
-console.log(rdfVocab.getQuads);
-rdfVocab.addQuadsToStore();
-//rdfVocab.writeQuads();
-rdfVocab.parsePropertiesToQuads();
+rdfVocab.parseBasicsToQuads();
+rdfVocab.parseMainObjectPropertiesToQuads();
 // Create a shaclShape object
 // Create an RDFVocab object
