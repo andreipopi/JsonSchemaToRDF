@@ -11,5 +11,7 @@ console.log(config.getVocabURI());
 rdfVocab.parseBasicsToQuads();
 rdfVocab.parseMainObjectPropertiesToQuads();
 
+console.log(rdfVocab.getRequiredProperties());
+
 // Create a shaclShape object
 // Create an RDFVocab object

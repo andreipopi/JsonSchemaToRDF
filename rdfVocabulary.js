@@ -6,7 +6,7 @@ var DataFactory = N3.DataFactory;
 var namedNode = DataFactory.namedNode, literal = DataFactory.literal, defaultGraph = DataFactory.defaultGraph, quad = DataFactory.quad;
 var RDFVocabulary = /** @class */ (function () {
     // Constructors
-    function RDFVocabulary(map, source) {
+    function RDFVocabulary(termMapping, source) {
         this.store = new N3.Store();
         this.prefixes = {
             prefixes: {
@@ -28,7 +28,7 @@ var RDFVocabulary = /** @class */ (function () {
         };
         this.writer = new N3.Writer(this.prefixes);
         this.jsonSchema = require(source);
-        this.map = map;
+        this.map = termMapping;
         // Hardcoded -> can be made more general 
         this.mainObject = this.jsonSchema.properties.data.properties.stations.items.properties;
     }
@@ -52,10 +52,7 @@ var RDFVocabulary = /** @class */ (function () {
     /** creates and writes quads for the main object's properties, by checking if new terms are encountered (w.r.t. map) */
     RDFVocabulary.prototype.parseMainObjectPropertiesToQuads = function () {
         var fs = require('fs');
-        // We have
-        // this.store
-        // this.map
-        // For each property of the main object of json file (in this case station)
+        // For each property IN the main object of json file (in this case station)
         for (var elem in this.jsonSchema.properties.data.properties.stations.items.properties) {
             console.log(elem);
             // If the property exists in the mapping
@@ -78,6 +75,15 @@ var RDFVocabulary = /** @class */ (function () {
             // success case, the file was saved
             console.log('Turtle saved!');
         }); });
+    };
+    RDFVocabulary.prototype.getRequiredProperties = function () {
+        var requiredMap = new Map();
+        // For each OF the values in the required
+        for (var _i = 0, _a = this.jsonSchema.properties.data.properties.stations.items.required; _i < _a.length; _i++) {
+            var requiredProp = _a[_i];
+            requiredMap.set(requiredProp.toString(), this.map.get(requiredProp.toString()));
+        }
+        return requiredMap;
     };
     // Create quads of different shape
     RDFVocabulary.prototype.node_node_literal = function (subj, pred, obj) {

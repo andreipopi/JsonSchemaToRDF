@@ -1,3 +1,5 @@
+import { arrayBuffer } from "stream/consumers";
+
 const N3 = require('n3');
 const { DataFactory } = N3;
 const { namedNode, literal, defaultGraph, quad } = DataFactory;
@@ -42,10 +44,9 @@ export class RDFVocabulary {
 
    
     // Constructors
-    constructor (map: Map<string, string>, source:string, ){
+    constructor (termMapping: Map<string, string>, source:string, ){
         this.jsonSchema = require(source);
-        this.map = map;
-
+        this.map = termMapping;
         // Hardcoded -> can be made more general 
         this.mainObject = this.jsonSchema.properties.data.properties.stations.items.properties;
     }
@@ -56,7 +57,7 @@ export class RDFVocabulary {
         this.schema  = this.jsonSchema.$schema;
         this.description = this.jsonSchema.description;
         this.id = this.jsonSchema.$id;
-        
+
         this.vocabularyPrimaryTopic = this.node_node_node('https://w3id.org/gbfs/stations','foaf:primaryTopic','https://w3id.org/gbfs/stations#');
         this.aDocument = this.node_node_node('https://w3id.org/gbfs/stations', 'rdf:type', 'foaf:Document');
         this.descriptionQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'rdfs:comment', this.description);
@@ -75,7 +76,7 @@ export class RDFVocabulary {
     parseMainObjectPropertiesToQuads (){
         const fs = require('fs');
        
-        // For each property of the main object of json file (in this case station)
+        // For each property IN the main object of json file (in this case station)
         for (const elem in this.jsonSchema.properties.data.properties.stations.items.properties){
             console.log(elem);
 
@@ -98,6 +99,15 @@ export class RDFVocabulary {
             // success case, the file was saved
             console.log('Turtle saved!');}));
     }
+    getRequiredProperties () {
+        let requiredMap = new Map<string, string>();
+        // For each OF the values in the required
+        for (const requiredProp of this.jsonSchema.properties.data.properties.stations.items.required){
+            requiredMap.set(requiredProp.toString(), this.map.get(requiredProp.toString()));
+        }
+        return requiredMap;
+    }
+
 
     // Create quads of different shape
     node_node_literal (subj: string, pred:string, obj:string) {
@@ -112,13 +122,4 @@ export class RDFVocabulary {
         const myQuad = quad( namedNode(subj), literal(pred), literal(obj), defaultGraph());
         return myQuad;
     }
-
 }
-
-
-
-
-
-
-
-
