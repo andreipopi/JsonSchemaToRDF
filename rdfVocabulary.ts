@@ -14,6 +14,7 @@ export class RDFVocabulary {
             foaf: 'http://xmlns.com/foaf/0.1/',
             dcterms: 'http://purl.org/dc/terms/',
             vs: 'http://www.w3.org/2003/06/sw-vocab-status/ns#',
+            geo: 'http://www.w3.org/2003/01/geo/wgs84_pos#',
             vann: 'http://purl.org/vocab/vann/',
             "w3c-ssn": 'http://www.w3.org/ns/ssn/hasProperty',
             owl: 'http://www.w3.org/2002/07/owl#',

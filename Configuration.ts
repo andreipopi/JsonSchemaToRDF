@@ -23,7 +23,7 @@ export class Configuration {
         this.termsMapping.push( {key: 'cross_street', term:'airs:locatedAtCrossStreet'} );
 
 
-        console.log(this.termsMapping['key']['term']);
+        //console.log(this.termsMapping['key']['term']);
         //.......complete list!
 
         //
@@ -67,13 +67,13 @@ export class Configuration {
         
         });
 
-        for (const elem in this.jsonSchema.properties.data.properties.stations.items.properties){
+        /*for (const elem in this.jsonSchema.properties.data.properties.stations.items.properties){
 
             if (this.termsMapping['key'].find(elem.toString()) == true){
                 //console.log("elem", elem);
             }
             
-        }
+        }*/
        
     };
     

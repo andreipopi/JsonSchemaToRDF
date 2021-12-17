@@ -16,7 +16,7 @@ var Configuration = /** @class */ (function () {
         this.termsMapping.push({ key: 'type', term: 'rdf:type' });
         this.termsMapping.push({ key: 'station', term: 'dbpedialowl:Station' });
         this.termsMapping.push({ key: 'cross_street', term: 'airs:locatedAtCrossStreet' });
-        console.log(this.termsMapping['key']['term']);
+        //console.log(this.termsMapping['key']['term']);
         //.......complete list!
         //
     }
@@ -50,11 +50,13 @@ var Configuration = /** @class */ (function () {
             //console.log(cb);
             data = cb;
         });
-        for (var elem in this.jsonSchema.properties.data.properties.stations.items.properties) {
-            if (this.termsMapping['key'].find(elem.toString()) == true) {
+        /*for (const elem in this.jsonSchema.properties.data.properties.stations.items.properties){
+
+            if (this.termsMapping['key'].find(elem.toString()) == true){
                 //console.log("elem", elem);
             }
-        }
+            
+        }*/
     };
     ;
     Configuration.prototype.getShaclURI = function () {

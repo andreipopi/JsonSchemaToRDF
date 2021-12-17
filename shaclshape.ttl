@@ -1,0 +1,70 @@
+
+PREFIX :       <http://example.org/>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+:User {
+  schema:name          xsd:string  ;
+  schema:birthDate     xsd:date?  ;
+  schema:gender        [ schema:Male schema:Female ] OR xsd:string ;
+  schema:knows         IRI @:User*
+}
+
+
+gtfsst:station {
+
+
+}
+
+
+sh:targetClass  https://w3id.org/gbfs/station;
+sh:property [
+    sh:path dcterms:identifier;
+    sh:minCount 1;
+    sh:maxCount 1;
+    sh:datatype xsd:string;
+];
+sh:property [
+    sh:path foaf:name;
+    sh:minCount 1;
+    sh:maxCount 1;
+    sh:datatype xsd:string;
+];
+sh:property [
+    sh:path geo:lat;
+    sh:minCount 1;
+    sh:maxCount 1;
+    sh:datatype xsd:number;
+];
+sh:property [
+    sh:path geo:lon;
+    sh:minCount 1;
+    sh:maxCount 1;
+    sh:datatype xsd:number;
+];
+
+
+
+
+<https://andreiswebsite.com/shape/gbfs-free-bike-status> a sh:NodeShape ;
+     sh:nodeKind sh:IRI ;
+     sh:class <https://w3id.org/gbfs#FreeBikeStatus>; ;
+     sh:property [
+         sh:datatype xsd:dateTime ;
+         sh:minCount 1 ;
+         sh:maxCount 1 ;
+         sh:path dcterms:modified
+      ], [
+         sh:minCount 1 ;
+         sh:nodeKind sh:IRI ;
+         sh:path rdf:type
+      ], [
+         sh:path skos:note
+      ], [
+         sh:path skos:historyNote
+       ], [
+         sh:datatype gsp:wktLiteral ;
+         sh:maxCount 1 ;
+         sh:minCount 1 ;
+         sh:path dcat:centroid
+     ]

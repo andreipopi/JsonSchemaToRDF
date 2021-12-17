@@ -4,6 +4,7 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/>.
 @prefix dcterms: <http://purl.org/dc/terms/>.
 @prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>.
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
 @prefix vann: <http://purl.org/vocab/vann/>.
 @prefix w3c-ssn: <http://www.w3.org/ns/ssn/hasProperty>.
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
@@ -15,4 +16,4 @@
     rdfs:comment "Details including system operator, system location, year implemented, URL, contact info, time zone.";
     vann:preferredNamespaceUri "https://w3id.org/gbfs/stations#";
     <contains> gtfsst:station.
-gtfsst:station w3c-ssn:hasProperty dcterms:identifier, foaf:name, rdf:label, <geo:lat>, <geo:long>, <address>, airs:locatedAtCrossStreet, dbpedia-owl:region, dbpedia-owl:postalCode, <rental_methods>, <is_virtual_station>, <station_area>, dbpedia-owl:capacity, <vehicle_capacity>, <is_valet_station>, <is_charging_station>, <rental_uris>, <vehicle_type_capacity>.
+gtfsst:station w3c-ssn:hasProperty dcterms:identifier, foaf:name, rdf:label, geo:lat, geo:long, <address>, airs:locatedAtCrossStreet, dbpedia-owl:region, dbpedia-owl:postalCode, <rental_methods>, <is_virtual_station>, <station_area>, dbpedia-owl:capacity, <vehicle_capacity>, <is_valet_station>, <is_charging_station>, <rental_uris>, <vehicle_type_capacity>.
