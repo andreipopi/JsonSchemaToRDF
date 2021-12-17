@@ -2,7 +2,9 @@ export class Configuration {
     baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';
     baseRdfVocabURI = ''; 
     jsonTraverse = require('json-schema-traverse');
-    jsonSchema = require('./files/station_information.json');
+
+    jsonSource = './files/station_information.json';
+    jsonSchema = require(this.jsonSource);
 
     // Mapping of available terms (manually defined in the constructor)
     map = new Map<string, string>();
@@ -15,12 +17,16 @@ export class Configuration {
         // Step 2) check the properties{} of the schema, which contains domain specific objects, e.g. stations, bikes, etc...
         // In step 1 and 2, we will use the map to check what terms already exist
 
-        this.map.set('description','dcterms/description');
-        this.map.set('last_updated', 'dcterms/modified' );
+        this.map.set('description','dcterms:description');
+        this.map.set('last_updated', 'dcterms:modified' );
         this.map.set('type', 'rdf:type');
 
+        this.map.set('url', 'schema:url');
+        this.map.set('summary', 'ebucore:summary');
+
+
         // Station properties terms
-        this.map.set('station_id','dcterms/identifier');
+        this.map.set('station_id','dcterms:identifier');
         this.map.set( 'name', 'foaf:name');
         this.map.set( 'short_name', 'rdf:label');
         this.map.set( 'lat', 'geo_lat');
@@ -38,6 +44,9 @@ export class Configuration {
         this.map.set( 'is_charging_station', 'new');
         this.map.set( 'rental_uris', 'new');
         this.map.set( 'vehicle_type_capacity', 'new');
+
+        // Alerts properties terms
+        this.map.set('alert_id', 'dcterms:identifier');
 
     };
     
@@ -66,19 +75,8 @@ export class Configuration {
      
     };*/
 
-    traverse () {
-
-        let data = [];
-        this.jsonTraverse(this.jsonSchema.properties.data.properties.stations.items.properties, (cb) => {
-            
-            //console.log(cb);
-            data = cb;
-
-        });
-
+    /*traverse () {
         for (const elem in this.jsonSchema.properties.data.properties.stations.items.properties){
-
-         
             console.log('elemento', elem);
             if (this.map.has(elem)) {
                 console.log("elem", this.map.get(elem));
@@ -86,7 +84,11 @@ export class Configuration {
             
         }
        
-    };
+    };*/
+
+    getJsonSource (){
+        return this.jsonSource;
+    }
     
     getShaclURI (){
         return this.baseShaclURI;

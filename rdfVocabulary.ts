@@ -4,11 +4,14 @@ const { namedNode, literal, defaultGraph, quad } = DataFactory;
 
 export class RDFVocabulary {
     // Attributes
-    jsonSchema = require('./files/station_information.json');
+    jsonSchema: any;
     store = new N3.Store();
+    mainObject: any;
     prefixes = {
         prefixes: {
             gtfsst: 'https://w3id.org/gbfs/stations#',
+            schema: 'http://schema.org/url#',
+            ebucore: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#',
             rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
             rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
             foaf: 'http://xmlns.com/foaf/0.1/',
@@ -23,19 +26,19 @@ export class RDFVocabulary {
         }};
 
     writer = new N3.Writer(this.prefixes);
+    map: Map<string, string>;
 
-    // Basic elements of a Json schema, avaialable in all schemas
-    schema = this.jsonSchema.$schema;
-    description = this.jsonSchema.description;
-    id = this.jsonSchema.$id;
+    // Basic elements of a Json schema
+    schema: any;
+    description: any;
+    id: any;
 
     // Info about the vocabulary
-
-    vocabularyPrimaryTopic = this.node_node_node('https://w3id.org/gbfs/stations','foaf:primaryTopic','https://w3id.org/gbfs/stations#');
-    aDocument = this.node_node_node('https://w3id.org/gbfs/stations', 'rdf:type', 'foaf:Document');
-    descriptionQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'rdfs:comment', this.description);
-    uriQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/stations#');
-    containsQuad = this.node_node_node('https://w3id.org/gbfs/stations', 'contains', 'gtfsst:station');
+    vocabularyPrimaryTopic: any;
+    aDocument: any;
+    descriptionQuad: any;
+    uriQuad: any; 
+    containsQuad: any; 
 
     // Properties of a station
     has_station_id = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', 'dcterms:identifier');
@@ -57,6 +60,25 @@ export class RDFVocabulary {
     has_rental_uris = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', 'rental_uris'); //require more
     has_vehicle_type_capacity = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', 'vehicle_type_capacity');
     
+    // Constructors
+    constructor (map: Map<string, string>, source:string){
+        this.jsonSchema = require(source);
+        this.map = map;
+
+        // Hardcoded -> can be made more general 
+        this.mainObject = this.jsonSchema.properties.data.properties.alerts.items.properties;
+
+        this.schema  = this.jsonSchema.$schema;
+        this.description = this.jsonSchema.description;
+        this.id = this.jsonSchema.$id;
+
+        this.vocabularyPrimaryTopic = this.node_node_node('https://w3id.org/gbfs/stations','foaf:primaryTopic','https://w3id.org/gbfs/stations#');
+        this.aDocument = this.node_node_node('https://w3id.org/gbfs/stations', 'rdf:type', 'foaf:Document');
+        this.descriptionQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'rdfs:comment', this.description);
+        this.uriQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/stations#');
+        this.containsQuad = this.node_node_node('https://w3id.org/gbfs/stations', 'contains', 'gtfsst:station');
+    }
+
     // Methods
     addQuadsToStore (){
         this.store.addQuad(this.vocabularyPrimaryTopic);
@@ -83,23 +105,22 @@ export class RDFVocabulary {
         this.store.addQuad(this.has_rental_uris);
         this.store.addQuad(this.has_vehicle_type_capacity);
     }
+
+    // still TODO
     // Take care of beginning of file
     // Take care of types ^^datetime
     // Take care of required from json
 
     writeQuads (){
-
         /*for (const quad in this.store.getQuads(null, null, null, null)){
             console.log(quad);
             this.writer.addQuad(quad);
         }*/
-        
         this.writer.addQuad(this.vocabularyPrimaryTopic);
         this.writer.addQuad(this.aDocument);
         this.writer.addQuad(this.descriptionQuad);
         this.writer.addQuad(this.uriQuad);
         this.writer.addQuad(this.containsQuad);
-
         // Write properties of a Station
         // required ["station_id", "name", "lat", "lon"]
         this.writer.addQuad(this.has_station_id);
@@ -135,8 +156,39 @@ export class RDFVocabulary {
     getQuads (st, subj:string, pred:string, obj:string){
         return st.getQuads(namedNode(subj), namedNode('rdf:type', namedNode('foaf:Document')));
     }
-
     // Auxiliary functions
+
+
+    /** creates quads from the with the terms in mapping */
+    parsePropertiesToQuads (){
+        const fs = require('fs');
+        // We have
+        // this.store
+        // this.map
+
+        // For each property of the main object of json file (in this case station)
+        for (const elem in this.jsonSchema.properties.data.properties.alerts.items.properties){
+            console.log(elem);
+
+            // If the property exists in the mapping
+            if (this.map.has(elem)) {
+                console.log("  ", this.map.get(elem));
+                // Then create the quad and add it to the writer
+                let newQuad = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', this.map.get(elem));
+                this.writer.addQuad(newQuad);
+            }
+            // else create a new term for the property and add it to the writer
+            else{
+                let newQuad = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', elem);
+                this.writer.addQuad(newQuad);
+            }
+        }
+        this.writer.end((error, result) => fs.writeFile('turtleTranslation.ttl', result, (err) => {
+            // throws an error, you could also catch it here
+            if (err) throw err;
+            // success case, the file was saved
+            console.log('Turtle saved!');}));
+    }
     // Create quads of different shape
     node_node_literal (subj: string, pred:string, obj:string) {
         const myQuad = quad( namedNode(subj), namedNode(pred), literal(obj), defaultGraph());

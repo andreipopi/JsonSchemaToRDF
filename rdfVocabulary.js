@@ -5,13 +5,14 @@ var N3 = require('n3');
 var DataFactory = N3.DataFactory;
 var namedNode = DataFactory.namedNode, literal = DataFactory.literal, defaultGraph = DataFactory.defaultGraph, quad = DataFactory.quad;
 var RDFVocabulary = /** @class */ (function () {
-    function RDFVocabulary() {
-        // Attributes
-        this.jsonSchema = require('./files/station_information.json');
+    // Constructors
+    function RDFVocabulary(map, source) {
         this.store = new N3.Store();
         this.prefixes = {
             prefixes: {
                 gtfsst: 'https://w3id.org/gbfs/stations#',
+                schema: 'http://schema.org/url#',
+                ebucore: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#',
                 rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
                 rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
                 foaf: 'http://xmlns.com/foaf/0.1/',
@@ -26,16 +27,6 @@ var RDFVocabulary = /** @class */ (function () {
             }
         };
         this.writer = new N3.Writer(this.prefixes);
-        // Basic elements of a Json schema, avaialable in all schemas
-        this.schema = this.jsonSchema.$schema;
-        this.description = this.jsonSchema.description;
-        this.id = this.jsonSchema.$id;
-        // Info about the vocabulary
-        this.vocabularyPrimaryTopic = this.node_node_node('https://w3id.org/gbfs/stations', 'foaf:primaryTopic', 'https://w3id.org/gbfs/stations#');
-        this.aDocument = this.node_node_node('https://w3id.org/gbfs/stations', 'rdf:type', 'foaf:Document');
-        this.descriptionQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'rdfs:comment', this.description);
-        this.uriQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/stations#');
-        this.containsQuad = this.node_node_node('https://w3id.org/gbfs/stations', 'contains', 'gtfsst:station');
         // Properties of a station
         this.has_station_id = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', 'dcterms:identifier');
         this.has_name = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', 'foaf:name');
@@ -55,6 +46,16 @@ var RDFVocabulary = /** @class */ (function () {
         this.has_is_charging_station = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', 'is_charging_station'); // boolean+ description
         this.has_rental_uris = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', 'rental_uris'); //require more
         this.has_vehicle_type_capacity = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', 'vehicle_type_capacity');
+        this.jsonSchema = require(source);
+        this.map = map;
+        this.schema = this.jsonSchema.$schema;
+        this.description = this.jsonSchema.description;
+        this.id = this.jsonSchema.$id;
+        this.vocabularyPrimaryTopic = this.node_node_node('https://w3id.org/gbfs/stations', 'foaf:primaryTopic', 'https://w3id.org/gbfs/stations#');
+        this.aDocument = this.node_node_node('https://w3id.org/gbfs/stations', 'rdf:type', 'foaf:Document');
+        this.descriptionQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'rdfs:comment', this.description);
+        this.uriQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/stations#');
+        this.containsQuad = this.node_node_node('https://w3id.org/gbfs/stations', 'contains', 'gtfsst:station');
     }
     // Methods
     RDFVocabulary.prototype.addQuadsToStore = function () {
@@ -82,6 +83,7 @@ var RDFVocabulary = /** @class */ (function () {
         this.store.addQuad(this.has_rental_uris);
         this.store.addQuad(this.has_vehicle_type_capacity);
     };
+    // still TODO
     // Take care of beginning of file
     // Take care of types ^^datetime
     // Take care of required from json
@@ -129,6 +131,36 @@ var RDFVocabulary = /** @class */ (function () {
         return st.getQuads(namedNode(subj), namedNode('rdf:type', namedNode('foaf:Document')));
     };
     // Auxiliary functions
+    /** creates quads from the with the terms in mapping */
+    RDFVocabulary.prototype.parsePropertiesToQuads = function () {
+        var fs = require('fs');
+        // We have
+        // this.store
+        // this.map
+        // For each property of the main object of json file (in this case station)
+        for (var elem in this.jsonSchema.properties.data.properties.alerts.items.properties) {
+            console.log(elem);
+            // If the property exists in the mapping
+            if (this.map.has(elem)) {
+                console.log("  ", this.map.get(elem));
+                // Then create the quad and add it to the writer
+                var newQuad = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', this.map.get(elem));
+                this.writer.addQuad(newQuad);
+            }
+            // else create a new term for the property and add it to the writer
+            else {
+                var newQuad = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', elem);
+                this.writer.addQuad(newQuad);
+            }
+        }
+        this.writer.end(function (error, result) { return fs.writeFile('turtleTranslation.ttl', result, function (err) {
+            // throws an error, you could also catch it here
+            if (err)
+                throw err;
+            // success case, the file was saved
+            console.log('Turtle saved!');
+        }); });
+    };
     // Create quads of different shape
     RDFVocabulary.prototype.node_node_literal = function (subj, pred, obj) {
         var myQuad = quad(namedNode(subj), namedNode(pred), literal(obj), defaultGraph());
