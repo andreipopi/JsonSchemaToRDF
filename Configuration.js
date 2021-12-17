@@ -9,13 +9,18 @@ var Configuration = /** @class */ (function () {
         this.jsonSchema = require('./files/station_information.json');
         // Mapping of available terms (manually defined in the constructor)
         this.termsMapping = [];
+        this.map = new Map();
         this.baseRdfVocabURI = 'https://w3id.org/gbfs/stations#';
-        // In the optimal case we traverse json and add existing terms
-        this.termsMapping.push({ key: 'description', term: 'dcterms/description' });
-        this.termsMapping.push({ key: 'last_updated', term: 'dcterms/modified' });
-        this.termsMapping.push({ key: 'type', term: 'rdf:type' });
-        this.termsMapping.push({ key: 'station', term: 'dbpedialowl:Station' });
-        this.termsMapping.push({ key: 'cross_street', term: 'airs:locatedAtCrossStreet' });
+        // We have a hardcoded map of existing terms, assuming that we have also checked new incoming jsonSchemas
+        // Step 1) create Turtle for the basic structure of the json schema: $schema, $id, $description, $properties
+        // Step 2) check the properties{} of the schema, which contains domain specific objects, e.g. stations, bikes, etc...
+        // In step 1 and 2, we use the map to check what terms already exist
+        this.map.set('description', 'dcterms/description');
+        this.map.set('last_updated', 'dcterms/modified');
+        this.map.set('type', 'rdf:type');
+        this.map.set('station', 'dbpedialowl:Station');
+        this.map.set('station_id', 'dcterms/identifier');
+        this.map.set('cross_street', 'airs:locatedAtCrossStreet');
         //console.log(this.termsMapping['key']['term']);
         //.......complete list!
         //
@@ -50,13 +55,12 @@ var Configuration = /** @class */ (function () {
             //console.log(cb);
             data = cb;
         });
-        /*for (const elem in this.jsonSchema.properties.data.properties.stations.items.properties){
-
-            if (this.termsMapping['key'].find(elem.toString()) == true){
-                //console.log("elem", elem);
+        for (var elem in this.jsonSchema.properties.data.properties.stations.items.properties) {
+            console.log('elemento', elem);
+            if (this.map.has(elem)) {
+                console.log("elem", this.map.get(elem));
             }
-            
-        }*/
+        }
     };
     ;
     Configuration.prototype.getShaclURI = function () {
