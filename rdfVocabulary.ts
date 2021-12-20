@@ -29,6 +29,7 @@ export class RDFVocabulary {
 
     writer = new N3.Writer(this.prefixes);
     map: Map<string, string>;
+    newTermsMap = new Map<string, string>();
 
     // Basic elements of a Json schema
     schema: any;
@@ -41,14 +42,13 @@ export class RDFVocabulary {
     descriptionQuad: any;
     uriQuad: any; 
     containsQuad: any; 
-
    
     // Constructors
     constructor (termMapping: Map<string, string>, source:string, ){
         this.jsonSchema = require(source);
         this.map = termMapping;
         // Hardcoded -> can be made more general 
-        this.mainObject = this.jsonSchema.properties.data.properties.stations.items.properties;
+        this.mainObject = this.jsonSchema.properties.data.properties.stations;
     }
 
     // Methods
@@ -63,19 +63,16 @@ export class RDFVocabulary {
         this.descriptionQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'rdfs:comment', this.description);
         this.uriQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/stations#');
         this.containsQuad = this.node_node_node('https://w3id.org/gbfs/stations', 'contains', 'gtfsst:station');
-        
         this.writer.addQuad(this.vocabularyPrimaryTopic);
         this.writer.addQuad(this.aDocument);
         this.writer.addQuad(this.descriptionQuad);
         this.writer.addQuad(this.uriQuad);
         this.writer.addQuad(this.containsQuad);
-
     }
 
-    /** creates and writes quads for the main object's properties, by checking if new terms are encountered (w.r.t. map) */
+    /** creates and writes quads(in the rdf vocab.) for the main object's properties, by checking if new terms are encountered (against map) */
     parseMainObjectPropertiesToQuads (){
         const fs = require('fs');
-       
         // For each property IN the main object of json file (in this case station)
         for (const elem in this.jsonSchema.properties.data.properties.stations.items.properties){
             console.log(elem);
@@ -88,17 +85,67 @@ export class RDFVocabulary {
                 this.writer.addQuad(newQuad);
             }
             // else create a new term for the property and add it to the writer
+            // additionaly, add the new term to a list of newly encountered terms
             else{
                 let newQuad = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', elem);
                 this.writer.addQuad(newQuad);
+                this.newTermsMap.set(elem, elem);
             }
         }
+
+        const mainObj = 'stations';
+
+
+        for (const newTerm of Array.from(this.newTermsMap)) {
+            console.log(newTerm[0]);
+            console.log("newterm",newTerm);
+            
+            let termType = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].type;
+            let termProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].properties;
+
+            // check for objects or arrays 
+            if( termType == 'object' && termProperties != undefined) {
+
+                let newQuad = this.node_node_node(newTerm[1], 'hasClass', 'Object');
+                this.writer.addQuad(newQuad);
+                console.log("object",this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].properties );
+                // Then there might be other subproperties
+                for (const subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].properties){
+                    console.log("looping over subproperties");
+                    let subPropQuad = this.node_node_node(newTerm[0], 'w3c-ssn:hasProperty', subProperty);
+                    this.writer.addQuad(subPropQuad);
+                }
+                
+            }
+
+            if(termType == 'array' ) {
+                console.log("array");
+                let newQuad = this.node_node_node(newTerm[1], 'hasClass', 'Array');
+                this.writer.addQuad(newQuad);
+                // Then there are elements
+                for (const subProperty of this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]]){
+                    
+                }
+            }
+            
+            if(termType !='array' && termType !='object'){
+                let newQuad = this.node_node_node(newTerm[1], 'rdf:type', termType);
+                this.writer.addQuad(newQuad);
+
+            }
+
+
+           
+        }
+
         this.writer.end((error, result) => fs.writeFile('turtleTranslation.ttl', result, (err) => {
             // throws an error, you could also catch it here
             if (err) throw err;
             // success case, the file was saved
             console.log('Turtle saved!');}));
     }
+
+    /** returns the properties of the main object which are required. Useful in the shaclshape class in order to create the shacl shape */
     getRequiredProperties () {
         let requiredMap = new Map<string, string>();
         // For each OF the values in the required
@@ -107,7 +154,6 @@ export class RDFVocabulary {
         }
         return requiredMap;
     }
-
 
     // Create quads of different shape
     node_node_literal (subj: string, pred:string, obj:string) {

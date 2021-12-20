@@ -18,4 +18,13 @@
     rdfs:comment "Details including system operator, system location, year implemented, URL, contact info, time zone.";
     vann:preferredNamespaceUri "https://w3id.org/gbfs/stations#";
     <contains> gtfsst:station.
-gtfsst:station w3c-ssn:hasProperty dcterms:identifier, foaf:name, rdf:label, <geo_lat>, geo:long, <new>, airs:locatedAtCrossStreet, dbpedia-owl:region, dbpedia-owl:postalCode, <new>, <new>, <new>, dbpedia-owl:capacity, <new>, <new>, <new>, <new>, <new>.
+gtfsst:station w3c-ssn:hasProperty dcterms:identifier, foaf:name, rdf:label, geo:lat, geo:long, <address>, airs:locatedAtCrossStreet, dbpedia-owl:region, dbpedia-owl:postalCode, <rental_methods>, <is_virtual_station>, <station_area>, dbpedia-owl:capacity, <vehicle_capacity>, <is_valet_station>, <is_charging_station>, <rental_uris>, <vehicle_type_capacity>.
+<address> rdf:type <string>.
+<rental_methods> <hasClass> <Array>.
+<is_virtual_station> rdf:type <boolean>.
+<station_area> <hasClass> <Object>;
+    w3c-ssn:hasProperty <type>, <coordinates>.
+<is_valet_station> rdf:type <boolean>.
+<is_charging_station> rdf:type <boolean>.
+<rental_uris> <hasClass> <Object>;
+    w3c-ssn:hasProperty <android>, <ios>, <web>.

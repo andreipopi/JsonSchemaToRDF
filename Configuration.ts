@@ -6,6 +6,7 @@ export class Configuration {
     jsonTraverse = require('json-schema-traverse');
     // Mapping of available terms (manually defined in the constructor)
     map = new Map<string, string>();
+    newTermsMap = new Map<string, string>();
 
     // Constructors
     constructor (){
@@ -20,7 +21,6 @@ export class Configuration {
         this.map.set('description','dcterms:description');
         this.map.set('last_updated', 'dcterms:modified' );
         this.map.set('type', 'rdf:type');
-
         this.map.set('url', 'schema:url');
         this.map.set('summary', 'ebucore:summary');
 
@@ -28,24 +28,25 @@ export class Configuration {
         this.map.set('station_id','dcterms:identifier');
         this.map.set( 'name', 'foaf:name');
         this.map.set( 'short_name', 'rdf:label');
-        this.map.set( 'lat', 'geo_lat');
+        this.map.set( 'lat', 'geo:lat');
         this.map.set( 'lon', 'geo:long');
-        this.map.set( 'address', 'new');
         this.map.set( 'cross_street', 'airs:locatedAtCrossStreet');
         this.map.set( 'region_id', 'dbpedia-owl:region');
         this.map.set( 'post_code', 'dbpedia-owl:postalCode');
-        this.map.set( 'rental_methods', 'new');
-        this.map.set( 'is_virtual_station', 'new');
-        this.map.set( 'station_area', 'new');
         this.map.set( 'capacity', 'dbpedia-owl:capacity');
-        this.map.set( 'vehicle_capacity', 'new');
-        this.map.set( 'is_valet_station', 'new');
-        this.map.set( 'is_charging_station', 'new');
-        this.map.set( 'rental_uris', 'new');
-        this.map.set( 'vehicle_type_capacity', 'new');
-
         // Alerts properties terms
         this.map.set('alert_id', 'dcterms:identifier');
+
+        this.newTermsMap.set( 'address', 'new');
+        this.newTermsMap.set( 'rental_methods', 'new');
+        this.newTermsMap.set( 'is_virtual_station', 'new');
+        this.newTermsMap.set( 'station_area', 'new');
+        this.newTermsMap.set( 'vehicle_capacity', 'new');
+        this.newTermsMap.set( 'is_valet_station', 'new');
+        this.newTermsMap.set( 'is_charging_station', 'new');
+        this.newTermsMap.set( 'rental_uris', 'new');
+        this.newTermsMap.set( 'vehicle_type_capacity', 'new');
+
 
     };
     

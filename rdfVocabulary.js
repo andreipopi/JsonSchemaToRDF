@@ -27,10 +27,11 @@ var RDFVocabulary = /** @class */ (function () {
             }
         };
         this.writer = new N3.Writer(this.prefixes);
+        this.newTermsMap = new Map();
         this.jsonSchema = require(source);
         this.map = termMapping;
         // Hardcoded -> can be made more general 
-        this.mainObject = this.jsonSchema.properties.data.properties.stations.items.properties;
+        this.mainObject = this.jsonSchema.properties.data.properties.stations;
     }
     // Methods
     /** creates and writes quads for the basic properties of a jsonSchema of the bike sharing system */
@@ -49,7 +50,7 @@ var RDFVocabulary = /** @class */ (function () {
         this.writer.addQuad(this.uriQuad);
         this.writer.addQuad(this.containsQuad);
     };
-    /** creates and writes quads for the main object's properties, by checking if new terms are encountered (w.r.t. map) */
+    /** creates and writes quads(in the rdf vocab.) for the main object's properties, by checking if new terms are encountered (against map) */
     RDFVocabulary.prototype.parseMainObjectPropertiesToQuads = function () {
         var fs = require('fs');
         // For each property IN the main object of json file (in this case station)
@@ -63,8 +64,43 @@ var RDFVocabulary = /** @class */ (function () {
                 this.writer.addQuad(newQuad);
             }
             // else create a new term for the property and add it to the writer
+            // additionaly, add the new term to a list of newly encountered terms
             else {
                 var newQuad = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', elem);
+                this.writer.addQuad(newQuad);
+                this.newTermsMap.set(elem, elem);
+            }
+        }
+        var mainObj = 'stations';
+        for (var _i = 0, _a = Array.from(this.newTermsMap); _i < _a.length; _i++) {
+            var newTerm = _a[_i];
+            console.log(newTerm[0]);
+            console.log("newterm", newTerm);
+            var termType = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].type;
+            var termProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].properties;
+            // check for objects or arrays 
+            if (termType == 'object' && termProperties != undefined) {
+                var newQuad = this.node_node_node(newTerm[1], 'hasClass', 'Object');
+                this.writer.addQuad(newQuad);
+                console.log("object", this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].properties);
+                // Then there might be other subproperties
+                for (var subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].properties) {
+                    console.log("looping over subproperties");
+                    var subPropQuad = this.node_node_node(newTerm[0], 'w3c-ssn:hasProperty', subProperty);
+                    this.writer.addQuad(subPropQuad);
+                }
+            }
+            if (termType == 'array') {
+                console.log("array");
+                var newQuad = this.node_node_node(newTerm[1], 'hasClass', 'Array');
+                this.writer.addQuad(newQuad);
+                // Then there are elements
+                for (var _b = 0, _c = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]]; _b < _c.length; _b++) {
+                    var subProperty = _c[_b];
+                }
+            }
+            if (termType != 'array' && termType != 'object') {
+                var newQuad = this.node_node_node(newTerm[1], 'rdf:type', termType);
                 this.writer.addQuad(newQuad);
             }
         }
@@ -76,6 +112,7 @@ var RDFVocabulary = /** @class */ (function () {
             console.log('Turtle saved!');
         }); });
     };
+    /** returns the properties of the main object which are required. Useful in the shaclshape class in order to create the shacl shape */
     RDFVocabulary.prototype.getRequiredProperties = function () {
         var requiredMap = new Map();
         // For each OF the values in the required
