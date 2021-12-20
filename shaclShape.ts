@@ -7,6 +7,8 @@ export class ShaclShape {
     jsonSchema: any;
     targetClass = 'https://w3id.org/gbfs/station';
     requiredProperties = new Map<string, string>();
+    shaclFileText = '';
+    fs = require('fs');
 
     // Constructors
     constructor (required: Map<string, string>, source: string) {
@@ -17,18 +19,30 @@ export class ShaclShape {
 
     // Methods
     writeConstraints (){
-        const fs = require('fs');
-        let textFile = '';
+        
+        
 
         let i = 0;
         for (let entry of Array.from(this.requiredProperties.entries())){
             console.log(entry);
             console.log("required", entry[0]);
             const type  = this.jsonSchema.properties.data.properties.stations.items.properties[entry[0]].type;
-            textFile = textFile+(this.mustHaveProperty(entry[1], type)).toString()+'\n';
+            this.shaclFileText = this.shaclFileText+(this.mustHaveProperty(entry[1], type)).toString()+'\n';
             i++;
         }
-        fs.writeFileSync("shacl.ttl",textFile , function(err){
+        this.fs.writeFileSync("shacl.ttl", this.shaclFileText , function(err){
+            if(err){
+              return console.log("error");
+            }
+        });
+        
+    }
+
+    writeTargetClass (){
+
+        this.shaclFileText = 'sh:targetClass ' + this.targetClass+ ';\n' +this.shaclFileText;
+
+        this.fs.writeFileSync("shacl.ttl", this.shaclFileText , function(err){
             if(err){
               return console.log("error");
             }
