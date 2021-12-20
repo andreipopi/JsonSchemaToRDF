@@ -1,0 +1,24 @@
+sh:property [ 
+ sh:path dcterms:identifier;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype string; 
+ ];
+sh:property [ 
+ sh:path foaf:name;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype string; 
+ ];
+sh:property [ 
+ sh:path geo:lat;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype number; 
+ ];
+sh:property [ 
+ sh:path geo:long;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype number; 
+ ];

@@ -29,7 +29,7 @@ export class RDFVocabulary {
 
     writer = new N3.Writer(this.prefixes);
     map: Map<string, string>;
-    newTermsMap = new Map<string, string>();
+    newTerms = [];
 
     // Basic elements of a Json schema
     schema: any;
@@ -89,30 +89,28 @@ export class RDFVocabulary {
             else{
                 let newQuad = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', elem);
                 this.writer.addQuad(newQuad);
-                this.newTermsMap.set(elem, elem);
+                this.newTerms.push(elem);
             }
         }
 
         const mainObj = 'stations';
 
-
-        for (const newTerm of Array.from(this.newTermsMap)) {
-            console.log(newTerm[0]);
+        for (const newTerm of this.newTerms) {
+            console.log(newTerm);
             console.log("newterm",newTerm);
             
-            let termType = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].type;
-            let termProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].properties;
+            let termType = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].type;
+            let termProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].properties;
 
             // check for objects or arrays 
             if( termType == 'object' && termProperties != undefined) {
 
-                let newQuad = this.node_node_node(newTerm[1], 'hasClass', 'Object');
+                let newQuad = this.node_node_node(newTerm, 'hasClass', 'Object');
                 this.writer.addQuad(newQuad);
-                console.log("object",this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].properties );
+                console.log("object",this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].properties );
                 // Then there might be other subproperties
-                for (const subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].properties){
-                    console.log("looping over subproperties");
-                    let subPropQuad = this.node_node_node(newTerm[0], 'w3c-ssn:hasProperty', subProperty);
+                for (const subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].properties){
+                    let subPropQuad = this.node_node_node(newTerm, 'w3c-ssn:hasProperty', subProperty);
                     this.writer.addQuad(subPropQuad);
                 }
                 
@@ -120,16 +118,16 @@ export class RDFVocabulary {
 
             if(termType == 'array' ) {
                 console.log("array");
-                let newQuad = this.node_node_node(newTerm[1], 'hasClass', 'Array');
+                let newQuad = this.node_node_node(newTerm, 'hasClass', 'Array');
                 this.writer.addQuad(newQuad);
                 // Then there are elements
-                for (const subProperty of this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]]){
+                for (const subProperty of this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm]){
                     
                 }
             }
-            
+
             if(termType !='array' && termType !='object'){
-                let newQuad = this.node_node_node(newTerm[1], 'rdf:type', termType);
+                let newQuad = this.node_node_node(newTerm, 'rdf:type', termType);
                 this.writer.addQuad(newQuad);
 
             }

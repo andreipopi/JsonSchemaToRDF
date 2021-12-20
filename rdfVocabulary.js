@@ -27,7 +27,7 @@ var RDFVocabulary = /** @class */ (function () {
             }
         };
         this.writer = new N3.Writer(this.prefixes);
-        this.newTermsMap = new Map();
+        this.newTerms = [];
         this.jsonSchema = require(source);
         this.map = termMapping;
         // Hardcoded -> can be made more general 
@@ -68,39 +68,38 @@ var RDFVocabulary = /** @class */ (function () {
             else {
                 var newQuad = this.node_node_node('gtfsst:station', 'w3c-ssn:hasProperty', elem);
                 this.writer.addQuad(newQuad);
-                this.newTermsMap.set(elem, elem);
+                this.newTerms.push(elem);
             }
         }
         var mainObj = 'stations';
-        for (var _i = 0, _a = Array.from(this.newTermsMap); _i < _a.length; _i++) {
+        for (var _i = 0, _a = this.newTerms; _i < _a.length; _i++) {
             var newTerm = _a[_i];
-            console.log(newTerm[0]);
+            console.log(newTerm);
             console.log("newterm", newTerm);
-            var termType = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].type;
-            var termProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].properties;
+            var termType = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].type;
+            var termProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].properties;
             // check for objects or arrays 
             if (termType == 'object' && termProperties != undefined) {
-                var newQuad = this.node_node_node(newTerm[1], 'hasClass', 'Object');
+                var newQuad = this.node_node_node(newTerm, 'hasClass', 'Object');
                 this.writer.addQuad(newQuad);
-                console.log("object", this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].properties);
+                console.log("object", this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].properties);
                 // Then there might be other subproperties
-                for (var subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]].properties) {
-                    console.log("looping over subproperties");
-                    var subPropQuad = this.node_node_node(newTerm[0], 'w3c-ssn:hasProperty', subProperty);
+                for (var subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].properties) {
+                    var subPropQuad = this.node_node_node(newTerm, 'w3c-ssn:hasProperty', subProperty);
                     this.writer.addQuad(subPropQuad);
                 }
             }
             if (termType == 'array') {
                 console.log("array");
-                var newQuad = this.node_node_node(newTerm[1], 'hasClass', 'Array');
+                var newQuad = this.node_node_node(newTerm, 'hasClass', 'Array');
                 this.writer.addQuad(newQuad);
                 // Then there are elements
-                for (var _b = 0, _c = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm[0]]; _b < _c.length; _b++) {
+                for (var _b = 0, _c = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm]; _b < _c.length; _b++) {
                     var subProperty = _c[_b];
                 }
             }
             if (termType != 'array' && termType != 'object') {
-                var newQuad = this.node_node_node(newTerm[1], 'rdf:type', termType);
+                var newQuad = this.node_node_node(newTerm, 'rdf:type', termType);
                 this.writer.addQuad(newQuad);
             }
         }
