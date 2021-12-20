@@ -1,4 +1,5 @@
-sh:targetClass https://w3id.org/gbfs/station;
+<https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
+sh:targetClass <https://w3id.org/gbfs/station>;
 sh:property [ 
  sh:path dcterms:identifier;  
  sh:minCount 1; 

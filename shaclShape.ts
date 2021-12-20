@@ -5,7 +5,8 @@ import { stringify } from "querystring";
 export class ShaclShape {
 
     jsonSchema: any;
-    targetClass = 'https://w3id.org/gbfs/station';
+    targetClass = '<https://w3id.org/gbfs/station>';
+    shaclRoot = '<https://mymockwebsite.com/shapes/gbfs-station_information>';
     requiredProperties = new Map<string, string>();
     shaclFileText = '';
     fs = require('fs');
@@ -39,16 +40,22 @@ export class ShaclShape {
     }
 
     writeTargetClass (){
-
         this.shaclFileText = 'sh:targetClass ' + this.targetClass+ ';\n' +this.shaclFileText;
-
         this.fs.writeFileSync("shacl.ttl", this.shaclFileText , function(err){
             if(err){
               return console.log("error");
             }
         });
-        
     }
+    writeShaclRoot (){
+        this.shaclFileText = this.shaclRoot+ ' a sh:NodeShape; \n' +this.shaclFileText;
+        this.fs.writeFileSync("shacl.ttl", this.shaclFileText , function(err){
+            if(err){
+              return console.log("error");
+            }
+        });
+    }
+
 
     mustHaveProperty(nome: string, type: string) {
         console.log(nome);

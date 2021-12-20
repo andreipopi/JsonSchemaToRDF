@@ -15,5 +15,6 @@ rdfVocab.parseMainObjectPropertiesToQuads();
 const shape = new ShaclShape(rdfVocab.getRequiredProperties(),config.getJsonSource());
 shape.writeConstraints();
 shape.writeTargetClass();
+shape.writeShaclRoot();
 // Create a shaclShape object
 // Create an RDFVocab object
