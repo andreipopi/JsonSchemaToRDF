@@ -88,15 +88,30 @@ var RDFVocabulary = /** @class */ (function () {
                      }*/
                     // Code specialised for station_information, where the only station property of type array is rental_methods
                     // We create a Rental_methods class 
+                    //owl:oneOf (boolean number)
                     console.log("array");
                     var newClassName = this.capitalizeFirstLetter(term);
                     var newQuad_1 = this.node_node_node('gbfsst:' + term, 'rdfs:range', 'gbfsst:' + newClassName);
                     this.writer.addQuad(newQuad_1);
                     var newClass = this.node_node_node('gbfsst:' + this.capitalizeFirstLetter(term), 'rdfs:type', 'rdfs:Class');
                     this.writer.addQuad(newClass);
-                    // Then there are elements
+                    // Then there are elements: either properties
                     for (var subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties) {
                         var subPropQuad = this.node_node_node('gbfsst:' + newClassName, 'rdf:Property', subProperty);
+                        this.writer.addQuad(subPropQuad);
+                    }
+                    // Or items (at least in the case of station_information)
+                    if (this.jsonSchema.properties.data.properties[mainObj].items.properties[term].items != undefined) {
+                        var enumeration = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].items["enum"];
+                        // Then we assume there is an enum 
+                        var oneOfValues = '(';
+                        for (var _i = 0, enumeration_1 = enumeration; _i < enumeration_1.length; _i++) {
+                            var value = enumeration_1[_i];
+                            oneOfValues = oneOfValues + ' ' + value;
+                        }
+                        oneOfValues = oneOfValues + ' )';
+                        console.log(oneOfValues);
+                        var subPropQuad = this.node_node_literal('gbfsst:' + newClassName, 'owl:oneOf', oneOfValues);
                         this.writer.addQuad(subPropQuad);
                     }
                 }

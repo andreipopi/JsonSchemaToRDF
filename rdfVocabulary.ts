@@ -118,6 +118,8 @@ export class RDFVocabulary {
                 // Code specialised for station_information, where the only station property of type array is rental_methods
                 // We create a Rental_methods class 
                
+                //owl:oneOf (boolean number)
+
                     console.log("array");
 
                     const newClassName = this.capitalizeFirstLetter(term);
@@ -126,11 +128,26 @@ export class RDFVocabulary {
 
                     let newClass = this.node_node_node('gbfsst:'+this.capitalizeFirstLetter(term), 'rdfs:type', 'rdfs:Class');
                     this.writer.addQuad(newClass);
-                    // Then there are elements
+                    // Then there are elements: either properties
                     for (const subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties){
                         let subPropQuad = this.node_node_node('gbfsst:'+newClassName, 'rdf:Property', subProperty);
                         this.writer.addQuad(subPropQuad);
                     }
+                    // Or items (at least in the case of station_information)
+                    if(this.jsonSchema.properties.data.properties[mainObj].items.properties[term].items != undefined){
+                        const enumeration = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].items.enum;
+                        // Then we assume there is an enum 
+                        let oneOfValues ='(';
+                        for (const value of enumeration){
+                            oneOfValues = oneOfValues+ ' '+ value;
+                        }
+                        oneOfValues = oneOfValues+ ' )';
+
+                        console.log(oneOfValues);
+                        let subPropQuad = this.node_node_literal('gbfsst:'+newClassName, 'owl:oneOf', oneOfValues);
+                        this.writer.addQuad(subPropQuad);
+                    }
+
                 }
                 // If it is not an object nor an array, then it is a property
                 if(termType !='array' && termType !='object' && termType != undefined){
