@@ -12,11 +12,13 @@
 @prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
-<https://w3id.org/gbfs/stations> foaf:primaryTopic <https://w3id.org/gbfs/stations#>;
-    rdf:type foaf:Document;
+<https://w3id.org/gbfs/stations> rdf:type foaf:Document;
     rdfs:comment "Details including system operator, system location, year implemented, URL, contact info, time zone.";
     vann:preferredNamespaceUri "https://w3id.org/gbfs/stations#";
-    <contains> gbfsst:station.
+    dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
+<https://pietercolpaert.be/#me> rdf:type foaf:Person;
+    foaf:mbox "mailto:pieter.colpaert@imec.be";
+    foaf:name "Pieter Colpaert".
 gbfsst:station rdf:Property <address>, <rental_methods>, <is_virtual_station>, <station_area>, <vehicle_capacity>, <is_valet_station>, <is_charging_station>, <rental_uris>, <vehicle_type_capacity>.
 <address> rdf:type <string>.
 <rental_methods> rdf:Class <Array>.

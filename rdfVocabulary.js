@@ -27,6 +27,8 @@ var RDFVocabulary = /** @class */ (function () {
         };
         this.writer = new N3.Writer(this.prefixes);
         this.newTerms = [];
+        this.creator1 = 'https://pietercolpaert.be/#me';
+        this.creator2 = 'https://www.linkedin.com/in/andrei-popescu/';
         this.jsonSchema = require(source);
         this.map = termMapping;
         // Hardcoded -> can be made more general 
@@ -38,26 +40,27 @@ var RDFVocabulary = /** @class */ (function () {
         this.schema = this.jsonSchema.$schema;
         this.description = this.jsonSchema.description;
         this.id = this.jsonSchema.$id;
-        this.vocabularyPrimaryTopic = this.node_node_node('https://w3id.org/gbfs/stations', 'foaf:primaryTopic', 'https://w3id.org/gbfs/stations#');
         this.aDocument = this.node_node_node('https://w3id.org/gbfs/stations', 'rdf:type', 'foaf:Document');
         this.descriptionQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'rdfs:comment', this.description);
         this.uriQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/stations#');
-        this.containsQuad = this.node_node_node('https://w3id.org/gbfs/stations', 'contains', 'gbfsst:station');
-        this.writer.addQuad(this.vocabularyPrimaryTopic);
+        this.creator1Quad = this.node_node_node('https://w3id.org/gbfs/stations', 'dcterms:creator', this.creator1);
+        this.creator2Quad = this.node_node_node('https://w3id.org/gbfs/stations', 'dcterms:creator', this.creator2);
         this.writer.addQuad(this.aDocument);
         this.writer.addQuad(this.descriptionQuad);
         this.writer.addQuad(this.uriQuad);
-        this.writer.addQuad(this.containsQuad);
+        this.writer.addQuad(this.creator1Quad);
+        this.writer.addQuad(this.creator2Quad);
+        this.writer.addQuad(this.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
+        this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
+        this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
     };
     /** creates and writes quads(in the rdf vocab.) for the main object's properties, by checking if new terms are encountered (against map) */
     RDFVocabulary.prototype.parseMainObjectPropertiesToQuads = function () {
         var fs = require('fs');
         // For each property IN the main object of json file (in this case station)
         for (var elem in this.jsonSchema.properties.data.properties.stations.items.properties) {
-            console.log("element is this", elem);
             // If the property does not exists in the mapping, then we add it to the vocabulary
             if (this.map.has(elem) == false) {
-                console.log("HAS NOT elem");
                 this.newTerms.push(elem);
                 // Then create the quad and add it to the writer
                 var newQuad = this.node_node_node('gbfsst:station', 'rdf:Property', elem);

@@ -1,3 +1,4 @@
+import { write } from "fs";
 import { arrayBuffer } from "stream/consumers";
 
 const N3 = require('n3');
@@ -36,12 +37,14 @@ export class RDFVocabulary {
     id: any;
 
     // Info about the vocabulary
-    vocabularyPrimaryTopic: any;
     aDocument: any;
     descriptionQuad: any;
     uriQuad: any; 
-    containsQuad: any; 
-   
+    creator1 = 'https://pietercolpaert.be/#me';
+    creator2 = 'https://www.linkedin.com/in/andrei-popescu/';
+    creator1Quad: any;
+    creator2Quad: any;
+
     // Constructors
     constructor (termMapping: Map<string, string>, source:string, ){
         this.jsonSchema = require(source);
@@ -57,27 +60,37 @@ export class RDFVocabulary {
         this.description = this.jsonSchema.description;
         this.id = this.jsonSchema.$id;
 
-        this.vocabularyPrimaryTopic = this.node_node_node('https://w3id.org/gbfs/stations','foaf:primaryTopic','https://w3id.org/gbfs/stations#');
         this.aDocument = this.node_node_node('https://w3id.org/gbfs/stations', 'rdf:type', 'foaf:Document');
         this.descriptionQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'rdfs:comment', this.description);
         this.uriQuad = this.node_node_literal('https://w3id.org/gbfs/stations', 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/stations#');
-        this.containsQuad = this.node_node_node('https://w3id.org/gbfs/stations', 'contains', 'gbfsst:station');
-        this.writer.addQuad(this.vocabularyPrimaryTopic);
+        this.creator1Quad = this.node_node_node('https://w3id.org/gbfs/stations', 'dcterms:creator', this.creator1);
+        this.creator2Quad = this.node_node_node('https://w3id.org/gbfs/stations', 'dcterms:creator', this.creator2);
+       
         this.writer.addQuad(this.aDocument);
         this.writer.addQuad(this.descriptionQuad);
         this.writer.addQuad(this.uriQuad);
-        this.writer.addQuad(this.containsQuad);
+        this.writer.addQuad(this.creator1Quad);
+        this.writer.addQuad(this.creator2Quad);
+        this.writer.addQuad(this.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
+        this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
+        this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
+
     }
 
     /** creates and writes quads(in the rdf vocab.) for the main object's properties, by checking if new terms are encountered (against map) */
     parseMainObjectPropertiesToQuads (){
         const fs = require('fs');
+
+
+        // First add the main object to the vocabulary
+
+
+        // Then add its new (not availalbe in config.map) properties to the vocabulary
+
         // For each property IN the main object of json file (in this case station)
         for (const elem in this.jsonSchema.properties.data.properties.stations.items.properties){
-            console.log("element is this",elem);
             // If the property does not exists in the mapping, then we add it to the vocabulary
             if (this.map.has(elem) == false) {
-                console.log("HAS NOT elem");
                 this.newTerms.push(elem);
                 // Then create the quad and add it to the writer
                 let newQuad = this.node_node_node('gbfsst:station', 'rdf:Property', elem);
