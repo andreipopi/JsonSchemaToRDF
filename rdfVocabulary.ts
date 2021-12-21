@@ -105,29 +105,31 @@ export class RDFVocabulary {
                 
                 // Deal with subproperties/elements
                 // check for objects or arrays 
-                if(termType == 'object' && termProperties != undefined) {
+                if((termType == 'object' && termProperties != undefined) || termType == 'array') {
 
-                    console.log("object",this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties );
+                   /* console.log("object",this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties );
                     // Then there might be other subproperties
                     for (const subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties){
                         let subPropQuad = this.node_node_node('gbfsst:'+term, 'rdf:Property', subProperty);
                         this.writer.addQuad(subPropQuad);
-                    }
-                }
+                    }*/
+                
 
                 // Code specialised for station_information, where the only station property of type array is rental_methods
                 // We create a Rental_methods class 
-                if(termType == 'array') {
+               
                     console.log("array");
 
-                    let newQuad = this.node_node_node('gbfsst:'+term, 'rdfs:range', 'gbfsst:'+this.capitalizeFirstLetter(term));
+                    const newClassName = this.capitalizeFirstLetter(term);
+                    let newQuad = this.node_node_node('gbfsst:'+term, 'rdfs:range', 'gbfsst:'+newClassName);
                     this.writer.addQuad(newQuad);
 
                     let newClass = this.node_node_node('gbfsst:'+this.capitalizeFirstLetter(term), 'rdfs:type', 'rdfs:Class');
                     this.writer.addQuad(newClass);
                     // Then there are elements
-                    for (const subProperty of this.jsonSchema.properties.data.properties[mainObj].items.properties[term]){
-                    
+                    for (const subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties){
+                        let subPropQuad = this.node_node_node('gbfsst:'+newClassName, 'rdf:Property', subProperty);
+                        this.writer.addQuad(subPropQuad);
                     }
                 }
                 // If it is not an object nor an array, then it is a property
