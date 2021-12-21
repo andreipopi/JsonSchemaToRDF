@@ -1,4 +1,4 @@
-@prefix gtfsst: <https://w3id.org/gbfs/stations#>.
+@prefix gbfsst: <https://w3id.org/gbfs/stations#>.
 @prefix schema: <http://schema.org/url#>.
 @prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
@@ -8,7 +8,6 @@
 @prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>.
 @prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
 @prefix vann: <http://purl.org/vocab/vann/>.
-@prefix w3c-ssn: <http://www.w3.org/ns/ssn/hasProperty>.
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
 @prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
@@ -17,14 +16,14 @@
     rdf:type foaf:Document;
     rdfs:comment "Details including system operator, system location, year implemented, URL, contact info, time zone.";
     vann:preferredNamespaceUri "https://w3id.org/gbfs/stations#";
-    <contains> gtfsst:station.
-gtfsst:station w3c-ssn:hasProperty dcterms:identifier, foaf:name, rdf:label, geo:lat, geo:long, <address>, airs:locatedAtCrossStreet, dbpedia-owl:region, dbpedia-owl:postalCode, <rental_methods>, <is_virtual_station>, <station_area>, dbpedia-owl:capacity, <vehicle_capacity>, <is_valet_station>, <is_charging_station>, <rental_uris>, <vehicle_type_capacity>.
+    <contains> gbfsst:station.
+gbfsst:station rdf:Property <address>, <rental_methods>, <is_virtual_station>, <station_area>, <vehicle_capacity>, <is_valet_station>, <is_charging_station>, <rental_uris>, <vehicle_type_capacity>.
 <address> rdf:type <string>.
-<rental_methods> <hasClass> <Array>.
+<rental_methods> rdf:Class <Array>.
 <is_virtual_station> rdf:type <boolean>.
-<station_area> <hasClass> <Object>;
-    w3c-ssn:hasProperty <type>, <coordinates>.
+<station_area> rdf:Class <Object>;
+    rdf:Property <type>, <coordinates>.
 <is_valet_station> rdf:type <boolean>.
 <is_charging_station> rdf:type <boolean>.
-<rental_uris> <hasClass> <Object>;
-    w3c-ssn:hasProperty <android>, <ios>, <web>.
+<rental_uris> rdf:Class <Object>;
+    rdf:Property <android>, <ios>, <web>.

@@ -17,12 +17,8 @@ export class ShaclShape {
         this.requiredProperties = required;
     }
 
-
     // Methods
     writeConstraints (){
-        
-        
-
         let i = 0;
         for (let entry of Array.from(this.requiredProperties.entries())){
             console.log(entry);
