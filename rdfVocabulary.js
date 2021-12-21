@@ -57,46 +57,51 @@ var RDFVocabulary = /** @class */ (function () {
     /** creates and writes quads(in the rdf vocab.) for the main object's properties, by checking if new terms are encountered (against map) */
     RDFVocabulary.prototype.parseMainObjectPropertiesToQuads = function () {
         var fs = require('fs');
-        // For each property IN the main object of json file (in this case station)
-        for (var elem in this.jsonSchema.properties.data.properties.stations.items.properties) {
-            // If the property does not exists in the mapping, then we add it to the vocabulary
-            if (this.map.has(elem) == false) {
-                this.newTerms.push(elem);
-                // Then create the quad and add it to the writer
-                var newQuad = this.node_node_node('gbfsst:station', 'rdf:Property', elem);
-                this.writer.addQuad(newQuad);
-            }
-        }
         var mainObj = 'stations';
-        for (var _i = 0, _a = this.newTerms; _i < _a.length; _i++) {
-            var newTerm = _a[_i];
-            console.log(newTerm);
-            console.log("newterm", newTerm);
-            var termType = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].type;
-            var termProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].properties;
-            // check for objects or arrays 
-            if (termType == 'object' && termProperties != undefined) {
-                var newQuad = this.node_node_node(newTerm, 'rdf:Class', 'Object');
+        // First add the main object to the vocabulary
+        var mainObjQuad = this.node_node_node('gbfsst:Station', 'rdf:type', 'rdfs:Class');
+        this.writer.addQuad(mainObjQuad);
+        this.writer.addQuad(this.node_node_literal('gbfsst:Station', 'rdf:label', 'Station'));
+        // Then add its new (not availalbe in config.map) properties to the vocabulary
+        // For each property IN the main object of json file (in this case station)
+        for (var term in this.jsonSchema.properties.data.properties.stations.items.properties) {
+            // If the property does not exists in the mapping, then we add it to the vocabulary
+            if (this.map.has(term) == false) {
+                var termType = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].type;
+                var termProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties;
+                this.newTerms.push(term);
+                // Then create the quad and add it to the writer
+                var newQuad = this.node_node_node('gbfsst:' + term, 'rdf:type', 'rdf:Property');
                 this.writer.addQuad(newQuad);
-                console.log("object", this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].properties);
-                // Then there might be other subproperties
-                for (var subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].properties) {
-                    var subPropQuad = this.node_node_node(newTerm, 'rdf:Property', subProperty);
-                    this.writer.addQuad(subPropQuad);
+                var newQuad2 = this.node_node_literal('gbfsst:' + term, 'rdf:label', term.toString());
+                this.writer.addQuad(newQuad2);
+                var rangeQuad = this.node_node_literal('gbfsst:' + term, 'rdfs:range', this.getXsdType(termType));
+                this.writer.addQuad(rangeQuad);
+                // Deal with subproperties/elements
+                // check for objects or arrays 
+                if (termType == 'object' && termProperties != undefined) {
+                    var newQuad_1 = this.node_node_node(term, 'rdf:Class', 'Object');
+                    this.writer.addQuad(newQuad_1);
+                    console.log("object", this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties);
+                    // Then there might be other subproperties
+                    for (var subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties) {
+                        var subPropQuad = this.node_node_node(term, 'rdf:Property', subProperty);
+                        this.writer.addQuad(subPropQuad);
+                    }
                 }
-            }
-            if (termType == 'array') {
-                console.log("array");
-                var newQuad = this.node_node_node(newTerm, 'rdf:Class', 'Array');
-                this.writer.addQuad(newQuad);
-                // Then there are elements
-                for (var _b = 0, _c = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm]; _b < _c.length; _b++) {
-                    var subProperty = _c[_b];
+                if (termType == 'array') {
+                    console.log("array");
+                    var newQuad_2 = this.node_node_node(term, 'rdf:Class', 'Array');
+                    this.writer.addQuad(newQuad_2);
+                    // Then there are elements
+                    for (var _i = 0, _a = this.jsonSchema.properties.data.properties[mainObj].items.properties[term]; _i < _a.length; _i++) {
+                        var subProperty = _a[_i];
+                    }
                 }
-            }
-            if (termType != 'array' && termType != 'object') {
-                var newQuad = this.node_node_node(newTerm, 'rdf:type', termType);
-                this.writer.addQuad(newQuad);
+                if (termType != 'array' && termType != 'object') {
+                    var newQuad_3 = this.node_node_node(term, 'rdf:type', termType);
+                    this.writer.addQuad(newQuad_3);
+                }
             }
         }
         this.writer.end(function (error, result) { return fs.writeFile('turtleTranslation.ttl', result, function (err) {
@@ -129,6 +134,26 @@ var RDFVocabulary = /** @class */ (function () {
     RDFVocabulary.prototype.node_literal_literal = function (subj, pred, obj) {
         var myQuad = quad(namedNode(subj), literal(pred), literal(obj), defaultGraph());
         return myQuad;
+    };
+    RDFVocabulary.prototype.getXsdType = function (t) {
+        switch (t) {
+            case 'string': {
+                return 'xsd:string';
+                break;
+            }
+            case 'number': {
+                return 'xsd:float';
+                break;
+            }
+            case 'boolean': {
+                return 'xsd:boolean';
+                break;
+            }
+            default: {
+                //statements; 
+                break;
+            }
+        }
     };
     return RDFVocabulary;
 }());

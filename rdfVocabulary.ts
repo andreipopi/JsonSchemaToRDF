@@ -80,56 +80,62 @@ export class RDFVocabulary {
     /** creates and writes quads(in the rdf vocab.) for the main object's properties, by checking if new terms are encountered (against map) */
     parseMainObjectPropertiesToQuads (){
         const fs = require('fs');
-
-
+        const mainObj = 'stations';
         // First add the main object to the vocabulary
-
+        const mainObjQuad = this.node_node_node('gbfsst:Station', 'rdf:type', 'rdfs:Class');
+        this.writer.addQuad(mainObjQuad);
+        this.writer.addQuad(this.node_node_literal('gbfsst:Station', 'rdf:label', 'Station'));
 
         // Then add its new (not availalbe in config.map) properties to the vocabulary
 
         // For each property IN the main object of json file (in this case station)
-        for (const elem in this.jsonSchema.properties.data.properties.stations.items.properties){
+        for (const term in this.jsonSchema.properties.data.properties.stations.items.properties){
             // If the property does not exists in the mapping, then we add it to the vocabulary
-            if (this.map.has(elem) == false) {
-                this.newTerms.push(elem);
+            if (this.map.has(term) == false) {
+                let termType = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].type;
+                let termProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties;
+
+                this.newTerms.push(term);
                 // Then create the quad and add it to the writer
-                let newQuad = this.node_node_node('gbfsst:station', 'rdf:Property', elem);
+                let newQuad = this.node_node_node('gbfsst:'+term, 'rdf:type', 'rdf:Property');
                 this.writer.addQuad(newQuad);
-            }
-        }
+                let newQuad2 = this.node_node_literal('gbfsst:'+term, 'rdf:label', term.toString());
+                this.writer.addQuad(newQuad2);
+                let rangeQuad = this.node_node_literal('gbfsst:'+term, 'rdfs:range', this.getXsdType(termType));
+                this.writer.addQuad(rangeQuad);
 
-        const mainObj = 'stations';
-        for (const newTerm of this.newTerms) {
-            console.log(newTerm);
-            console.log("newterm",newTerm);
-            let termType = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].type;
-            let termProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].properties;
-
-            // check for objects or arrays 
-            if( termType == 'object' && termProperties != undefined) {
-                let newQuad = this.node_node_node(newTerm, 'rdf:Class', 'Object');
-                this.writer.addQuad(newQuad);
-                console.log("object",this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].properties );
-                // Then there might be other subproperties
-                for (const subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm].properties){
-                    let subPropQuad = this.node_node_node(newTerm, 'rdf:Property', subProperty);
-                    this.writer.addQuad(subPropQuad);
+                // Deal with subproperties/elements
+                // check for objects or arrays 
+                if(termType == 'object' && termProperties != undefined) {
+                    let newQuad = this.node_node_node(term, 'rdf:Class', 'Object');
+                    this.writer.addQuad(newQuad);
+                    console.log("object",this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties );
+                    // Then there might be other subproperties
+                    for (const subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties){
+                        let subPropQuad = this.node_node_node(term, 'rdf:Property', subProperty);
+                        this.writer.addQuad(subPropQuad);
+                    }
                 }
-            }
-            if(termType == 'array' ) {
-                console.log("array");
-                let newQuad = this.node_node_node(newTerm, 'rdf:Class', 'Array');
-                this.writer.addQuad(newQuad);
-                // Then there are elements
-                for (const subProperty of this.jsonSchema.properties.data.properties[mainObj].items.properties[newTerm]){
+                if(termType == 'array') {
+                    console.log("array");
+                    let newQuad = this.node_node_node(term, 'rdf:Class', 'Array');
+                    this.writer.addQuad(newQuad);
+                    // Then there are elements
+                    for (const subProperty of this.jsonSchema.properties.data.properties[mainObj].items.properties[term]){
                     
+                    }
                 }
-            }
-            if(termType !='array' && termType !='object'){
-                let newQuad = this.node_node_node(newTerm, 'rdf:type', termType);
-                this.writer.addQuad(newQuad);
+                if(termType !='array' && termType !='object'){
+                    let newQuad = this.node_node_node(term, 'rdf:type', termType);
+                    this.writer.addQuad(newQuad);
+                }
+
             }
         }
+
+        
+        
+
         this.writer.end((error, result) => fs.writeFile('turtleTranslation.ttl', result, (err) => {
             // throws an error, you could also catch it here
             if (err) throw err;
@@ -159,5 +165,27 @@ export class RDFVocabulary {
     node_literal_literal (subj: string, pred:string, obj:string) {
         const myQuad = quad( namedNode(subj), literal(pred), literal(obj), defaultGraph());
         return myQuad;
+    }
+
+    getXsdType (t:string) {
+        switch(t) { 
+            case 'string': { 
+                return 'xsd:string';
+                break; 
+            } 
+            case 'number': { 
+               return 'xsd:float';
+               break;
+            } 
+            case 'boolean': { 
+                return 'xsd:boolean';
+                break;
+             } 
+            default: { 
+               //statements; 
+               break; 
+            } 
+         } 
+
     }
 }
