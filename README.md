@@ -16,7 +16,7 @@ Andrei Popescu <andrei.popescu@ugent.be>
 
 ## ToDos (might have cronological/logical dependencies)
 
+ * correct the properties added to the vocabulary
  * include types of terms in the map
- * get required attributes for the main object of jsonschema
-    * write SHACL
+ 
 
