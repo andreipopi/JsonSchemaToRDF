@@ -23,6 +23,7 @@ export class RDFVocabulary {
             geo: 'http://www.w3.org/2003/01/geo/wgs84_pos#',
             vann: 'http://purl.org/vocab/vann/',
             owl: 'http://www.w3.org/2002/07/owl#',
+            jsonsc: 'https://www.w3.org/2019/wot/json-schema#',
             airs: 'https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#',
             "dbpedia-owl": 'http://dbpedia.org/ontology/', //ERROR, should be dbpedia-owl but the - gives an error, not sure how to escape it
         }};
@@ -76,7 +77,6 @@ export class RDFVocabulary {
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
 
     }
-
     /** creates and writes quads(in the rdf vocab.) for the main object's properties, by checking if new terms are encountered (against map) */
     parseMainObjectPropertiesToQuads (){
         const fs = require('fs');
@@ -94,40 +94,48 @@ export class RDFVocabulary {
             if (this.map.has(term) == false) {
                 let termType = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].type;
                 let termProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties;
+                let termDescription = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].description;
 
                 this.newTerms.push(term);
                 // Then create the quad and add it to the writer
                 let newQuad = this.node_node_node('gbfsst:'+term, 'rdf:type', 'rdf:Property');
                 this.writer.addQuad(newQuad);
-                let newQuad2 = this.node_node_literal('gbfsst:'+term, 'rdf:label', term.toString());
+                let newQuad2 = this.node_node_literal('gbfsst:'+term, 'rdf:label', termDescription.toString());
                 this.writer.addQuad(newQuad2);
-                let rangeQuad = this.node_node_literal('gbfsst:'+term, 'rdfs:range', this.getXsdType(termType));
-                this.writer.addQuad(rangeQuad);
-
+                
                 // Deal with subproperties/elements
                 // check for objects or arrays 
                 if(termType == 'object' && termProperties != undefined) {
-                    let newQuad = this.node_node_node(term, 'rdf:Class', 'Object');
-                    this.writer.addQuad(newQuad);
+
                     console.log("object",this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties );
                     // Then there might be other subproperties
                     for (const subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties){
-                        let subPropQuad = this.node_node_node(term, 'rdf:Property', subProperty);
+                        let subPropQuad = this.node_node_node('gbfsst:'+term, 'rdf:Property', subProperty);
                         this.writer.addQuad(subPropQuad);
                     }
                 }
+
+                // Code specialised for station_information, where the only station property of type array is rental_methods
+                // We create a Rental_methods class 
                 if(termType == 'array') {
                     console.log("array");
-                    let newQuad = this.node_node_node(term, 'rdf:Class', 'Array');
+
+                    let newQuad = this.node_node_node('gbfsst:'+term, 'rdfs:range', 'gbfsst:'+this.capitalizeFirstLetter(term));
                     this.writer.addQuad(newQuad);
+
+                    let newClass = this.node_node_node('gbfsst:'+this.capitalizeFirstLetter(term), 'rdfs:type', 'rdfs:Class');
+                    this.writer.addQuad(newClass);
                     // Then there are elements
                     for (const subProperty of this.jsonSchema.properties.data.properties[mainObj].items.properties[term]){
                     
                     }
                 }
-                if(termType !='array' && termType !='object'){
-                    let newQuad = this.node_node_node(term, 'rdf:type', termType);
-                    this.writer.addQuad(newQuad);
+                // If it is not an object nor an array, then it is a property
+                if(termType !='array' && termType !='object' && termType != undefined){
+                    
+                    let rangeQuad = this.node_node_literal('gbfsst:'+term, 'rdfs:range', this.getXsdType(termType));
+                    this.writer.addQuad(rangeQuad);
+
                 }
 
             }
@@ -187,5 +195,8 @@ export class RDFVocabulary {
             } 
          } 
 
+    }
+    capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 }
