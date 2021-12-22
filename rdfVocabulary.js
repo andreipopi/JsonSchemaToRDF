@@ -55,32 +55,31 @@ var RDFVocabulary = /** @class */ (function () {
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
     };
-    /** creates and writes quads(in the rdf vocab.) for the main object's properties, by checking if new terms are encountered (against map) */
+    /** creates and writes quads (in turtleTranslation.ttl)
+     * for the main object's properties,
+     * by checking if new terms are encountered (against map).
+    */
     RDFVocabulary.prototype.parseMainObjectPropertiesToQuads = function () {
         var fs = require('fs');
         var mainObj = 'stations';
-        // First add the main object to the vocabulary as a class
+        // Add the main object to the vocabulary as a class
         var mainObjQuad = this.node_node_node('gbfsst:Station', 'rdf:type', 'rdfs:Class');
         this.writer.addQuad(mainObjQuad);
         this.writer.addQuad(this.node_node_literal('gbfsst:Station', 'rdf:label', 'Station'));
-        // Then add its new (not availalbe in config.map) properties to the vocabulary
+        // Add its new (not availalbe in config.map) properties to the vocabulary
+        var properties = this.jsonSchema.properties.data.properties[mainObj].items.properties;
         // For each property IN the main object of json file (in this case station)
-        for (var term in this.jsonSchema.properties.data.properties.stations.items.properties) {
+        // Properties
+        for (var term in properties) {
             // If the property does not exists in the mapping, then we add it to the vocabulary
             if (this.map.has(term) == false) {
                 var termType = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].type;
                 var termProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties;
                 var termDescription = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].description;
                 this.newTerms.push(term);
-                // Deal with subproperties/elements
+                // Sub-properties
                 // check for objects or arrays 
                 if ((termType == 'object' && termProperties != undefined) || termType == 'array') {
-                    /* console.log("object",this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties );
-                     // Then there might be other subproperties
-                     for (const subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties){
-                         let subPropQuad = this.node_node_node('gbfsst:'+term, 'rdf:Property', subProperty);
-                         this.writer.addQuad(subPropQuad);
-                     }*/
                     // Code specialised for station_information, where the only station property of type array is rental_methods
                     // We create a Rental_methods class
                     // Then create the quad and add it to the writer
@@ -97,15 +96,21 @@ var RDFVocabulary = /** @class */ (function () {
                     // Then there are elements: either properties
                     if (subProperties != undefined) {
                         for (var subProperty in subProperties) {
-                            console.log("subproperty", subProperty);
                             var property = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties[subProperty];
-                            console.log(property);
-                            var subPropQuad = this.node_node_node('gbfsst:' + newClassName, 'rdf:Property', 'gbfsst:' + subProperty);
-                            this.writer.addQuad(subPropQuad);
-                            var label = this.node_node_literal('gbfsst:' + subProperty, 'rdf:label', property.description);
-                            this.writer.addQuad(label);
-                            var type = this.node_node_literal('gbfsst:' + subProperty, 'rdf:type', property.type);
-                            this.writer.addQuad(type);
+                            if (subProperty != 'type') {
+                                console.log("subproperty", subProperty);
+                                console.log(property);
+                                var subPropQuad = this.node_node_node('gbfsst:' + newClassName, 'rdf:Property', 'gbfsst:' + subProperty);
+                                this.writer.addQuad(subPropQuad);
+                                if (property.description != undefined) {
+                                    var label = this.node_node_literal('gbfsst:' + subProperty, 'rdf:label', property.description);
+                                    this.writer.addQuad(label);
+                                }
+                                if (property.type != undefined) {
+                                    var type = this.node_node_literal('gbfsst:' + subProperty, 'rdf:type', property.type);
+                                    this.writer.addQuad(type);
+                                }
+                            } // else: we skip the type subproperties because of the modelling differences, e.g. see  station_area vs rental_uris vs rental_methods
                         }
                     }
                     // Or items (at least in the case of station_information)
@@ -126,10 +131,10 @@ var RDFVocabulary = /** @class */ (function () {
                 // If it is not an object nor an array, then it is a property
                 if (termType != 'array' && termType != 'object' && termType != undefined) {
                     // Then create the quad and add it to the writer
-                    var newQuad = this.node_node_node('gbfsst:' + term, 'rdf:type', 'rdf:Property');
-                    this.writer.addQuad(newQuad);
-                    var newQuad2 = this.node_node_literal('gbfsst:' + term, 'rdf:label', termDescription.toString());
-                    this.writer.addQuad(newQuad2);
+                    var propertyQuad = this.node_node_node('gbfsst:' + term, 'rdf:type', 'rdf:Property');
+                    this.writer.addQuad(propertyQuad);
+                    var descriptionQuad = this.node_node_literal('gbfsst:' + term, 'rdf:label', termDescription.toString());
+                    this.writer.addQuad(descriptionQuad);
                     var rangeQuad = this.node_node_literal('gbfsst:' + term, 'rdfs:range', this.getXsdType(termType));
                     this.writer.addQuad(rangeQuad);
                 }
