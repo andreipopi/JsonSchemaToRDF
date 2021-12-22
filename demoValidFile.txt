@@ -1,5 +1,0 @@
-:station 1 a gfsst:station;
-            dcterms:identifier '01';
-            foaf:name 'Sint-Pieters';
-            geo:lat 45;
-            geo:lon 45.  
