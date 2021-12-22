@@ -1,0 +1,15 @@
+@prefix ex: <http://example.org/> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
+@prefix gbfsst: <https://w3id.org/gbfs/stations#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+
+
+ex:station1 a gbfsst:Station;
+            dcterms:identifier "01";
+            foaf:name "Sint-Pieters"@en;
+            geo:lat "45"^^xsd:float;
+            geo:lon "45"^^xsd:float .  
+	    
+	    
