@@ -1,7 +1,8 @@
 export class Configuration {
     jsonSource = './files/station_information.json';
     //jsonSource =  './files/free_bike_status.json';
-    jsonSchema = require(this.jsonSource);
+    //jsonSource =  './files/system_alerts.json';
+    //jsonSchema = require(this.jsonSource);
     baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';
     baseRdfVocabURI = ''; 
     jsonTraverse = require('json-schema-traverse');
@@ -28,7 +29,7 @@ export class Configuration {
         // Station properties terms
         this.map.set('station_id','dcterms:identifier');
         this.map.set( 'name', 'foaf:name');
-        this.map.set( 'short_name', 'rdf:label');
+        this.map.set( 'short_name', 'rdfs:label');
         this.map.set( 'lat', 'geo:lat');
         this.map.set( 'lon', 'geo:long');
         this.map.set( 'cross_street', 'airs:locatedAtCrossStreet');
@@ -38,9 +39,8 @@ export class Configuration {
 
         // FreeBikeStatus properties terms
         this.map.set('bike_id', 'dcterms:identifier');
-       
-
-
+        this.map.set('alert_id', 'dcterms:identifier');
+    
 
         this.newTermsMap.set( 'address', 'new');
         this.newTermsMap.set( 'rental_methods', 'new');
@@ -51,9 +51,6 @@ export class Configuration {
         this.newTermsMap.set( 'is_charging_station', 'new');
         this.newTermsMap.set( 'rental_uris', 'new');
         this.newTermsMap.set( 'vehicle_type_capacity', 'new');
-
-
-
 
     };
     
@@ -96,7 +93,6 @@ export class Configuration {
     getJsonSource (){
         return this.jsonSource;
     }
-    
     getShaclURI (){
         return this.baseShaclURI;
     };

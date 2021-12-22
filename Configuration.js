@@ -6,7 +6,8 @@ var Configuration = /** @class */ (function () {
     function Configuration() {
         this.jsonSource = './files/station_information.json';
         //jsonSource =  './files/free_bike_status.json';
-        this.jsonSchema = require(this.jsonSource);
+        //jsonSource =  './files/system_alerts.json';
+        //jsonSchema = require(this.jsonSource);
         this.baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';
         this.baseRdfVocabURI = '';
         this.jsonTraverse = require('json-schema-traverse');
@@ -28,7 +29,7 @@ var Configuration = /** @class */ (function () {
         // Station properties terms
         this.map.set('station_id', 'dcterms:identifier');
         this.map.set('name', 'foaf:name');
-        this.map.set('short_name', 'rdf:label');
+        this.map.set('short_name', 'rdfs:label');
         this.map.set('lat', 'geo:lat');
         this.map.set('lon', 'geo:long');
         this.map.set('cross_street', 'airs:locatedAtCrossStreet');
@@ -37,6 +38,7 @@ var Configuration = /** @class */ (function () {
         this.map.set('capacity', 'dbpedia-owl:capacity');
         // FreeBikeStatus properties terms
         this.map.set('bike_id', 'dcterms:identifier');
+        this.map.set('alert_id', 'dcterms:identifier');
         this.newTermsMap.set('address', 'new');
         this.newTermsMap.set('rental_methods', 'new');
         this.newTermsMap.set('is_virtual_station', 'new');

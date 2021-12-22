@@ -8,8 +8,8 @@ const { namedNode, literal, defaultGraph, quad } = DataFactory;
 export class RDFVocabulary {
     // Attributes
     jsonSchema: any;
-    store = new N3.Store();
     mainObject: any;
+    mainJsonObject: any;
     prefixes = {
         prefixes: {
             gbfsst: 'https://w3id.org/gbfs/stations#',
@@ -53,16 +53,15 @@ export class RDFVocabulary {
         // Hardcoded -> can be made more general 
         this.mainObject = 'gbfsst:Station';
         //this.mainObject = 'gbfsst:Bike';
-
+        //this.mainObject = 'gbfsst:Alert';
+        this.mainJsonObject = this.getMainJsonObject(this.mainObject);
     }
-
     // Methods
     /** creates and writes quads for the basic properties of a jsonSchema of the bike sharing system */
     parseBasicsToQuads (){
         this.schema  = this.jsonSchema.$schema;
         this.description = this.jsonSchema.description;
         this.id = this.jsonSchema.$id;
-       
         this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/stations', 'rdf:type', 'foaf:Document'));
         this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/stations', 'rdfs:comment', this.description));
         this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/stations', 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/stations#'));
@@ -71,7 +70,6 @@ export class RDFVocabulary {
         this.writer.addQuad(this.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
-
     }
     /** creates and writes quads (in turtleTranslation.ttl) 
      * for the main object's properties, 
@@ -79,25 +77,23 @@ export class RDFVocabulary {
     */
     parseMainObjectPropertiesToQuads (){
         const fs = require('fs');
-        const mainObj = 'stations'; // as available in the json file; used to loop over station properties
-        //const mainObj = 'bikes';
-
+        
         // Add the main object to the vocabulary as a class
-        this.writer.addQuad(this.node_node_node('gbfsst:Station', 'rdf:type', 'rdfs:Class'));
-        this.writer.addQuad(this.node_node_literal('gbfsst:Station', 'rdf:label', 'Station'));
+        this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
+        this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', 'Station'));
 
         // Add its new (not availalbe in config.map) properties to the vocabulary
-        const properties = this.jsonSchema.properties.data.properties[mainObj].items.properties;
-        
+        const properties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties;
         console.log("properties",properties);
-        // Properties of 'Station'
+        // Properties of the main object (e.g.'Station')
         for (const term in properties){
             console.log(term);
             // If the property does not exist in the mapping, then we add it to the vocabulary
+
             if (this.map.has(term) == false) {
-                let termType = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].type;
-                let termProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties; 
-                let termDescription = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].description;
+                let termType = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].type;
+                let termProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties; 
+                let termDescription = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].description;
 
                 console.log(term+"type"+termType);
                 // Keep an array of new terms
@@ -109,7 +105,7 @@ export class RDFVocabulary {
 
                     // Add property and its label
                     this.writer.addQuad(this.node_node_node('gbfsst:'+term, 'rdf:type', 'rdf:Property'));
-                    this.writer.addQuad(this.node_node_literal('gbfsst:'+term, 'rdf:label', termDescription.toString()));
+                    this.writer.addQuad(this.node_node_literal('gbfsst:'+term, 'rdfs:label', termDescription.toString()));
         
                     // Since it is an object/array, we give it a new class as a range
                     const newClassName = this.capitalizeFirstLetter(term);
@@ -117,14 +113,14 @@ export class RDFVocabulary {
                     // e.g. we create a new 'Rental_methods' class (in the case of rental_methods)
                     this.writer.addQuad(this.node_node_node('gbfsst:'+this.capitalizeFirstLetter(term), 'rdfs:type', 'rdfs:Class'));
 
-                    const subProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties;
-                    const subItems = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].items;
+                    const subProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties;
+                    const subItems = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].items;
                                         
                     console.log("subItems",subItems);
                     // Either properties
                     if (subProperties != undefined) {
                         for (const subProperty in subProperties){
-                            const property = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties[subProperty];
+                            const property = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties[subProperty];
                             if(subProperty != 'type'){
                                 console.log("subproperty", subProperty);
                                 console.log(property);
@@ -132,7 +128,7 @@ export class RDFVocabulary {
                                 this.writer.addQuad(this.node_node_node('gbfsst:'+newClassName, 'rdf:Property','gbfsst:'+ subProperty));
                                 // Check if there is an available description
                                 if(property.description != undefined){
-                                    this.writer.addQuad(this.node_node_literal('gbfsst:'+subProperty, 'rdf:label', property.description));
+                                    this.writer.addQuad(this.node_node_literal('gbfsst:'+subProperty, 'rdfs:label', property.description));
                                 }
                                 // and/or a type
                                 if(property.type != undefined){
@@ -144,36 +140,39 @@ export class RDFVocabulary {
 
                     // Or items (at least in the case of station_information)
                     if (subItems != undefined) {
-                        const enumeration = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].items.enum;
-                        // Then we assume there is an enum 
-                        let oneOfValues ='(';
-                        for (const value of enumeration){
-                            oneOfValues = oneOfValues+ ' '+ value;
+                        const enumeration = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].items.enum;
+                        
+                        // Then we assume there is an enum
+                        if (enumeration != undefined){
+                            let oneOfValues ='(';
+                            for (const value of enumeration){
+                                oneOfValues = oneOfValues+ ' '+ value;
+                            }
+                            oneOfValues = oneOfValues+ ' )';
+                            console.log(oneOfValues);
+                            let subPropQuad = this.node_node_literal('gbfsst:'+newClassName, 'owl:oneOf', oneOfValues);
+                            this.writer.addQuad(subPropQuad);
                         }
-                        oneOfValues = oneOfValues+ ' )';
-                        console.log(oneOfValues);
-                        let subPropQuad = this.node_node_literal('gbfsst:'+newClassName, 'owl:oneOf', oneOfValues);
-                        this.writer.addQuad(subPropQuad);
+                        
                     }
                 }
 
                 // If it is not an object nor an array, then it is a property
                 if(termType !='array' && termType !='object'){
 
+                    // it has a primitive datatype
                     if(termType != undefined){
                         // Then create the quad and add it to the writer
                         this.writer.addQuad(this.node_node_node('gbfsst:'+term, 'rdf:type', 'rdf:Property'));
-                        this.writer.addQuad(this.node_node_literal('gbfsst:'+term, 'rdf:label', termDescription.toString()));
+                        this.writer.addQuad(this.node_node_literal('gbfsst:'+term, 'rdfs:label', termDescription.toString()));
                         this.writer.addQuad('gbfsst:'+term, 'rdfs:range', this.getXsdType(termType));
                     }
+                    // it has some other datatype
                     else{
-
                         this.writer.addQuad(this.node_node_node('gbfsst:'+term, 'rdf:type', 'rdf:Property'));
-                        this.writer.addQuad(this.node_node_literal('gbfsst:'+term, 'rdf:label', termDescription.toString()));
-
+                        this.writer.addQuad(this.node_node_literal('gbfsst:'+term, 'rdsf:label', termDescription.toString()));
                         // Might be a more complex type, e.g. oneOf
                     }
-                    
                 }
             }
             else{
@@ -194,10 +193,13 @@ export class RDFVocabulary {
     getRequiredProperties () {
         let requiredMap = new Map<string, string>();
         // For each OF the values in the required
+        
 
-        for (const requiredProp of this.jsonSchema.properties.data.properties.stations.items.required){
+
+        for (const requiredProp of this.jsonSchema.properties.data.properties[this.mainJsonObject].items.required){
+
+        //for (const requiredProp of this.jsonSchema.properties.data.properties.stations.items.required){
         //for (const requiredProp of this.jsonSchema.properties.data.properties.bikes.items.required){
-
             requiredMap.set(requiredProp.toString(), this.map.get(requiredProp.toString()));
         }
         return requiredMap;
@@ -216,7 +218,6 @@ export class RDFVocabulary {
         const myQuad = quad( namedNode(subj), literal(pred), literal(obj), defaultGraph());
         return myQuad;
     }
-
     getXsdType (t:string) {
         switch(t) { 
             case 'string': { 
@@ -236,7 +237,26 @@ export class RDFVocabulary {
                break; 
             } 
          } 
-
+    }
+    getMainJsonObject (mainObject:string) {
+        switch(mainObject) { 
+            case 'gbfsst:Station': { 
+                return 'stations';
+                break; 
+            } 
+            case 'gbfsst:Bike': { 
+               return 'bikes';
+               break;
+            } 
+            case 'gbfsst:Alert': { 
+                return 'alerts';
+                break;
+             } 
+            default: { 
+               //statements; 
+               break; 
+            } 
+         } 
     }
     capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
