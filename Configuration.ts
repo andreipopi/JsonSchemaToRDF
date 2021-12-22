@@ -1,5 +1,6 @@
 export class Configuration {
     jsonSource = './files/station_information.json';
+    //jsonSource =  './files/free_bike_status.json';
     jsonSchema = require(this.jsonSource);
     baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';
     baseRdfVocabURI = ''; 
@@ -34,8 +35,12 @@ export class Configuration {
         this.map.set( 'region_id', 'dbpedia-owl:region');
         this.map.set( 'post_code', 'dbpedia-owl:postalCode');
         this.map.set( 'capacity', 'dbpedia-owl:capacity');
-        // Alerts properties terms
-        this.map.set('alert_id', 'dcterms:identifier');
+
+        // FreeBikeStatus properties terms
+        this.map.set('bike_id', 'dcterms:identifier');
+       
+
+
 
         this.newTermsMap.set( 'address', 'new');
         this.newTermsMap.set( 'rental_methods', 'new');
@@ -46,6 +51,8 @@ export class Configuration {
         this.newTermsMap.set( 'is_charging_station', 'new');
         this.newTermsMap.set( 'rental_uris', 'new');
         this.newTermsMap.set( 'vehicle_type_capacity', 'new');
+
+
 
 
     };
