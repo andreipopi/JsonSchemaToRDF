@@ -81,13 +81,13 @@ export class RDFVocabulary {
     parseMainObjectPropertiesToQuads (){
         const fs = require('fs');
         const mainObj = 'stations';
-        // First add the main object to the vocabulary
+
+        // First add the main object to the vocabulary as a class
         const mainObjQuad = this.node_node_node('gbfsst:Station', 'rdf:type', 'rdfs:Class');
         this.writer.addQuad(mainObjQuad);
         this.writer.addQuad(this.node_node_literal('gbfsst:Station', 'rdf:label', 'Station'));
 
         // Then add its new (not availalbe in config.map) properties to the vocabulary
-
         // For each property IN the main object of json file (in this case station)
         for (const term in this.jsonSchema.properties.data.properties.stations.items.properties){
             // If the property does not exists in the mapping, then we add it to the vocabulary
@@ -97,11 +97,7 @@ export class RDFVocabulary {
                 let termDescription = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].description;
 
                 this.newTerms.push(term);
-                // Then create the quad and add it to the writer
-                let newQuad = this.node_node_node('gbfsst:'+term, 'rdf:type', 'rdf:Property');
-                this.writer.addQuad(newQuad);
-                let newQuad2 = this.node_node_literal('gbfsst:'+term, 'rdf:label', termDescription.toString());
-                this.writer.addQuad(newQuad2);
+                
                 
                 // Deal with subproperties/elements
                 // check for objects or arrays 
@@ -113,25 +109,44 @@ export class RDFVocabulary {
                         let subPropQuad = this.node_node_node('gbfsst:'+term, 'rdf:Property', subProperty);
                         this.writer.addQuad(subPropQuad);
                     }*/
-                
-
+            
                 // Code specialised for station_information, where the only station property of type array is rental_methods
-                // We create a Rental_methods class 
-               
-                //owl:oneOf (boolean number)
-
-                    console.log("array");
+                // We create a Rental_methods class
+                    // Then create the quad and add it to the writer
+                    let propQuad = this.node_node_node('gbfsst:'+term, 'rdf:type', 'rdf:Property');
+                    this.writer.addQuad(propQuad);
+                    let descriptionQuad = this.node_node_literal('gbfsst:'+term, 'rdf:label', termDescription.toString());
+                    this.writer.addQuad(descriptionQuad);
 
                     const newClassName = this.capitalizeFirstLetter(term);
                     let newQuad = this.node_node_node('gbfsst:'+term, 'rdfs:range', 'gbfsst:'+newClassName);
                     this.writer.addQuad(newQuad);
-
                     let newClass = this.node_node_node('gbfsst:'+this.capitalizeFirstLetter(term), 'rdfs:type', 'rdfs:Class');
                     this.writer.addQuad(newClass);
+
+
+                    const subProperties = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties;
                     // Then there are elements: either properties
-                    for (const subProperty in this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties){
-                        let subPropQuad = this.node_node_node('gbfsst:'+newClassName, 'rdf:Property', subProperty);
-                        this.writer.addQuad(subPropQuad);
+                    if (subProperties != undefined) {
+
+                        for (const subProperty in subProperties){
+                        
+                            console.log("subproperty", subProperty);
+                            const property = this.jsonSchema.properties.data.properties[mainObj].items.properties[term].properties[subProperty];
+                            
+                            console.log(property);
+                            let subPropQuad = this.node_node_node('gbfsst:'+newClassName, 'rdf:Property','gbfsst:'+ subProperty);
+                            this.writer.addQuad(subPropQuad);
+    
+                            let label = this.node_node_literal('gbfsst:'+subProperty, 'rdf:label', property.description);
+                            this.writer.addQuad(label);
+
+                            let type = this.node_node_literal('gbfsst:'+subProperty, 'rdfs:type', property.type);
+                            this.writer.addQuad(type);
+
+                        }
+
+
                     }
                     // Or items (at least in the case of station_information)
                     if(this.jsonSchema.properties.data.properties[mainObj].items.properties[term].items != undefined){
@@ -147,11 +162,15 @@ export class RDFVocabulary {
                         let subPropQuad = this.node_node_literal('gbfsst:'+newClassName, 'owl:oneOf', oneOfValues);
                         this.writer.addQuad(subPropQuad);
                     }
-
                 }
                 // If it is not an object nor an array, then it is a property
                 if(termType !='array' && termType !='object' && termType != undefined){
                     
+                    // Then create the quad and add it to the writer
+                    let newQuad = this.node_node_node('gbfsst:'+term, 'rdf:type', 'rdf:Property');
+                    this.writer.addQuad(newQuad);
+                    let newQuad2 = this.node_node_literal('gbfsst:'+term, 'rdf:label', termDescription.toString());
+                    this.writer.addQuad(newQuad2);
                     let rangeQuad = this.node_node_literal('gbfsst:'+term, 'rdfs:range', this.getXsdType(termType));
                     this.writer.addQuad(rangeQuad);
 
