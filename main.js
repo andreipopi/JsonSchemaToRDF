@@ -9,10 +9,5 @@ var rdfVocab = new rdfVocabulary_1.RDFVocabulary(config.getTermMapping(), config
 console.log(config.getVocabURI());
 rdfVocab.parseBasicsToQuads();
 rdfVocab.parseMainObjectPropertiesToQuads();
-console.log(rdfVocab.getRequiredProperties());
-//const shape = new ShaclShape(rdfVocab.getRequiredProperties(),config.getJsonSource());
-//shape.writeConstraints();
-//shape.writeTargetClass();
-//shape.writeShaclRoot();
 // Create a shaclShape object
 // Create an RDFVocab object

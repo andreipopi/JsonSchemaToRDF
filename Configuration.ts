@@ -55,7 +55,7 @@ export class Configuration {
     };
     
     // Station_information file parsing
-    // json-schema-traverse is a not mantained
+    
     
     /*traverse (){
         let data = [];

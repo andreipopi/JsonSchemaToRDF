@@ -1,5 +1,6 @@
 import { write } from "fs";
 import { arrayBuffer } from "stream/consumers";
+import {ShaclShape} from './shaclShape';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -7,11 +8,11 @@ const { namedNode, literal, defaultGraph, quad } = DataFactory;
 
 export class RDFVocabulary {
     // Attributes
+    jsonSource:any;
     jsonSchema: any;
     mainObject: any;
     mainJsonObject: any;
     prefixes: any;
-
     writer: any;
     map: Map<string, string>;
     newTerms = [];
@@ -30,8 +31,12 @@ export class RDFVocabulary {
     creator1Quad: any;
     creator2Quad: any;
 
+    // ShaclShape
+    shape: any;
+
     // Constructors
     constructor (termMapping: Map<string, string>, source:string, ){
+        this.jsonSource = source;
         this.jsonSchema = require(source);
         this.map = termMapping;
         // Hardcoded -> can be made more general 
@@ -80,6 +85,8 @@ export class RDFVocabulary {
      * by checking if new terms are encountered (against map).  
     */
     parseMainObjectPropertiesToQuads (){
+    
+    
         const fs = require('fs');
         
         // Add the main object to the vocabulary as a class
@@ -100,8 +107,11 @@ export class RDFVocabulary {
                 let termDescription = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].description;
 
                 console.log(term+"type"+termType);
-                // Keep an array of new terms
-                this.newTerms.push(term);
+
+                // Keep an array of new terms (unused so far)
+                this.newTerms.push(term); 
+                // Update our mapping with the new term: add   < term, 'gbfsvcb:'+term >
+                this.map.set(term, 'gbfsvcb:'+term);
                 
                 // Sub-properties of 'Station/term'
                 // if 'term' is an object and it has sub properties, or if it is an array
@@ -191,6 +201,13 @@ export class RDFVocabulary {
             if (err) throw err;
             // success case, the file was saved
             console.log('Turtle saved!');}));
+
+
+        console.log(this.getRequiredProperties());
+        this.shape = new ShaclShape(this.getRequiredProperties(), this.jsonSource);
+        this.shape.writeConstraints(this.mainJsonObject);
+        this.shape.writeTargetClass();
+        this.shape.writeShaclRoot();
     }
 
     /** returns the properties of the main object which are required. Useful in the shaclshape class in order to create the shacl shape */
@@ -198,15 +215,16 @@ export class RDFVocabulary {
         let requiredMap = new Map<string, string>();
         // For each OF the values in the required
         
-
-
         for (const requiredProp of this.jsonSchema.properties.data.properties[this.mainJsonObject].items.required){
-
-        //for (const requiredProp of this.jsonSchema.properties.data.properties.stations.items.required){
-        //for (const requiredProp of this.jsonSchema.properties.data.properties.bikes.items.required){
             requiredMap.set(requiredProp.toString(), this.map.get(requiredProp.toString()));
         }
         return requiredMap;
+    }
+
+
+
+    getWriter (){
+        return this.writer;
     }
 
     // Create quads of different shape

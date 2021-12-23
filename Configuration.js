@@ -51,7 +51,6 @@ var Configuration = /** @class */ (function () {
     }
     ;
     // Station_information file parsing
-    // json-schema-traverse is a not mantained
     /*traverse (){
         let data = [];
         this.jsonTraverse(this.jsonSchema.properties, (cb) => {

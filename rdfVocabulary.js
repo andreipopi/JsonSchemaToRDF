@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 exports.RDFVocabulary = void 0;
+var shaclShape_1 = require("./shaclShape");
 var N3 = require('n3');
 var DataFactory = N3.DataFactory;
 var namedNode = DataFactory.namedNode, literal = DataFactory.literal, defaultGraph = DataFactory.defaultGraph, quad = DataFactory.quad;
@@ -10,6 +11,7 @@ var RDFVocabulary = /** @class */ (function () {
         this.newTerms = [];
         this.creator1 = 'https://pietercolpaert.be/#me';
         this.creator2 = 'https://www.linkedin.com/in/andrei-popescu/';
+        this.jsonSource = source;
         this.jsonSchema = require(source);
         this.map = termMapping;
         // Hardcoded -> can be made more general 
@@ -73,8 +75,10 @@ var RDFVocabulary = /** @class */ (function () {
                 var termProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties;
                 var termDescription = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].description;
                 console.log(term + "type" + termType);
-                // Keep an array of new terms
+                // Keep an array of new terms (unused so far)
                 this.newTerms.push(term);
+                // Update our mapping with the new term: add   < term, 'gbfsvcb:'+term >
+                this.map.set(term, 'gbfsvcb:' + term);
                 // Sub-properties of 'Station/term'
                 // if 'term' is an object and it has sub properties, or if it is an array
                 if ((termType == 'object' && termProperties != undefined) || termType == 'array') {
@@ -156,6 +160,11 @@ var RDFVocabulary = /** @class */ (function () {
             // success case, the file was saved
             console.log('Turtle saved!');
         }); });
+        console.log(this.getRequiredProperties());
+        this.shape = new shaclShape_1.ShaclShape(this.getRequiredProperties(), this.jsonSource);
+        this.shape.writeConstraints(this.mainJsonObject);
+        this.shape.writeTargetClass();
+        this.shape.writeShaclRoot();
     };
     /** returns the properties of the main object which are required. Useful in the shaclshape class in order to create the shacl shape */
     RDFVocabulary.prototype.getRequiredProperties = function () {
@@ -163,11 +172,12 @@ var RDFVocabulary = /** @class */ (function () {
         // For each OF the values in the required
         for (var _i = 0, _a = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.required; _i < _a.length; _i++) {
             var requiredProp = _a[_i];
-            //for (const requiredProp of this.jsonSchema.properties.data.properties.stations.items.required){
-            //for (const requiredProp of this.jsonSchema.properties.data.properties.bikes.items.required){
             requiredMap.set(requiredProp.toString(), this.map.get(requiredProp.toString()));
         }
         return requiredMap;
+    };
+    RDFVocabulary.prototype.getWriter = function () {
+        return this.writer;
     };
     // Create quads of different shape
     RDFVocabulary.prototype.node_node_literal = function (subj, pred, obj) {
