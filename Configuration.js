@@ -4,8 +4,8 @@ exports.Configuration = void 0;
 var Configuration = /** @class */ (function () {
     // Constructors
     function Configuration() {
-        this.jsonSource = './files/station_information.json';
-        //jsonSource =  './files/free_bike_status.json';
+        //jsonSource = './files/station_information.json';
+        this.jsonSource = './files/free_bike_status.json';
         //jsonSource =  './files/system_alerts.json';
         //jsonSchema = require(this.jsonSource);
         this.baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';

@@ -10,25 +10,9 @@ export class RDFVocabulary {
     jsonSchema: any;
     mainObject: any;
     mainJsonObject: any;
-    prefixes = {
-        prefixes: {
-            gbfsst: 'https://w3id.org/gbfs/stations#',
-            schema: 'http://schema.org/url#',
-            ebucore: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#',
-            rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-            rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-            foaf: 'http://xmlns.com/foaf/0.1/',
-            dcterms: 'http://purl.org/dc/terms/',
-            vs: 'http://www.w3.org/2003/06/sw-vocab-status/ns#',
-            geo: 'http://www.w3.org/2003/01/geo/wgs84_pos#',
-            vann: 'http://purl.org/vocab/vann/',
-            owl: 'http://www.w3.org/2002/07/owl#',
-            jsonsc: 'https://www.w3.org/2019/wot/json-schema#',
-            airs: 'https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#',
-            "dbpedia-owl": 'http://dbpedia.org/ontology/', //ERROR, should be dbpedia-owl but the - gives an error, not sure how to escape it
-        }};
+    prefixes: any;
 
-    writer = new N3.Writer(this.prefixes);
+    writer: any;
     map: Map<string, string>;
     newTerms = [];
 
@@ -51,10 +35,30 @@ export class RDFVocabulary {
         this.jsonSchema = require(source);
         this.map = termMapping;
         // Hardcoded -> can be made more general 
-        this.mainObject = 'gbfsst:Station';
-        //this.mainObject = 'gbfsst:Bike';
+        //this.mainObject = 'gbfsst:Station';
+        this.mainObject = 'gbfsvcb:Bike';
         //this.mainObject = 'gbfsst:Alert';
         this.mainJsonObject = this.getMainJsonObject(this.mainObject);
+
+        this.prefixes = {
+            prefixes: {
+                gbfsvcb: 'https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject+'#',
+                schema: 'http://schema.org/url#',
+                ebucore: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#',
+                rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+                rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+                foaf: 'http://xmlns.com/foaf/0.1/',
+                dcterms: 'http://purl.org/dc/terms/',
+                vs: 'http://www.w3.org/2003/06/sw-vocab-status/ns#',
+                geo: 'http://www.w3.org/2003/01/geo/wgs84_pos#',
+                vann: 'http://purl.org/vocab/vann/',
+                owl: 'http://www.w3.org/2002/07/owl#',
+                jsonsc: 'https://www.w3.org/2019/wot/json-schema#',
+                airs: 'https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#',
+                "dbpedia-owl": 'http://dbpedia.org/ontology/', //ERROR, should be dbpedia-owl but the - gives an error, not sure how to escape it
+            }};
+
+            this.writer = new N3.Writer(this.prefixes);
     }
     // Methods
     /** creates and writes quads for the basic properties of a jsonSchema of the bike sharing system */
@@ -62,11 +66,11 @@ export class RDFVocabulary {
         this.schema  = this.jsonSchema.$schema;
         this.description = this.jsonSchema.description;
         this.id = this.jsonSchema.$id;
-        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/stations', 'rdf:type', 'foaf:Document'));
-        this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/stations', 'rdfs:comment', this.description));
-        this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/stations', 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/stations#'));
-        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/stations', 'dcterms:creator', this.creator1));
-        this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/stations', 'dcterms:creator', this.creator2));
+        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject, 'rdf:type', 'foaf:Document'));
+        this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject, 'rdfs:comment', this.description));
+        this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject, 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/vocabularies/'+this.mainJsonObject+'#'));
+        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject, 'dcterms:creator', this.creator1));
+        this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject, 'dcterms:creator', this.creator2));
         this.writer.addQuad(this.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
@@ -80,7 +84,7 @@ export class RDFVocabulary {
         
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
-        this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', 'Station'));
+        this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
 
         // Add its new (not availalbe in config.map) properties to the vocabulary
         const properties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties;
@@ -104,14 +108,14 @@ export class RDFVocabulary {
                 if((termType == 'object' && termProperties != undefined) || termType == 'array') {
 
                     // Add property and its label
-                    this.writer.addQuad(this.node_node_node('gbfsst:'+term, 'rdf:type', 'rdf:Property'));
-                    this.writer.addQuad(this.node_node_literal('gbfsst:'+term, 'rdfs:label', termDescription.toString()));
+                    this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdf:type', 'rdf:Property'));
+                    this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString()));
         
                     // Since it is an object/array, we give it a new class as a range
                     const newClassName = this.capitalizeFirstLetter(term);
-                    this.writer.addQuad(this.node_node_node('gbfsst:'+term, 'rdfs:range', 'gbfsst:'+newClassName));
+                    this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdfs:range', 'gbfsst:'+newClassName));
                     // e.g. we create a new 'Rental_methods' class (in the case of rental_methods)
-                    this.writer.addQuad(this.node_node_node('gbfsst:'+this.capitalizeFirstLetter(term), 'rdfs:type', 'rdfs:Class'));
+                    this.writer.addQuad(this.node_node_node('gbfsvcb:'+this.capitalizeFirstLetter(term), 'rdfs:type', 'rdfs:Class'));
 
                     const subProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties;
                     const subItems = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].items;
@@ -125,14 +129,14 @@ export class RDFVocabulary {
                                 console.log("subproperty", subProperty);
                                 console.log(property);
                                 // Add the subproperty to the vocabulary
-                                this.writer.addQuad(this.node_node_node('gbfsst:'+newClassName, 'rdf:Property','gbfsst:'+ subProperty));
+                                this.writer.addQuad(this.node_node_node('gbfsvcb:'+newClassName, 'rdf:Property','gbfsvcb:'+ subProperty));
                                 // Check if there is an available description
                                 if(property.description != undefined){
-                                    this.writer.addQuad(this.node_node_literal('gbfsst:'+subProperty, 'rdfs:label', property.description));
+                                    this.writer.addQuad(this.node_node_literal('gbfsvcb:'+subProperty, 'rdfs:label', property.description));
                                 }
                                 // and/or a type
                                 if(property.type != undefined){
-                                    this.writer.addQuad(this.node_node_literal('gbfsst:'+subProperty, 'rdf:type', property.type));
+                                    this.writer.addQuad(this.node_node_literal('gbfsvcb:'+subProperty, 'rdf:type', property.type));
                                 }
                             }// else: we skip the type subproperties because of the modelling differences, e.g. see  station_area vs rental_uris vs rental_methods
                         }
@@ -150,7 +154,7 @@ export class RDFVocabulary {
                             }
                             oneOfValues = oneOfValues+ ' )';
                             console.log(oneOfValues);
-                            let subPropQuad = this.node_node_literal('gbfsst:'+newClassName, 'owl:oneOf', oneOfValues);
+                            let subPropQuad = this.node_node_literal('gbfsvcb:'+newClassName, 'owl:oneOf', oneOfValues);
                             this.writer.addQuad(subPropQuad);
                         }
                         
@@ -163,14 +167,14 @@ export class RDFVocabulary {
                     // it has a primitive datatype
                     if(termType != undefined){
                         // Then create the quad and add it to the writer
-                        this.writer.addQuad(this.node_node_node('gbfsst:'+term, 'rdf:type', 'rdf:Property'));
-                        this.writer.addQuad(this.node_node_literal('gbfsst:'+term, 'rdfs:label', termDescription.toString()));
-                        this.writer.addQuad('gbfsst:'+term, 'rdfs:range', this.getXsdType(termType));
+                        this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdf:type', 'rdf:Property'));
+                        this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString()));
+                        this.writer.addQuad('gbfsvcb:'+term, 'rdfs:range', this.getXsdType(termType));
                     }
                     // it has some other datatype
                     else{
-                        this.writer.addQuad(this.node_node_node('gbfsst:'+term, 'rdf:type', 'rdf:Property'));
-                        this.writer.addQuad(this.node_node_literal('gbfsst:'+term, 'rdsf:label', termDescription.toString()));
+                        this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdf:type', 'rdf:Property'));
+                        this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString()));
                         // Might be a more complex type, e.g. oneOf
                     }
                 }
@@ -240,15 +244,15 @@ export class RDFVocabulary {
     }
     getMainJsonObject (mainObject:string) {
         switch(mainObject) { 
-            case 'gbfsst:Station': { 
+            case 'gbfsvcb:Station': { 
                 return 'stations';
                 break; 
             } 
-            case 'gbfsst:Bike': { 
+            case 'gbfsvcb:Bike': { 
                return 'bikes';
                break;
             } 
-            case 'gbfsst:Alert': { 
+            case 'gbfsvcb:Alert': { 
                 return 'alerts';
                 break;
              } 

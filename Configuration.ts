@@ -1,6 +1,6 @@
 export class Configuration {
-    jsonSource = './files/station_information.json';
-    //jsonSource =  './files/free_bike_status.json';
+    //jsonSource = './files/station_information.json';
+    jsonSource =  './files/free_bike_status.json';
     //jsonSource =  './files/system_alerts.json';
     //jsonSchema = require(this.jsonSource);
     baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';
