@@ -61,6 +61,14 @@ var ShaclShape = /** @class */ (function () {
             }
         });
     };
+    ShaclShape.prototype.isRequired = function (prop) {
+        if (this.requiredProperties.has(prop)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
     return ShaclShape;
 }());
 exports.ShaclShape = ShaclShape;

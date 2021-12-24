@@ -1,6 +1,6 @@
 export class Configuration {
-    //jsonSource = './files/station_information.json';
-    jsonSource =  './files/free_bike_status.json';
+    jsonSource = './files/station_information.json';
+    //jsonSource =  './files/free_bike_status.json';
     //jsonSource =  './files/system_alerts.json';
     //jsonSchema = require(this.jsonSource);
     baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';
@@ -13,13 +13,7 @@ export class Configuration {
     // Constructors
     constructor (){
         this.baseRdfVocabURI = 'https://w3id.org/gbfs/stations#';
-        // Configuration.ts
-        // Step 0) We have a hardcoded map of existing terms, assuming that we have also checked new incoming jsonSchemas
-        // rdfVocabulary.ts
-        // Step 1) create Turtle for the basic structure of the json schema: $schema, $id, $description, $properties
-        // Step 2) check the properties{} of the schema, which contains domain specific objects, e.g. stations, bikes, etc...
-        // In step 1 and 2, we will use the map to check what terms already exist
-
+    
         this.map.set('description','dcterms:description');
         this.map.set('last_updated', 'dcterms:modified' );
         this.map.set('type', 'rdf:type');
@@ -40,7 +34,6 @@ export class Configuration {
         // FreeBikeStatus properties terms
         this.map.set('bike_id', 'dcterms:identifier');
         this.map.set('alert_id', 'dcterms:identifier');
-    
 
         this.newTermsMap.set( 'address', 'new');
         this.newTermsMap.set( 'rental_methods', 'new');
@@ -54,9 +47,7 @@ export class Configuration {
 
     };
     
-    // Station_information file parsing
-    
-    
+    // Some trials with the json-schema-traverse package: not really scccessful 
     /*traverse (){
         let data = [];
         this.jsonTraverse(this.jsonSchema.properties, (cb) => {
@@ -78,16 +69,13 @@ export class Configuration {
         });
      
     };*/
-
     /*traverse () {
         for (const elem in this.jsonSchema.properties.data.properties.stations.items.properties){
             console.log('elemento', elem);
             if (this.map.has(elem)) {
                 console.log("elem", this.map.get(elem));
             }
-            
         }
-       
     };*/
 
     getJsonSource (){

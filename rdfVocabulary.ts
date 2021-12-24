@@ -32,7 +32,6 @@ export class RDFVocabulary {
     creator2 = 'https://www.linkedin.com/in/andrei-popescu/';
     creator1Quad: any;
     creator2Quad: any;
-
     // ShaclShape
     shape: any;
 
@@ -42,9 +41,9 @@ export class RDFVocabulary {
         this.jsonSchema = require(source);
         this.map = termMapping;
         // Hardcoded -> can be made more general 
-        //this.mainObject = 'gbfsst:Station';
-        this.mainObject = 'gbfsvcb:Bike';
-        //this.mainObject = 'gbfsst:Alert';
+        this.mainObject = 'gbfsvcb:Station';
+        //this.mainObject = 'gbfsvcb:Bike';
+        //this.mainObject = 'gbfsvcb:Alert';
         this.mainJsonObject = this.getMainJsonObject(this.mainObject);
 
         this.prefixes = {
@@ -88,14 +87,12 @@ export class RDFVocabulary {
     */
     parseMainObjectPropertiesToQuads (){
     
-        
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
 
+        // Create a ShaclShape object and insert the first entries
         this.shape = new ShaclShape(this.getRequiredProperties(), this.jsonSource);
-            //this.shape.writeConstraints(this.mainJsonObject);
-
         this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText+this.shape.getShaclTargetClass()+'\n';
 
@@ -114,7 +111,6 @@ export class RDFVocabulary {
             if (this.map.has(term) == false) {
                 
                 console.log(term+"type"+termType);
-
                 // Keep an array of new terms (unused so far)
                 this.newTerms.push(term); 
                 // Update our mapping with the new term: add   < term, 'gbfsvcb:'+term >
@@ -200,12 +196,13 @@ export class RDFVocabulary {
                 this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:Property', this.map.get(term) ));
             }
 
-
-            // Shacl Shape 
-            this.shaclFileText = this.shaclFileText+this.shape.getShaclProperty(term, this.getXsdType(termType));
-            //this.shape.writeTargetClass();
-            //this.shape.writeShaclRoot();
-
+            // Write the property to the Shacl shape
+            if (this.shape.isRequired(term)){
+                this.shaclFileText = this.shaclFileText+this.shape.getShaclRequiredProperty(term, this.getXsdType(termType))+'\n';
+            }
+            else{
+                this.shaclFileText = this.shaclFileText+this.shape.getShaclProperty(term, this.getXsdType(termType))+'\n';
+            }
         }
 
         // Write the content of the writer in the .ttl
@@ -215,15 +212,12 @@ export class RDFVocabulary {
             // success case, the file was saved
             console.log('Turtle saved!');}));
 
+        // Write the Shacl shape on file
         this.fs.writeFileSync("shacl.ttl", this.shaclFileText , function(err){
             if(err){
                 return console.log("error");
             }
         });
-    
-        
-
-
     }
     
     /** returns the properties of the main object which are required. Useful in the shaclshape class in order to create the shacl shape */

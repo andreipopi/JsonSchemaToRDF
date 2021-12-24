@@ -18,9 +18,9 @@ var RDFVocabulary = /** @class */ (function () {
         this.jsonSchema = require(source);
         this.map = termMapping;
         // Hardcoded -> can be made more general 
-        //this.mainObject = 'gbfsst:Station';
-        this.mainObject = 'gbfsvcb:Bike';
-        //this.mainObject = 'gbfsst:Alert';
+        this.mainObject = 'gbfsvcb:Station';
+        //this.mainObject = 'gbfsvcb:Bike';
+        //this.mainObject = 'gbfsvcb:Alert';
         this.mainJsonObject = this.getMainJsonObject(this.mainObject);
         this.prefixes = {
             prefixes: {
@@ -67,7 +67,6 @@ var RDFVocabulary = /** @class */ (function () {
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
         this.shape = new shaclShape_1.ShaclShape(this.getRequiredProperties(), this.jsonSource);
-        //this.shape.writeConstraints(this.mainJsonObject);
         this.shaclFileText = this.shaclFileText + this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText + this.shape.getShaclTargetClass() + '\n';
         // Add its new (not availalbe in config.map) properties to the vocabulary
@@ -158,8 +157,13 @@ var RDFVocabulary = /** @class */ (function () {
                 // The property is available in map
                 this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:Property', this.map.get(term)));
             }
+            if (this.shape.isRequired(term)) {
+                this.shaclFileText = this.shaclFileText + this.shape.getShaclRequiredProperty(term, this.getXsdType(termType)) + '\n';
+            }
+            else {
+                this.shaclFileText = this.shaclFileText + this.shape.getShaclProperty(term, this.getXsdType(termType)) + '\n';
+            }
             // Shacl Shape 
-            this.shaclFileText = this.shaclFileText + this.shape.getShaclProperty(term, this.getXsdType(termType));
             //this.shape.writeTargetClass();
             //this.shape.writeShaclRoot();
         }
