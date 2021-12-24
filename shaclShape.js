@@ -21,7 +21,7 @@ var ShaclShape = /** @class */ (function () {
             console.log(entry);
             console.log("required", entry[0]);
             var type = this.jsonSchema.properties.data.properties[mainJsonObject].items.properties[entry[0]].type;
-            this.shaclFileText = this.shaclFileText + (this.requiredProperty(entry[1], type)).toString() + '\n';
+            this.shaclFileText = this.shaclFileText + (this.getShaclRequiredProperty(entry[1], type)).toString() + '\n';
             i++;
         }
         this.fs.writeFileSync("shacl.ttl", this.shaclFileText, function (err) {
@@ -30,10 +30,20 @@ var ShaclShape = /** @class */ (function () {
             }
         });
     };
-    ShaclShape.prototype.requiredProperty = function (nome, type) {
+    ShaclShape.prototype.getShaclProperty = function (nome, type) {
+        var prop = 'sh:property [ \n sh:path ' + nome + '; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ];';
+        return prop;
+    };
+    ShaclShape.prototype.getShaclRequiredProperty = function (nome, type) {
         console.log(nome);
         var prop = 'sh:property [ \n sh:path ' + nome + ';  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ];';
         return prop;
+    };
+    ShaclShape.prototype.getShaclTargetClass = function () {
+        return 'sh:targetClass ' + this.targetClass + ';';
+    };
+    ShaclShape.prototype.getShaclRoot = function () {
+        return this.shaclFileText = this.shaclRoot + ' a sh:NodeShape; \n';
     };
     ShaclShape.prototype.writeTargetClass = function () {
         this.shaclFileText = 'sh:targetClass ' + this.targetClass + ';\n' + this.shaclFileText;

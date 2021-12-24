@@ -8,6 +8,9 @@ var namedNode = DataFactory.namedNode, literal = DataFactory.literal, defaultGra
 var RDFVocabulary = /** @class */ (function () {
     // Constructors
     function RDFVocabulary(termMapping, source) {
+        // Attributes
+        this.fs = require('fs');
+        this.shaclFileText = '';
         this.newTerms = [];
         this.creator1 = 'https://pietercolpaert.be/#me';
         this.creator2 = 'https://www.linkedin.com/in/andrei-popescu/';
@@ -59,10 +62,14 @@ var RDFVocabulary = /** @class */ (function () {
      * by checking if new terms are encountered (against map).
     */
     RDFVocabulary.prototype.parseMainObjectPropertiesToQuads = function () {
-        var fs = require('fs');
+        var _this = this;
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
+        this.shape = new shaclShape_1.ShaclShape(this.getRequiredProperties(), this.jsonSource);
+        //this.shape.writeConstraints(this.mainJsonObject);
+        this.shaclFileText = this.shaclFileText + this.shape.getShaclRoot();
+        this.shaclFileText = this.shaclFileText + this.shape.getShaclTargetClass() + '\n';
         // Add its new (not availalbe in config.map) properties to the vocabulary
         var properties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties;
         console.log("properties", properties);
@@ -70,10 +77,10 @@ var RDFVocabulary = /** @class */ (function () {
         for (var term in properties) {
             console.log(term);
             // If the property does not exist in the mapping, then we add it to the vocabulary
+            var termType = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].type;
+            var termProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties;
+            var termDescription = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].description;
             if (this.map.has(term) == false) {
-                var termType = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].type;
-                var termProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties;
-                var termDescription = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].description;
                 console.log(term + "type" + termType);
                 // Keep an array of new terms (unused so far)
                 this.newTerms.push(term);
@@ -151,20 +158,24 @@ var RDFVocabulary = /** @class */ (function () {
                 // The property is available in map
                 this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:Property', this.map.get(term)));
             }
+            // Shacl Shape 
+            this.shaclFileText = this.shaclFileText + this.shape.getShaclProperty(term, this.getXsdType(termType));
+            //this.shape.writeTargetClass();
+            //this.shape.writeShaclRoot();
         }
         // Write the content of the writer in the .ttl
-        this.writer.end(function (error, result) { return fs.writeFile('turtleTranslation.ttl', result, function (err) {
+        this.writer.end(function (error, result) { return _this.fs.writeFile('turtleTranslation.ttl', result, function (err) {
             // throws an error, you could also catch it here
             if (err)
                 throw err;
             // success case, the file was saved
             console.log('Turtle saved!');
         }); });
-        console.log(this.getRequiredProperties());
-        this.shape = new shaclShape_1.ShaclShape(this.getRequiredProperties(), this.jsonSource);
-        this.shape.writeConstraints(this.mainJsonObject);
-        this.shape.writeTargetClass();
-        this.shape.writeShaclRoot();
+        this.fs.writeFileSync("shacl.ttl", this.shaclFileText, function (err) {
+            if (err) {
+                return console.log("error");
+            }
+        });
     };
     /** returns the properties of the main object which are required. Useful in the shaclshape class in order to create the shacl shape */
     RDFVocabulary.prototype.getRequiredProperties = function () {
