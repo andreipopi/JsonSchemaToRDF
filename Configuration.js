@@ -15,12 +15,6 @@ var Configuration = /** @class */ (function () {
         this.map = new Map();
         this.newTermsMap = new Map();
         this.baseRdfVocabURI = 'https://w3id.org/gbfs/stations#';
-        // Configuration.ts
-        // Step 0) We have a hardcoded map of existing terms, assuming that we have also checked new incoming jsonSchemas
-        // rdfVocabulary.ts
-        // Step 1) create Turtle for the basic structure of the json schema: $schema, $id, $description, $properties
-        // Step 2) check the properties{} of the schema, which contains domain specific objects, e.g. stations, bikes, etc...
-        // In step 1 and 2, we will use the map to check what terms already exist
         this.map.set('description', 'dcterms:description');
         this.map.set('last_updated', 'dcterms:modified');
         this.map.set('type', 'rdf:type');
@@ -50,7 +44,7 @@ var Configuration = /** @class */ (function () {
         this.newTermsMap.set('vehicle_type_capacity', 'new');
     }
     ;
-    // Station_information file parsing
+    // Some trials with the json-schema-traverse package: not really scccessful 
     /*traverse (){
         let data = [];
         this.jsonTraverse(this.jsonSchema.properties, (cb) => {
@@ -78,9 +72,7 @@ var Configuration = /** @class */ (function () {
             if (this.map.has(elem)) {
                 console.log("elem", this.map.get(elem));
             }
-            
         }
-       
     };*/
     Configuration.prototype.getJsonSource = function () {
         return this.jsonSource;

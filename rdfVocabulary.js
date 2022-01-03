@@ -66,6 +66,7 @@ var RDFVocabulary = /** @class */ (function () {
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
+        // Create a ShaclShape object and insert the first entries
         this.shape = new shaclShape_1.ShaclShape(this.getRequiredProperties(), this.jsonSource);
         this.shaclFileText = this.shaclFileText + this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText + this.shape.getShaclTargetClass() + '\n';
@@ -143,7 +144,7 @@ var RDFVocabulary = /** @class */ (function () {
                         // Then create the quad and add it to the writer
                         this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdf:type', 'rdf:Property'));
                         this.writer.addQuad(this.node_node_literal('gbfsvcb:' + term, 'rdfs:label', termDescription.toString()));
-                        this.writer.addQuad('gbfsvcb:' + term, 'rdfs:range', this.getXsdType(termType));
+                        this.writer.addQuad('gbfsvcb:' + term, 'rdfs:range', literal(termDescription.toString(), 'en'));
                     }
                     // it has some other datatype
                     else {
@@ -157,15 +158,13 @@ var RDFVocabulary = /** @class */ (function () {
                 // The property is available in map
                 this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:Property', this.map.get(term)));
             }
+            // Write the property to the Shacl shape
             if (this.shape.isRequired(term)) {
                 this.shaclFileText = this.shaclFileText + this.shape.getShaclRequiredProperty(term, this.getXsdType(termType)) + '\n';
             }
             else {
                 this.shaclFileText = this.shaclFileText + this.shape.getShaclProperty(term, this.getXsdType(termType)) + '\n';
             }
-            // Shacl Shape 
-            //this.shape.writeTargetClass();
-            //this.shape.writeShaclRoot();
         }
         // Write the content of the writer in the .ttl
         this.writer.end(function (error, result) { return _this.fs.writeFile('turtleTranslation.ttl', result, function (err) {
@@ -175,6 +174,7 @@ var RDFVocabulary = /** @class */ (function () {
             // success case, the file was saved
             console.log('Turtle saved!');
         }); });
+        // Write the Shacl shape on file
         this.fs.writeFileSync("shacl.ttl", this.shaclFileText, function (err) {
             if (err) {
                 return console.log("error");
@@ -196,8 +196,14 @@ var RDFVocabulary = /** @class */ (function () {
     };
     // Create quads of different shape
     RDFVocabulary.prototype.node_node_literal = function (subj, pred, obj) {
-        var myQuad = quad(namedNode(subj), namedNode(pred), literal(obj), defaultGraph());
-        return myQuad;
+        if (pred == 'rdfs:label' || pred == 'rdfs:comment') {
+            var myQuad = quad(namedNode(subj), namedNode(pred), literal(obj, 'en'), defaultGraph());
+            return myQuad;
+        }
+        else {
+            var myQuad = quad(namedNode(subj), namedNode(pred), literal(obj), defaultGraph());
+            return myQuad;
+        }
     };
     RDFVocabulary.prototype.node_node_node = function (subj, pred, obj) {
         var myQuad = quad(namedNode(subj), namedNode(pred), namedNode(obj), defaultGraph());

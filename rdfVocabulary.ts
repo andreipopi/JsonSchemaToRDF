@@ -1,6 +1,9 @@
 import { write } from "fs";
 import { arrayBuffer } from "stream/consumers";
 import {ShaclShape} from './shaclShape';
+import {DataFactory, Literal, Quad, Store} from "n3";
+import literal = DataFactory.literal;
+
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -180,13 +183,13 @@ export class RDFVocabulary {
                     if(termType != undefined){
                         // Then create the quad and add it to the writer
                         this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdf:type', 'rdf:Property'));
-                        this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString()));
-                        this.writer.addQuad('gbfsvcb:'+term, 'rdfs:range', this.getXsdType(termType));
+                        this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString()) );
+                        this.writer.addQuad('gbfsvcb:'+term, 'rdfs:range', literal(termDescription.toString(), 'en') );
                     }
                     // it has some other datatype
                     else{
                         this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdf:type', 'rdf:Property'));
-                        this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString()));
+                        this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString() ));
                         // Might be a more complex type, e.g. oneOf
                     }
                 }
@@ -229,15 +232,23 @@ export class RDFVocabulary {
         }
         return requiredMap;
     }
-
+    
     getWriter (){
         return this.writer;
     }
 
     // Create quads of different shape
     node_node_literal (subj: string, pred:string, obj:string) {
-        const myQuad = quad( namedNode(subj), namedNode(pred), literal(obj), defaultGraph());
-        return myQuad;
+
+        if(pred == 'rdfs:label' || pred == 'rdfs:comment'){
+            const myQuad = quad( namedNode(subj), namedNode(pred), literal(obj, 'en'), defaultGraph());
+            return myQuad;
+        }
+        else{
+            const myQuad = quad( namedNode(subj), namedNode(pred), literal(obj), defaultGraph());
+            return myQuad;
+        }
+        
     }
     node_node_node (subj: string, pred:string, obj:string) {
         const myQuad = quad( namedNode(subj), namedNode(pred), namedNode(obj), defaultGraph());
