@@ -201,10 +201,23 @@ export class RDFVocabulary {
 
             // Write the property to the Shacl shape
             if (this.shape.isRequired(term)){
-                this.shaclFileText = this.shaclFileText+this.shape.getShaclRequiredProperty(term, this.getXsdType(termType))+'\n';
+                // If the type is primitive
+                if (termType == 'boolean' || termType == 'string' || termType == 'number') {
+                    this.shaclFileText = this.shaclFileText+this.shape.getShaclTypedRequiredProperty(term, this.getXsdType(termType))+'\n';
+                }
+                else{
+                    this.shaclFileText = this.shaclFileText+this.shape.getShaclRequiredProperty(term)+'\n';
+                }
             }
             else{
-                this.shaclFileText = this.shaclFileText+this.shape.getShaclProperty(term, this.getXsdType(termType))+'\n';
+
+                // If the type is primitive
+                if (termType == 'boolean' || termType == 'string' || termType == 'number') {
+                    this.shaclFileText = this.shaclFileText+this.shape.getShaclTypedProperty(term, this.getXsdType(termType))+'\n';                }
+                else{
+                    this.shaclFileText = this.shaclFileText+this.shape.getShaclProperty(term)+'\n';
+                }
+                
             }
         }
 

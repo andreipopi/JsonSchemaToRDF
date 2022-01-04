@@ -19,16 +19,28 @@ export class ShaclShape {
     }
 
     // Methods
-    getShaclProperty (nome: string, type: string) {
+    getShaclTypedProperty (nome: string, type: string) {
         const prop = 'sh:property [ \n sh:path '+nome+ '; \n sh:maxCount 1; \n sh:datatype '+ type+'; \n ];';
         return prop;
     }
 
-    getShaclRequiredProperty(nome: string, type: string) {
+    getShaclTypedRequiredProperty(nome: string, type: string) {
         console.log(nome);
         const prop = 'sh:property [ \n sh:path '+nome+ ';  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype '+ type+'; \n ];';
         return prop;
     }
+
+    
+    getShaclProperty (nome: string) {
+        const prop = 'sh:property [ \n sh:path '+nome+ '; \n sh:maxCount 1; \n ];';
+        return prop;
+    }
+    getShaclRequiredProperty(nome: string) {
+        console.log(nome);
+        const prop = 'sh:property [ \n sh:path '+nome+ ';  \n sh:minCount 1; \n sh:maxCount 1; \n ];';
+        return prop;
+    }
+    
 
     getShaclTargetClass(){
         return 'sh:targetClass ' + this.targetClass+ ';';

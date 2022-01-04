@@ -14,13 +14,22 @@ var ShaclShape = /** @class */ (function () {
         this.targetClass = '<https://w3id.org/gbfs/station>';
     }
     // Methods
-    ShaclShape.prototype.getShaclProperty = function (nome, type) {
+    ShaclShape.prototype.getShaclTypedProperty = function (nome, type) {
         var prop = 'sh:property [ \n sh:path ' + nome + '; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ];';
         return prop;
     };
-    ShaclShape.prototype.getShaclRequiredProperty = function (nome, type) {
+    ShaclShape.prototype.getShaclTypedRequiredProperty = function (nome, type) {
         console.log(nome);
         var prop = 'sh:property [ \n sh:path ' + nome + ';  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ];';
+        return prop;
+    };
+    ShaclShape.prototype.getShaclProperty = function (nome) {
+        var prop = 'sh:property [ \n sh:path ' + nome + '; \n sh:maxCount 1; \n ];';
+        return prop;
+    };
+    ShaclShape.prototype.getShaclRequiredProperty = function (nome) {
+        console.log(nome);
+        var prop = 'sh:property [ \n sh:path ' + nome + ';  \n sh:minCount 1; \n sh:maxCount 1; \n ];';
         return prop;
     };
     ShaclShape.prototype.getShaclTargetClass = function () {
