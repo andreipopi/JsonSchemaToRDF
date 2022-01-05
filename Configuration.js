@@ -4,16 +4,15 @@ exports.Configuration = void 0;
 var Configuration = /** @class */ (function () {
     // Constructors
     function Configuration() {
-        this.jsonSource = './files/station_information.json';
+        //jsonSource = './files/station_information.json';
         //jsonSource =  './files/free_bike_status.json';
-        //jsonSource =  './files/system_alerts.json';
+        this.jsonSource = './files/system_alerts.json';
         //jsonSchema = require(this.jsonSource);
         this.baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';
         this.baseRdfVocabURI = '';
         this.jsonTraverse = require('json-schema-traverse');
         // Mapping of available terms (manually defined in the constructor)
         this.map = new Map();
-        this.newTermsMap = new Map();
         this.baseRdfVocabURI = 'https://w3id.org/gbfs/stations#';
         this.map.set('description', 'dcterms:description');
         this.map.set('last_updated', 'dcterms:modified');
@@ -33,15 +32,6 @@ var Configuration = /** @class */ (function () {
         // FreeBikeStatus properties terms
         this.map.set('bike_id', 'dcterms:identifier');
         this.map.set('alert_id', 'dcterms:identifier');
-        this.newTermsMap.set('address', 'new');
-        this.newTermsMap.set('rental_methods', 'new');
-        this.newTermsMap.set('is_virtual_station', 'new');
-        this.newTermsMap.set('station_area', 'new');
-        this.newTermsMap.set('vehicle_capacity', 'new');
-        this.newTermsMap.set('is_valet_station', 'new');
-        this.newTermsMap.set('is_charging_station', 'new');
-        this.newTermsMap.set('rental_uris', 'new');
-        this.newTermsMap.set('vehicle_type_capacity', 'new');
     }
     ;
     // Some trials with the json-schema-traverse package: not really scccessful 

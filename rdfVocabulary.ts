@@ -20,7 +20,6 @@ export class RDFVocabulary {
     prefixes: any;
     writer: any;
     map: Map<string, string>;
-    newTerms = [];
 
     // Basic elements of a Json schema
     schema: any;
@@ -44,9 +43,9 @@ export class RDFVocabulary {
         this.jsonSchema = require(source);
         this.map = termMapping;
         // Hardcoded -> can be made more general 
-        this.mainObject = 'gbfsvcb:Station';
+        //this.mainObject = 'gbfsvcb:Station';
         //this.mainObject = 'gbfsvcb:Bike';
-        //this.mainObject = 'gbfsvcb:Alert';
+        this.mainObject = 'gbfsvcb:Alert';
         this.mainJsonObject = this.getMainJsonObject(this.mainObject);
 
         this.prefixes = {
@@ -89,7 +88,6 @@ export class RDFVocabulary {
      * by checking if new terms are encountered (against map).  
     */
     parseMainObjectPropertiesToQuads (){
-    
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
@@ -99,23 +97,21 @@ export class RDFVocabulary {
         this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText+this.shape.getShaclTargetClass()+'\n';
 
-        // Add its new (not availalbe in config.map) properties to the vocabulary
+        // Add new (not availalbe in config.map) properties to the vocabulary
         const properties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties;
         console.log("properties",properties);
         // Properties of the main object (e.g.'Station')
         for (const term in properties){
             console.log(term);
-            // If the property does not exist in the mapping, then we add it to the vocabulary
 
+            // Get the term type, subproperties, and description
             let termType = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].type;
             let termProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties; 
             let termDescription = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].description;
 
+            // If the property does not exist in the mapping, then we add it to the vocabulary
             if (this.map.has(term) == false) {
                 
-                console.log(term+"type"+termType);
-                // Keep an array of new terms (unused so far)
-                this.newTerms.push(term); 
                 // Update our mapping with the new term: add   < term, 'gbfsvcb:'+term >
                 this.map.set(term, 'gbfsvcb:'+term);
                 
@@ -123,13 +119,13 @@ export class RDFVocabulary {
                 // if 'term' is an object and it has sub properties, or if it is an array
                 if((termType == 'object' && termProperties != undefined) || termType == 'array') {
 
-                    // Add property and its label
+                    // Add the property and its label
                     this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdf:type', 'rdf:Property'));
                     this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString()));
         
                     // Since it is an object/array, we give it a new class as a range
                     const newClassName = this.capitalizeFirstLetter(term);
-                    this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdfs:range', 'gbfsst:'+newClassName));
+                    this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdfs:range', 'gbfsvcb:'+newClassName));
                     // e.g. we create a new 'Rental_methods' class (in the case of rental_methods)
                     this.writer.addQuad(this.node_node_node('gbfsvcb:'+this.capitalizeFirstLetter(term), 'rdfs:type', 'rdfs:Class'));
 
@@ -140,19 +136,19 @@ export class RDFVocabulary {
                     // Either properties
                     if (subProperties != undefined) {
                         for (const subProperty in subProperties){
-                            const property = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties[subProperty];
+                            const subsubProperty = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties[subProperty];
                             if(subProperty != 'type'){
                                 console.log("subproperty", subProperty);
-                                console.log(property);
+                                console.log(subsubProperty);
                                 // Add the subproperty to the vocabulary
                                 this.writer.addQuad(this.node_node_node('gbfsvcb:'+newClassName, 'rdf:Property','gbfsvcb:'+ subProperty));
                                 // Check if there is an available description
-                                if(property.description != undefined){
-                                    this.writer.addQuad(this.node_node_literal('gbfsvcb:'+subProperty, 'rdfs:label', property.description));
+                                if(subsubProperty.description != undefined){
+                                    this.writer.addQuad(this.node_node_literal('gbfsvcb:'+subProperty, 'rdfs:label', subsubProperty.description));
                                 }
                                 // and/or a type
-                                if(property.type != undefined){
-                                    this.writer.addQuad(this.node_node_literal('gbfsvcb:'+subProperty, 'rdf:type', property.type));
+                                if(subsubProperty.type != undefined){
+                                    this.writer.addQuad(this.node_node_literal('gbfsvcb:'+subProperty, 'rdf:type', subsubProperty.type));
                                 }
                             }// else: we skip the type subproperties because of the modelling differences, e.g. see  station_area vs rental_uris vs rental_methods
                         }
@@ -196,7 +192,7 @@ export class RDFVocabulary {
             }
             else{
                 // The property is available in map
-                this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:Property', this.map.get(term) ));
+                this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:Property', this.map.get(term)));
             }
 
             // Write the property to the Shacl shape
@@ -209,7 +205,7 @@ export class RDFVocabulary {
                     this.shaclFileText = this.shaclFileText+this.shape.getShaclRequiredProperty(term)+'\n';
                 }
             }
-            else{
+            else{ // Else the property is not required
 
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {

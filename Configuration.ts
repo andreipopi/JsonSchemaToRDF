@@ -1,14 +1,13 @@
 export class Configuration {
-    jsonSource = './files/station_information.json';
+    //jsonSource = './files/station_information.json';
     //jsonSource =  './files/free_bike_status.json';
-    //jsonSource =  './files/system_alerts.json';
+    jsonSource =  './files/system_alerts.json';
     //jsonSchema = require(this.jsonSource);
     baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';
     baseRdfVocabURI = ''; 
     jsonTraverse = require('json-schema-traverse');
     // Mapping of available terms (manually defined in the constructor)
     map = new Map<string, string>();
-    newTermsMap = new Map<string, string>();
 
     // Constructors
     constructor (){
@@ -34,16 +33,6 @@ export class Configuration {
         // FreeBikeStatus properties terms
         this.map.set('bike_id', 'dcterms:identifier');
         this.map.set('alert_id', 'dcterms:identifier');
-
-        this.newTermsMap.set( 'address', 'new');
-        this.newTermsMap.set( 'rental_methods', 'new');
-        this.newTermsMap.set( 'is_virtual_station', 'new');
-        this.newTermsMap.set( 'station_area', 'new');
-        this.newTermsMap.set( 'vehicle_capacity', 'new');
-        this.newTermsMap.set( 'is_valet_station', 'new');
-        this.newTermsMap.set( 'is_charging_station', 'new');
-        this.newTermsMap.set( 'rental_uris', 'new');
-        this.newTermsMap.set( 'vehicle_type_capacity', 'new');
 
     };
     
