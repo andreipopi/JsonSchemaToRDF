@@ -3,4 +3,5 @@ stages:
 
 job1: 
   stage: build
+  script: make build
    
