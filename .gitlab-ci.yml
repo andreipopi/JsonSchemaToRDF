@@ -4,7 +4,8 @@ stages:
 job1: 
   stage: build
   script: 
-    - node install
+    - npm install
+    - npm run build
     - tsc main.js
     - node main.js
    
