@@ -12,5 +12,5 @@ job1:
   artifacts:
     paths:
       - build/shacl.ttl
-      - build/turleTranslation.ttl
+      - build/turtleTranslation.ttl
    
