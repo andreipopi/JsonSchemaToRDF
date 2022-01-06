@@ -218,14 +218,14 @@ export class RDFVocabulary {
         }
 
         // Write the content of the writer in the .ttl
-        this.writer.end((error, result) => this.fs.writeFile('build/turtleTranslation.ttl', result, (err) => {
+        this.writer.end((error, result) => this.fs.writeFile('turtleTranslation.ttl', result, (err) => {
             // throws an error, you could also catch it here
             if (err) throw err;
             // success case, the file was saved
             console.log('Turtle saved!');}));
 
         // Write the Shacl shape on file
-        this.fs.writeFileSync("build/shacl.ttl", this.shaclFileText , function(err){
+        this.fs.writeFileSync("shacl.ttl", this.shaclFileText , function(err){
             if(err){
                 return console.log("error");
             }
