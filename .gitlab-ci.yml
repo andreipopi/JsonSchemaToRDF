@@ -9,4 +9,7 @@ job1:
     - npm install --include=dev
     - npm run build
     - node main.js
+  artifacts:
+    paths:
+      - build/
    

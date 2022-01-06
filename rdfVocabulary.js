@@ -176,7 +176,7 @@ var RDFVocabulary = /** @class */ (function () {
             }
         }
         // Write the content of the writer in the .ttl
-        this.writer.end(function (error, result) { return _this.fs.writeFile('turtleTranslation.ttl', result, function (err) {
+        this.writer.end(function (error, result) { return _this.fs.writeFile('build/turtleTranslation.ttl', result, function (err) {
             // throws an error, you could also catch it here
             if (err)
                 throw err;
@@ -184,7 +184,7 @@ var RDFVocabulary = /** @class */ (function () {
             console.log('Turtle saved!');
         }); });
         // Write the Shacl shape on file
-        this.fs.writeFileSync("shacl.ttl", this.shaclFileText, function (err) {
+        this.fs.writeFileSync("build/shacl.ttl", this.shaclFileText, function (err) {
             if (err) {
                 return console.log("error");
             }
