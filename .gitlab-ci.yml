@@ -8,6 +8,7 @@ job1:
   script: 
     - npm install --include=dev
     - npm run build
+    - tsc main.ts
     - node main.js
   artifacts:
     paths:
