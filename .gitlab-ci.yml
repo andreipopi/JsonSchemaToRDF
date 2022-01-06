@@ -12,6 +12,6 @@ job1:
     - node main.js
   artifacts:
     paths:
-      - shacl.ttl
-      - turleTranslation.ttl
+      - build/shacl.ttl
+      - build/turleTranslation.ttl
    
