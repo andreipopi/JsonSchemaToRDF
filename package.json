@@ -4,7 +4,8 @@
   },
   "dependencies": {
     "json-schema-traverse": "^1.0.0",
-    "n3": "^1.12.2"
+    "n3": "^1.12.2",
+    "tsc": "^2.0.3"
   },
   "name": "jsonschema2rdf",
   "description": "This is a basic component of the data publishing pipeline.",
