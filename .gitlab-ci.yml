@@ -3,5 +3,8 @@ stages:
 
 job1: 
   stage: build
-  script: make build
+  script: 
+    - node install
+    - tsc main.js
+    - node main.js
    
