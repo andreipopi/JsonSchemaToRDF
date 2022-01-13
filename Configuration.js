@@ -3,16 +3,17 @@ exports.__esModule = true;
 exports.Configuration = void 0;
 var Configuration = /** @class */ (function () {
     // Constructors
-    function Configuration() {
+    function Configuration(source) {
         //jsonSource = './files/station_information.json';
         //jsonSource =  './files/free_bike_status.json';
-        this.jsonSource = './files/system_alerts.json';
+        this.jsonSource = '';
         //jsonSchema = require(this.jsonSource);
         this.baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';
         this.baseRdfVocabURI = '';
         this.jsonTraverse = require('json-schema-traverse');
         // Mapping of available terms (manually defined in the constructor)
         this.map = new Map();
+        this.jsonSource = source;
         this.baseRdfVocabURI = 'https://w3id.org/gbfs/stations#';
         this.map.set('description', 'dcterms:description');
         this.map.set('last_updated', 'dcterms:modified');

@@ -7,7 +7,7 @@ var DataFactory = N3.DataFactory;
 var namedNode = DataFactory.namedNode, literal = DataFactory.literal, defaultGraph = DataFactory.defaultGraph, quad = DataFactory.quad;
 var RDFVocabulary = /** @class */ (function () {
     // Constructors
-    function RDFVocabulary(termMapping, source) {
+    function RDFVocabulary(termMapping, source, mainObj) {
         // Attributes
         this.fs = require('fs');
         this.shaclFileText = '';
@@ -17,9 +17,7 @@ var RDFVocabulary = /** @class */ (function () {
         this.jsonSchema = require(source);
         this.map = termMapping;
         // Hardcoded -> can be made more general 
-        //this.mainObject = 'gbfsvcb:Station';
-        //this.mainObject = 'gbfsvcb:Bike';
-        this.mainObject = 'gbfsvcb:Alert';
+        this.mainObject = mainObj;
         this.mainJsonObject = this.getMainJsonObject(this.mainObject);
         this.prefixes = {
             prefixes: {

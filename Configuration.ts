@@ -1,7 +1,7 @@
 export class Configuration {
     //jsonSource = './files/station_information.json';
     //jsonSource =  './files/free_bike_status.json';
-    jsonSource =  './files/system_alerts.json';
+    jsonSource = '';
     //jsonSchema = require(this.jsonSource);
     baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';
     baseRdfVocabURI = ''; 
@@ -10,7 +10,10 @@ export class Configuration {
     map = new Map<string, string>();
 
     // Constructors
-    constructor (){
+    constructor (source: string){
+
+        this.jsonSource = source;
+        
         this.baseRdfVocabURI = 'https://w3id.org/gbfs/stations#';
     
         this.map.set('description','dcterms:description');

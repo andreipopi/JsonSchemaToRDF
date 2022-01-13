@@ -38,14 +38,13 @@ export class RDFVocabulary {
     shape: any;
 
     // Constructors
-    constructor (termMapping: Map<string, string>, source:string, ){
+    constructor (termMapping: Map<string, string>, source:string, mainObj: string ){
         this.jsonSource = source;
         this.jsonSchema = require(source);
         this.map = termMapping;
         // Hardcoded -> can be made more general 
-        //this.mainObject = 'gbfsvcb:Station';
-        //this.mainObject = 'gbfsvcb:Bike';
-        this.mainObject = 'gbfsvcb:Alert';
+
+        this.mainObject = mainObj;
         this.mainJsonObject = this.getMainJsonObject(this.mainObject);
 
         this.prefixes = {
@@ -246,7 +245,6 @@ export class RDFVocabulary {
 
     // Create quads of different shape
     node_node_literal (subj: string, pred:string, obj:string) {
-
         if(pred == 'rdfs:label' || pred == 'rdfs:comment'){
             const myQuad = quad( namedNode(subj), namedNode(pred), literal(obj, 'en'), defaultGraph());
             return myQuad;
@@ -255,12 +253,13 @@ export class RDFVocabulary {
             const myQuad = quad( namedNode(subj), namedNode(pred), literal(obj), defaultGraph());
             return myQuad;
         }
-        
     }
+
     node_node_node (subj: string, pred:string, obj:string) {
         const myQuad = quad( namedNode(subj), namedNode(pred), namedNode(obj), defaultGraph());
         return myQuad;
     }
+
     node_literal_literal (subj: string, pred:string, obj:string) {
         const myQuad = quad( namedNode(subj), literal(pred), literal(obj), defaultGraph());
         return myQuad;
