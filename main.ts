@@ -5,14 +5,14 @@ import {ShaclShape} from './shaclShape';
 
 
 
-let files: Array<string> = ['./files/station_information.json', './files/free_bike_status.json', './files/system_alerts.json'];
-let objects: Array<string> = ['gbfsvcb:Station', 'gbfsvcb:Bike', 'gbfsvcb:Alert'];
+const files: string[] = ['./files/station_information.json', './files/free_bike_status.json', './files/system_alerts.json'];
+const objects: string[] = ['gbfsvcb:Station', 'gbfsvcb:Bike', 'gbfsvcb:Alert'];
 
 let i = 0;
-for (let obj in objects){
+for (const obj of objects){
 
     const config = new Configuration(files[i]);
-    i++;
+    i +=1;
     const rdfVocab = new RDFVocabulary(config.getTermMapping(), config.getJsonSource(), obj);
     
     console.log(config.getVocabURI());

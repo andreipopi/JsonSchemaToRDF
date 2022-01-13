@@ -13,12 +13,12 @@ var RDFVocabulary = /** @class */ (function () {
         this.shaclFileText = '';
         this.creator1 = 'https://pietercolpaert.be/#me';
         this.creator2 = 'https://www.linkedin.com/in/andrei-popescu/';
-        this.jsonSource = source;
+        this.jsonSource = source; //needed when creating a ShaclShape object
         this.jsonSchema = require(source);
         this.map = termMapping;
-        // Hardcoded -> can be made more general 
         this.mainObject = mainObj;
         this.mainJsonObject = this.getMainJsonObject(this.mainObject);
+        this.fileName = mainObj;
         this.prefixes = {
             prefixes: {
                 gbfsvcb: 'https://w3id.org/gbfs/vocabularies/' + this.mainJsonObject + '#',
@@ -64,7 +64,7 @@ var RDFVocabulary = /** @class */ (function () {
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
         // Create a ShaclShape object and insert the first entries
-        this.shape = new shaclShape_1.ShaclShape(this.getRequiredProperties(), this.jsonSource);
+        this.shape = new shaclShape_1.ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
         this.shaclFileText = this.shaclFileText + this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText + this.shape.getShaclTargetClass() + '\n';
         // Add new (not availalbe in config.map) properties to the vocabulary
@@ -174,15 +174,16 @@ var RDFVocabulary = /** @class */ (function () {
             }
         }
         // Write the content of the writer in the .ttl
-        this.writer.end(function (error, result) { return _this.fs.writeFile('build/turtleTranslation.ttl', result, function (err) {
+        this.writer.end(function (error, result) { return _this.fs.writeFile("build/" + _this.fileName + "turtleTranslation.ttl", result, function (err) {
             // throws an error, you could also catch it here
             if (err)
                 throw err;
             // success case, the file was saved
             console.log('Turtle saved!');
         }); });
+        this.writer;
         // Write the Shacl shape on file
-        this.fs.writeFileSync("build/shacl.ttl", this.shaclFileText, function (err) {
+        this.fs.writeFileSync("build/" + this.fileName + "shacl.ttl", this.shaclFileText, function (err) {
             if (err) {
                 return console.log("error");
             }
@@ -192,6 +193,8 @@ var RDFVocabulary = /** @class */ (function () {
     RDFVocabulary.prototype.getRequiredProperties = function () {
         var requiredMap = new Map();
         // For each OF the values in the required
+        console.log(this.mainJsonObject);
+        console.log(this.jsonSchema.properties.data.properties[this.mainJsonObject].items.required);
         for (var _i = 0, _a = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.required; _i < _a.length; _i++) {
             var requiredProp = _a[_i];
             requiredMap.set(requiredProp.toString(), this.map.get(requiredProp.toString()));

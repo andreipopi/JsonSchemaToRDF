@@ -12,10 +12,13 @@ export class ShaclShape {
     fs = require('fs');
 
     // Constructors
-    constructor (required: Map<string, string>, source: string) {
+    constructor (required: Map<string, string>, source: string, mainObj: string) {
         this.jsonSchema = require(source);
         this.requiredProperties = required;
-        this.targetClass = '<https://w3id.org/gbfs/station>';
+
+        console.log("passed object",mainObj);
+        console.log("main target",this.getShaclTarget(mainObj));
+        this.targetClass = this.getShaclTarget(mainObj);
     }
 
     // Methods
@@ -44,6 +47,27 @@ export class ShaclShape {
 
     getShaclTargetClass(){
         return 'sh:targetClass ' + this.targetClass+ ';';
+    }
+
+    getShaclTarget (mainObject:string) {
+        switch(mainObject) { 
+            case 'gbfsvcb:Station': { 
+                return '<https://w3id.org/gbfs/station>';
+                break; 
+            } 
+            case 'gbfsvcb:Bike': { 
+               return '<https://w3id.org/gbfs/bike>';
+               break;
+            } 
+            case 'gbfsvcb:Alert': { 
+                return '<https://w3id.org/gbfs/alert>';
+                break;
+             } 
+            default: { 
+               //statements; 
+               break; 
+            } 
+         } 
     }
 
     getShaclRoot(){

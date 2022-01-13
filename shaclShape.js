@@ -4,14 +4,16 @@ exports.__esModule = true;
 exports.ShaclShape = void 0;
 var ShaclShape = /** @class */ (function () {
     // Constructors
-    function ShaclShape(required, source) {
+    function ShaclShape(required, source, mainObj) {
         this.shaclRoot = '<https://mymockwebsite.com/shapes/gbfs-station_information>';
         this.requiredProperties = new Map();
         this.shaclFileText = '';
         this.fs = require('fs');
         this.jsonSchema = require(source);
         this.requiredProperties = required;
-        this.targetClass = '<https://w3id.org/gbfs/station>';
+        console.log("passed object", mainObj);
+        console.log("main target", this.getShaclTarget(mainObj));
+        this.targetClass = this.getShaclTarget(mainObj);
     }
     // Methods
     ShaclShape.prototype.getShaclTypedProperty = function (nome, type) {
@@ -34,6 +36,26 @@ var ShaclShape = /** @class */ (function () {
     };
     ShaclShape.prototype.getShaclTargetClass = function () {
         return 'sh:targetClass ' + this.targetClass + ';';
+    };
+    ShaclShape.prototype.getShaclTarget = function (mainObject) {
+        switch (mainObject) {
+            case 'gbfsvcb:Station': {
+                return '<https://w3id.org/gbfs/station>';
+                break;
+            }
+            case 'gbfsvcb:Bike': {
+                return '<https://w3id.org/gbfs/bike>';
+                break;
+            }
+            case 'gbfsvcb:Alert': {
+                return '<https://w3id.org/gbfs/alert>';
+                break;
+            }
+            default: {
+                //statements; 
+                break;
+            }
+        }
     };
     ShaclShape.prototype.getShaclRoot = function () {
         return this.shaclFileText = this.shaclRoot + ' a sh:NodeShape; \n';
