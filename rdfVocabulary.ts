@@ -206,14 +206,12 @@ export class RDFVocabulary {
                 }
             }
             else{ // Else the property is not required
-
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
                     this.shaclFileText = this.shaclFileText+this.shape.getShaclTypedProperty(term, this.getXsdType(termType))+'\n';                }
                 else{
                     this.shaclFileText = this.shaclFileText+this.shape.getShaclProperty(term)+'\n';
                 }
-                
             }
         }
 
@@ -241,7 +239,7 @@ export class RDFVocabulary {
         }
         return requiredMap;
     }
-    
+
     getWriter (){
         return this.writer;
     }
