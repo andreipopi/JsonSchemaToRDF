@@ -32,7 +32,6 @@ export class Configuration {
         this.map.set( 'region_id', 'dbpedia-owl:region');
         this.map.set( 'post_code', 'dbpedia-owl:postalCode');
         this.map.set( 'capacity', 'dbpedia-owl:capacity');
-
         // FreeBikeStatus properties terms
         this.map.set('bike_id', 'dcterms:identifier');
         this.map.set('alert_id', 'dcterms:identifier');

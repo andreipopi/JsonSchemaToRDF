@@ -3,6 +3,7 @@ import { arrayBuffer } from "stream/consumers";
 import {ShaclShape} from './shaclShape';
 import {DataFactory, Literal, Quad, Store} from "n3";
 import literal = DataFactory.literal;
+import { NamedNode } from "n3/lib/N3DataFactory";
 
 
 const N3 = require('n3');
@@ -161,13 +162,16 @@ export class RDFVocabulary {
                         
                         // Then we assume there is an enum
                         if (enumeration != undefined){
-                            let oneOfValues ='(';
+                            //let oneOfValues ='(';
+
+                            let oneOfValues:NamedNode[] = [];
+
                             for (const value of enumeration){
-                                oneOfValues = oneOfValues+ ' '+ value;
+                                oneOfValues.push(namedNode(value));
                             }
-                            oneOfValues = oneOfValues+ ' )';
-                            console.log(oneOfValues);
-                            let subPropQuad = this.node_node_literal('gbfsvcb:'+newClassName, 'owl:oneOf', oneOfValues);
+
+                            console.log("this is the list of values", oneOfValues);
+                            let subPropQuad = this.node_node_list('gbfsvcb:'+newClassName, 'owl:oneOf', oneOfValues);
                             this.writer.addQuad(subPropQuad);
                         }
                         
@@ -237,10 +241,8 @@ export class RDFVocabulary {
     getRequiredProperties () {
         let requiredMap = new Map<string, string>();
         // For each OF the values in the required
-
         console.log(this.mainJsonObject);
         console.log(this.jsonSchema.properties.data.properties[this.mainJsonObject].items.required);
-
         for (const requiredProp of this.jsonSchema.properties.data.properties[this.mainJsonObject].items.required){
             requiredMap.set(requiredProp.toString(), this.map.get(requiredProp.toString()));
         }
@@ -265,6 +267,11 @@ export class RDFVocabulary {
 
     node_node_node (subj: string, pred:string, obj:string) {
         const myQuad = quad( namedNode(subj), namedNode(pred), namedNode(obj), defaultGraph());
+        return myQuad;
+    }
+
+    node_node_list (subj: string, pred:string, list:NamedNode[]) {
+        const myQuad = quad( namedNode(subj), namedNode(pred), this.writer.list(list), defaultGraph());
         return myQuad;
     }
 

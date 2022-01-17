@@ -120,14 +120,14 @@ var RDFVocabulary = /** @class */ (function () {
                         var enumeration = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].items["enum"];
                         // Then we assume there is an enum
                         if (enumeration != undefined) {
-                            var oneOfValues = '(';
+                            //let oneOfValues ='(';
+                            var oneOfValues = [];
                             for (var _i = 0, enumeration_1 = enumeration; _i < enumeration_1.length; _i++) {
                                 var value = enumeration_1[_i];
-                                oneOfValues = oneOfValues + ' ' + value;
+                                oneOfValues.push(namedNode(value));
                             }
-                            oneOfValues = oneOfValues + ' )';
-                            console.log(oneOfValues);
-                            var subPropQuad = this.node_node_literal('gbfsvcb:' + newClassName, 'owl:oneOf', oneOfValues);
+                            console.log("this is the list of values", oneOfValues);
+                            var subPropQuad = this.node_node_list('gbfsvcb:' + newClassName, 'owl:oneOf', oneOfValues);
                             this.writer.addQuad(subPropQuad);
                         }
                     }
@@ -217,6 +217,10 @@ var RDFVocabulary = /** @class */ (function () {
     };
     RDFVocabulary.prototype.node_node_node = function (subj, pred, obj) {
         var myQuad = quad(namedNode(subj), namedNode(pred), namedNode(obj), defaultGraph());
+        return myQuad;
+    };
+    RDFVocabulary.prototype.node_node_list = function (subj, pred, list) {
+        var myQuad = quad(namedNode(subj), namedNode(pred), this.writer.list(list), defaultGraph());
         return myQuad;
     };
     RDFVocabulary.prototype.node_literal_literal = function (subj, pred, obj) {
