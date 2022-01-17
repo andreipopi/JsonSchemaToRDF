@@ -5,3 +5,4 @@ steps.txt
 shacl.ttl
 turtleTranslation.ttl
 .build
+.jsonldContext.ts

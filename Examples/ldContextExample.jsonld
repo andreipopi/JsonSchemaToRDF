@@ -1,0 +1,37 @@
+{
+    "@context": {
+        "gbfsvcb": "https://w3id.org/gbfs/vocabularies/stations#",
+        "schema": "http://schema.org/url#",
+        "ebucore": "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "dcterms": "http://purl.org/dc/terms/",
+        "vs": "http://www.w3.org/2003/06/sw-vocab-status/ns#",
+        "geo": "http://www.w3.org/2003/01/geo/wgs84_pos#",
+        "vann": "http://purl.org/vocab/vann/",
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "jsonsc": "https://www.w3.org/2019/wot/json-schema#",
+        "airs": "https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#",
+        "dbpedia-owl": "http://dbpedia.org/ontology/",
+
+        "description": "dcterms:description",
+        "last_update": "dcterms:modified",
+        "type": "rdf:type",
+        "url": "schema:url",
+        "summary": "ebucore:summary",
+        "station_id": "dcterms:identifier",
+        "name": "foaf:name",
+        "short_name": "rdfs:label",
+        "lat": "geo:lat",
+        "lon": "geo:long",
+        "cross_street": "airs:locatedAtCrossStreet",
+        "region_id": "dbpedia-owl:region",
+        "post_code": "dbpedia-owl:postalCode",
+        "capacity": "dbpedia-owl:capacity",
+
+        "bike_id": "dcterms:identifier",
+        "alert_id": "dcterms:identifier"
+    }
+    
+}

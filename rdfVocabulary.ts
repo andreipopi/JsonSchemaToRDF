@@ -79,7 +79,7 @@ export class RDFVocabulary {
         this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject, 'rdfs:comment', this.description));
         this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject, 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/vocabularies/'+this.mainJsonObject+'#'));
         this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject, 'dcterms:creator', this.creator1));
-        this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject, 'dcterms:creator', this.creator2));
+        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject, 'dcterms:creator', this.creator2));
         this.writer.addQuad(this.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
@@ -129,7 +129,7 @@ export class RDFVocabulary {
                     const newClassName = this.capitalizeFirstLetter(term);
                     this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdfs:range', 'gbfsvcb:'+newClassName));
                     // e.g. we create a new 'Rental_methods' class (in the case of rental_methods)
-                    this.writer.addQuad(this.node_node_node('gbfsvcb:'+this.capitalizeFirstLetter(term), 'rdfs:type', 'rdfs:Class'));
+                    this.writer.addQuad(this.node_node_node('gbfsvcb:'+this.capitalizeFirstLetter(term), 'rdf:type', 'rdfs:Class'));
 
                     const subProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties;
                     const subItems = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].items;
@@ -227,7 +227,6 @@ export class RDFVocabulary {
             // success case, the file was saved
             console.log('Turtle saved!');}));
 
-        this.writer
 
         // Write the Shacl shape on file
         this.fs.writeFileSync(`build/${this.fileName}shacl.ttl`, this.shaclFileText , function(err){
@@ -321,5 +320,8 @@ export class RDFVocabulary {
     }
     capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    getPrefixes(){
+        return this.prefixes;
     }
 }

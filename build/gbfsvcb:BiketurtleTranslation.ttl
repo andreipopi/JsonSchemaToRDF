@@ -16,7 +16,7 @@
 <https://w3id.org/gbfs/vocabularies/bikes> rdf:type foaf:Document;
     rdfs:comment "Describes the vehicles that are available for rent (as of v2.1-RC2)."@en;
     vann:preferredNamespaceUri "https://w3id.org/gbfs/vocabularies/bikes#";
-    dcterms:creator <https://pietercolpaert.be/#me>, "https://www.linkedin.com/in/andrei-popescu/".
+    dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
 <https://pietercolpaert.be/#me> rdf:type foaf:Person;
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
