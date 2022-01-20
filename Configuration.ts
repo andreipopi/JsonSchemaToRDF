@@ -36,6 +36,11 @@ export class Configuration {
         this.map.set('bike_id', 'dcterms:identifier');
         this.map.set('alert_id', 'dcterms:identifier');
 
+        this.map.set('creditcard', 'schema:CreditCard');
+        this.map.set('phone', 'foaf:phone');
+
+
+
     };
     
     // Some trials with the json-schema-traverse package: not really scccessful 

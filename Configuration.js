@@ -33,6 +33,7 @@ var Configuration = /** @class */ (function () {
         // FreeBikeStatus properties terms
         this.map.set('bike_id', 'dcterms:identifier');
         this.map.set('alert_id', 'dcterms:identifier');
+        this.map.set('creditcard', 'schema:CreditCard');
     }
     ;
     // Some trials with the json-schema-traverse package: not really scccessful 

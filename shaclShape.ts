@@ -15,7 +15,6 @@ export class ShaclShape {
     constructor (required: Map<string, string>, source: string, mainObj: string) {
         this.jsonSchema = require(source);
         this.requiredProperties = required;
-
         console.log("passed object",mainObj);
         console.log("main target",this.getShaclTarget(mainObj));
         this.targetClass = this.getShaclTarget(mainObj);
@@ -32,8 +31,6 @@ export class ShaclShape {
         const prop = 'sh:property [ \n sh:path '+nome+ ';  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype '+ type+'; \n ];';
         return prop;
     }
-
-    
     getShaclProperty (nome: string) {
         const prop = 'sh:property [ \n sh:path '+nome+ '; \n sh:maxCount 1; \n ];';
         return prop;
@@ -43,12 +40,9 @@ export class ShaclShape {
         const prop = 'sh:property [ \n sh:path '+nome+ ';  \n sh:minCount 1; \n sh:maxCount 1; \n ];';
         return prop;
     }
-    
-
     getShaclTargetClass(){
         return 'sh:targetClass ' + this.targetClass+ ';';
     }
-
     getShaclTarget (mainObject:string) {
         switch(mainObject) { 
             case 'gbfsvcb:Station': { 

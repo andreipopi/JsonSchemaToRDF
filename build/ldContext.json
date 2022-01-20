@@ -29,6 +29,8 @@
 	 	 "post_code": "dbpedia-owl:postalCode", 
 	 	 "capacity": "dbpedia-owl:capacity", 
 	 	 "bike_id": "dcterms:identifier", 
-	 	 "alert_id": "dcterms:identifier"
+	 	 "alert_id": "dcterms:identifier", 
+	 	 "creditcard": "schema:CreditCard"
+
   	 } 
  }

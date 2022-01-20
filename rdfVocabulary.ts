@@ -52,7 +52,7 @@ export class RDFVocabulary {
         this.prefixes = {
             prefixes: {
                 gbfsvcb: 'https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject+'#',
-                schema: 'http://schema.org/url#',
+                schema: 'http://schema.org/#',
                 ebucore: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#',
                 rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
                 rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
@@ -159,17 +159,21 @@ export class RDFVocabulary {
                     // Or items (at least in the case of station_information)
                     if (subItems != undefined) {
                         const enumeration = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].items.enum;
-                        
                         // Then we assume there is an enum
+                       
                         if (enumeration != undefined){
                             //let oneOfValues ='(';
 
                             let oneOfValues:NamedNode[] = [];
-
                             for (const value of enumeration){
-                                oneOfValues.push(namedNode(value));
+                                //We get the values from the mapping, else we create new terms
+                                if (this.map.get(value)!= undefined) {
+                                    oneOfValues.push(namedNode(this.map.get(value)));
+                                }
+                                else{
+                                    oneOfValues.push(namedNode(value));
+                                }
                             }
-
                             console.log("this is the list of values", oneOfValues);
                             let subPropQuad = this.node_node_list('gbfsvcb:'+newClassName, 'owl:oneOf', oneOfValues);
                             this.writer.addQuad(subPropQuad);
