@@ -32,6 +32,7 @@ Andrei Popescu <andrei.popescu@ugent.be>
  * test
 
 ## Future Work
+* gbfs.json apparently has a slightly different structure, so it needs special treatment -> ignored for now
 * in the utopian scenario, we want `rdfVocabulary` to become fully generalisable; this way, the component could be applied to other usecases; How to do that? Available json-schema parsers? 
 
 
