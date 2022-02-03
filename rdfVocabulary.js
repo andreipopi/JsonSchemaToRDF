@@ -281,6 +281,18 @@ var RDFVocabulary = /** @class */ (function () {
                 return 'vehicle_types';
                 break;
             }
+            case 'gbfsvcb:PricingPlan': {
+                return 'plans';
+                break;
+            }
+            case 'gbfsvcb:Version': {
+                return 'versions';
+                break;
+            }
+            case 'gbfsvcb:Calendar': {
+                return 'calendars';
+                break;
+            }
             case 'gbfsvcb:Feed': {
                 return 'feeds';
                 break;

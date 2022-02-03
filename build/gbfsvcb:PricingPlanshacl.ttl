@@ -1,42 +1,56 @@
 <https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
-sh:targetClass <https://w3id.org/gbfs/vehicleType>;
+sh:targetClass <https://w3id.org/gbfs/pricingPlan>;
 sh:property [ 
- sh:path vehicle_type_id;  
+ sh:path plan_id;  
  sh:minCount 1; 
  sh:maxCount 1; 
  sh:datatype xsd:string; 
  ];
 sh:property [ 
- sh:path form_factor;  
+ sh:path url; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path name;  
  sh:minCount 1; 
  sh:maxCount 1; 
  sh:datatype xsd:string; 
  ];
 sh:property [ 
- sh:path propulsion_type;  
+ sh:path currency;  
  sh:minCount 1; 
  sh:maxCount 1; 
  sh:datatype xsd:string; 
  ];
 sh:property [ 
- sh:path max_range_meters; 
+ sh:path price;  
+ sh:minCount 1; 
  sh:maxCount 1; 
  sh:datatype xsd:float; 
  ];
 sh:property [ 
- sh:path name; 
+ sh:path is_taxable;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:boolean; 
+ ];
+sh:property [ 
+ sh:path description;  
+ sh:minCount 1; 
  sh:maxCount 1; 
  sh:datatype xsd:string; 
  ];
 sh:property [ 
- sh:path default_reserve_time; 
+ sh:path per_km_pricing; 
  sh:maxCount 1; 
  ];
 sh:property [ 
- sh:path return_type; 
+ sh:path per_min_pricing; 
  sh:maxCount 1; 
  ];
 sh:property [ 
- sh:path vehicle_assets; 
+ sh:path surge_pricing; 
  sh:maxCount 1; 
+ sh:datatype xsd:boolean; 
  ];

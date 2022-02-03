@@ -60,7 +60,23 @@ export class ShaclShape {
             case 'gbfsvcb:Region': { 
                 return '<https://w3id.org/gbfs/region>';
                 break;
-            } 
+            }
+            case 'gbfsvcb:VehicleType': { 
+                return '<https://w3id.org/gbfs/vehicleType>';
+                break;
+            }
+            case 'gbfsvcb:PricingPlan': { 
+                return '<https://w3id.org/gbfs/pricingPlan>';
+                break;
+            }
+            case 'gbfsvcb:Version': { 
+                return '<https://w3id.org/gbfs/version>';
+                break;
+            }
+            case 'gbfsvcb:Calendar': { 
+                return '<https://w3id.org/gbfs/calendar>';
+                break;
+            }
             case 'gbfsvcb:Feed': { 
                 return '<https://w3id.org/gbfs/feed>';
                 break;
