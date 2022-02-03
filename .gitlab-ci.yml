@@ -6,8 +6,9 @@ stages:
 job1: 
   stage: build
   script: 
-    - npm install --include=dev
-    - npm run build
+    #- npm install --include=dev
+    #- npm run build
+    - tsc main.ts
     - node main.js
   #artifacts:
   #  paths:
