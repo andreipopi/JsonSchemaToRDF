@@ -1,5 +1,5 @@
 @prefix gbfsvcb: <https://w3id.org/gbfs/vocabularies/stations#>.
-@prefix schema: <http://schema.org/url#>.
+@prefix schema: <http://schema.org/#>.
 @prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
@@ -30,7 +30,7 @@ gbfsvcb:rental_methods rdf:type rdf:Property;
     rdfs:label "Payment methods accepted at this station."@en;
     rdfs:range gbfsvcb:Rental_methods.
 gbfsvcb:Rental_methods rdf:type rdfs:Class;
-    owl:oneOf (<key> <creditcard> <paypass> <applepay> <androidpay> <transitcard> <accountnumber> <phone>).
+    owl:oneOf (<key> schema:CreditCard <paypass> <applepay> <androidpay> <transitcard> <accountnumber> foaf:phone).
 gbfsvcb:is_virtual_station rdf:type rdf:Property;
     rdfs:label "Is this station a location with or without physical infrastructure? (added in v2.1-RC)"@en.
 gbfsvcb:station_area rdf:type rdf:Property;

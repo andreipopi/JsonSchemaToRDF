@@ -22,7 +22,7 @@ var RDFVocabulary = /** @class */ (function () {
         this.prefixes = {
             prefixes: {
                 gbfsvcb: 'https://w3id.org/gbfs/vocabularies/' + this.mainJsonObject + '#',
-                schema: 'http://schema.org/url#',
+                schema: 'http://schema.org/#',
                 ebucore: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#',
                 rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
                 rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
@@ -54,7 +54,7 @@ var RDFVocabulary = /** @class */ (function () {
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
     };
-    /** creates and writes quads (in turtleTranslation.ttl)
+    /** creates and writes quads
      * for the main object's properties,
      * by checking if new terms are encountered (against map).
     */
@@ -124,7 +124,13 @@ var RDFVocabulary = /** @class */ (function () {
                             var oneOfValues = [];
                             for (var _i = 0, enumeration_1 = enumeration; _i < enumeration_1.length; _i++) {
                                 var value = enumeration_1[_i];
-                                oneOfValues.push(namedNode(value));
+                                //We get the values from the mapping, else we create new terms
+                                if (this.map.get(value) != undefined) {
+                                    oneOfValues.push(namedNode(this.map.get(value)));
+                                }
+                                else {
+                                    oneOfValues.push(namedNode(value));
+                                }
                             }
                             console.log("this is the list of values", oneOfValues);
                             var subPropQuad = this.node_node_list('gbfsvcb:' + newClassName, 'owl:oneOf', oneOfValues);
@@ -174,7 +180,7 @@ var RDFVocabulary = /** @class */ (function () {
             }
         }
         // Write the content of the writer in the .ttl
-        this.writer.end(function (error, result) { return _this.fs.writeFile("build/" + _this.fileName + "turtleTranslation.ttl", result, function (err) {
+        this.writer.end(function (error, result) { return _this.fs.writeFile("build/" + _this.fileName + ".ttl", result, function (err) {
             // throws an error, you could also catch it here
             if (err)
                 throw err;

@@ -23,7 +23,7 @@ var config = new Configuration_1.Configuration(files[0]);
 var rdfVocab = new rdfVocabulary_1.RDFVocabulary(config.getTermMapping(), config.getJsonSource(), objects[0]);
 var prefixes = rdfVocab.getPrefixes().prefixes;
 var mapping = config.getTermMapping();
-var size = Object.keys(prefixes).length;
+//const size=  Object.keys(prefixes).length;
 var context = "{ \n \t \"@context\": { \n \t";
 for (var prefix in prefixes) {
     //if( prefix != Array.from(Object.keys(prefixes))[size-1])
@@ -47,6 +47,3 @@ fs.writeFileSync("build/ldContext.json", context, function (err) {
         return console.log("error");
     }
 });
-// Create a configuration object that will take care of preprocessing
-// Create a shaclShape object
-// Create an RDFVocab object

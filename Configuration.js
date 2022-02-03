@@ -34,38 +34,9 @@ var Configuration = /** @class */ (function () {
         this.map.set('bike_id', 'dcterms:identifier');
         this.map.set('alert_id', 'dcterms:identifier');
         this.map.set('creditcard', 'schema:CreditCard');
+        this.map.set('phone', 'foaf:phone');
     }
     ;
-    // Some trials with the json-schema-traverse package: not really scccessful 
-    /*traverse (){
-        let data = [];
-        this.jsonTraverse(this.jsonSchema.properties, (cb) => {
-            console.log()
-            console.log(cb.data);
-            data = cb.data;
-            for (const elem in cb){
-                console.log(elem);
-            }
-        });
-        console.log("========");
-        this.jsonTraverse(this.jsonSchema.properties.data.properties.stations.items, (cb) => {
-            console.log('-----');
-            console.log(cb);
-            data = cb;
-            for (const elem in cb){
-                console.log("elem", elem.valueOf());
-            }
-        });
-     
-    };*/
-    /*traverse () {
-        for (const elem in this.jsonSchema.properties.data.properties.stations.items.properties){
-            console.log('elemento', elem);
-            if (this.map.has(elem)) {
-                console.log("elem", this.map.get(elem));
-            }
-        }
-    };*/
     Configuration.prototype.getJsonSource = function () {
         return this.jsonSource;
     };

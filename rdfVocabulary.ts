@@ -84,7 +84,7 @@ export class RDFVocabulary {
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
     }
-    /** creates and writes quads (in turtleTranslation.ttl) 
+    /** creates and writes quads
      * for the main object's properties, 
      * by checking if new terms are encountered (against map).  
     */
@@ -225,7 +225,7 @@ export class RDFVocabulary {
         }
 
         // Write the content of the writer in the .ttl
-        this.writer.end((error, result) => this.fs.writeFile(`build/${this.fileName}turtleTranslation.ttl`, result, (err) => {
+        this.writer.end((error, result) => this.fs.writeFile(`build/${this.fileName}.ttl`, result, (err) => {
             // throws an error, you could also catch it here
             if (err) throw err;
             // success case, the file was saved

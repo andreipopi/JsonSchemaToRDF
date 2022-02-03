@@ -1,8 +1,7 @@
+node_modules
 .idea
 .DS_Store
-node_modules
 steps.txt
 shacl.ttl
 turtleTranslation.ttl
 .build
-.jsonldContext.ts

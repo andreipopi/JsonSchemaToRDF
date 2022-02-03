@@ -1,5 +1,5 @@
 @prefix gbfsvcb: <https://w3id.org/gbfs/vocabularies/alerts#>.
-@prefix schema: <http://schema.org/url#>.
+@prefix schema: <http://schema.org/#>.
 @prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
