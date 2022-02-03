@@ -107,7 +107,16 @@ export class RDFVocabulary {
             console.log(term);
 
             // Get the term type, subproperties, and description
-            let termType = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].type;
+             
+            let termType = this.jsonSchema.properties.data.properties[this.mainJsonObject];
+
+            if ( termType == undefined){
+                // Exception of the gbfs.json which has patternProperties.properties......
+                termType = this.jsonSchema.properties.data.patternProperties.properties[this.mainJsonObject].items.properties[term].type;
+            }
+            else{
+                termType = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].type;
+            }
             let termProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties; 
             let termDescription = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].description;
 
@@ -246,9 +255,11 @@ export class RDFVocabulary {
         // For each OF the values in the required
         console.log(this.mainJsonObject);
         console.log(this.jsonSchema.properties.data.properties[this.mainJsonObject].items.required);
+
         for (const requiredProp of this.jsonSchema.properties.data.properties[this.mainJsonObject].items.required){
             requiredMap.set(requiredProp.toString(), this.map.get(requiredProp.toString()));
         }
+        
         return requiredMap;
     }
 
@@ -315,7 +326,19 @@ export class RDFVocabulary {
             case 'gbfsvcb:Alert': { 
                 return 'alerts';
                 break;
-             } 
+            }
+            case 'gbfsvcb:Region': { 
+                return 'regions';
+                break;
+            }
+            case 'gbfsvcb:VehicleType': { 
+                return 'vehicle_types';
+                break;
+            }  
+            case 'gbfsvcb:Feed': { 
+                return 'feeds';
+                break;
+            }
             default: { 
                //statements; 
                break; 

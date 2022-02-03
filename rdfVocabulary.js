@@ -74,7 +74,14 @@ var RDFVocabulary = /** @class */ (function () {
         for (var term in properties) {
             console.log(term);
             // Get the term type, subproperties, and description
-            var termType = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].type;
+            var termType = this.jsonSchema.properties.data.properties[this.mainJsonObject];
+            if (termType == undefined) {
+                // Exception of the gbfs.json which has patternProperties.properties......
+                termType = this.jsonSchema.properties.data.patternProperties.properties[this.mainJsonObject].items.properties[term].type;
+            }
+            else {
+                termType = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].type;
+            }
             var termProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties;
             var termDescription = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].description;
             // If the property does not exist in the mapping, then we add it to the vocabulary
@@ -264,6 +271,18 @@ var RDFVocabulary = /** @class */ (function () {
             }
             case 'gbfsvcb:Alert': {
                 return 'alerts';
+                break;
+            }
+            case 'gbfsvcb:Region': {
+                return 'regions';
+                break;
+            }
+            case 'gbfsvcb:VehicleType': {
+                return 'vehicle_types';
+                break;
+            }
+            case 'gbfsvcb:Feed': {
+                return 'feeds';
                 break;
             }
             default: {

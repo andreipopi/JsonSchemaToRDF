@@ -3,8 +3,8 @@ exports.__esModule = true;
 var Configuration_1 = require("./Configuration");
 var rdfVocabulary_1 = require("./rdfVocabulary");
 //import {ShaclShape} from './shaclShape';
-var files = ['./files/station_information.json', './files/free_bike_status.json', './files/system_alerts.json'];
-var objects = ['gbfsvcb:Station', 'gbfsvcb:Bike', 'gbfsvcb:Alert'];
+var files = ['./files/station_information.json', './files/free_bike_status.json', './files/system_alerts.json', './files/system_regions.json', './files/vehicle_types.json'];
+var objects = ['gbfsvcb:Station', 'gbfsvcb:Bike', 'gbfsvcb:Alert', 'gbfsvcb:Region', 'gbfsvcb:VehicleType'];
 var fs = require('fs');
 var i = 0;
 for (var _i = 0, objects_1 = objects; _i < objects_1.length; _i++) {

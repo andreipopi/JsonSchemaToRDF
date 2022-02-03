@@ -1,0 +1,42 @@
+<https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
+sh:targetClass undefined;
+sh:property [ 
+ sh:path vehicle_type_id;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path form_factor;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path propulsion_type;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path max_range_meters; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path name; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path default_reserve_time; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path return_type; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path vehicle_assets; 
+ sh:maxCount 1; 
+ ];

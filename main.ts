@@ -3,8 +3,8 @@ import {RDFVocabulary} from './rdfVocabulary';
 import {ShaclShape} from './shaclShape';
 
 //import {ShaclShape} from './shaclShape';
-const files: string[] = ['./files/station_information.json', './files/free_bike_status.json', './files/system_alerts.json'];
-const objects: string[] = ['gbfsvcb:Station', 'gbfsvcb:Bike', 'gbfsvcb:Alert'];
+const files: string[] = ['./files/station_information.json', './files/free_bike_status.json', './files/system_alerts.json', './files/system_regions.json', './files/vehicle_types.json'];
+const objects: string[] = [ 'gbfsvcb:Station', 'gbfsvcb:Bike', 'gbfsvcb:Alert', 'gbfsvcb:Region', 'gbfsvcb:VehicleType' ];
 const  fs = require('fs');
 
 let i = 0;

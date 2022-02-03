@@ -51,6 +51,14 @@ var ShaclShape = /** @class */ (function () {
                 return '<https://w3id.org/gbfs/alert>';
                 break;
             }
+            case 'gbfsvcb:Region': {
+                return '<https://w3id.org/gbfs/region>';
+                break;
+            }
+            case 'gbfsvcb:Feed': {
+                return '<https://w3id.org/gbfs/feed>';
+                break;
+            }
             default: {
                 //statements; 
                 break;
