@@ -346,7 +346,11 @@ export class RDFVocabulary {
             case 'gbfsvcb:Calendar': { 
                 return 'calendars';
                 break;
-            }    
+            } 
+            case 'gbfsvcb:RentalHour': { 
+                return 'rental_hours';
+                break;
+            }   
             case 'gbfsvcb:Feed': { 
                 return 'feeds';
                 break;

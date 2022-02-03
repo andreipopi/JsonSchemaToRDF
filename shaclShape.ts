@@ -77,6 +77,10 @@ export class ShaclShape {
                 return '<https://w3id.org/gbfs/calendar>';
                 break;
             }
+            case 'gbfsvcb:RentalHour': { 
+                return '<https://w3id.org/gbfs/rentalHour>';
+                break;
+            }
             case 'gbfsvcb:Feed': { 
                 return '<https://w3id.org/gbfs/feed>';
                 break;
