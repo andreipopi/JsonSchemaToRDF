@@ -9,6 +9,8 @@ It transforms GBFS JSON schemas into corresponding RDF vocabularies and Shacl sh
  * Install dependencies using `npm install`
  * Build the typescript using `npm run build`
  * Run jsonschema2rdf by running `node main.js`
+ Extra
+ * Check the resulting vocabularies and provide feedback on term mapping choices.
 
 
 Program flow:
