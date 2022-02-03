@@ -9,8 +9,8 @@ job1:
     - npm install --include=dev
     - npm run build
     - node main.js
-  artifacts:
-    paths:
-      - build/shacl.ttl
-      - build/turtleTranslation.ttl
+  #artifacts:
+  #  paths:
+  #    - build/shacl.ttl
+  #    - build/turtleTranslation.ttl
    
