@@ -1,5 +1,6 @@
 # JSON Schema to RDF
 
+According to Linked-Data best practices, RDF vocabularies and Shacl shapes are desiderata.
 This is a component tailored to the current GBFS use case and json schema structure.
 It transforms GBFS JSON schemas into corresponding RDF vocabularies and Shacl shapes.
 
