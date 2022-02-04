@@ -34,6 +34,10 @@ Andrei Popescu <andrei.popescu@ugent.be>
  * add all GBFS schemas to `files`
  * adapt the term map for all of them
  * test
+    # List of unmanaged details
+    -
+    -
+    -
 
 ## Future Work
 * gbfs.json apparently has a slightly different structure, so it needs special treatment -> ignored for now
