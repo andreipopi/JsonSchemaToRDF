@@ -104,10 +104,8 @@ export class RDFVocabulary {
         // Properties of the main object (e.g.'Station')
         for (const term in properties){
 
-            console.log(term);
-
+            console.log("Property: ", term);
             // Get the term type, subproperties, and description
-             
             let termType = this.jsonSchema.properties.data.properties[this.mainJsonObject];
 
             if ( termType == undefined){
@@ -119,6 +117,8 @@ export class RDFVocabulary {
             }
             let termProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties; 
             let termDescription = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].description;
+
+            let directEnum = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].enum;
 
             // If the property does not exist in the mapping, then we add it to the vocabulary
             if (this.map.has(term) == false) {
@@ -142,7 +142,7 @@ export class RDFVocabulary {
 
                     const subProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties;
                     const subItems = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].items;
-                                        
+
                     console.log("subItems",subItems);
                     // Either properties
                     if (subProperties != undefined) {
@@ -171,8 +171,6 @@ export class RDFVocabulary {
                         // Then we assume there is an enum
                        
                         if (enumeration != undefined){
-                            //let oneOfValues ='(';
-
                             let oneOfValues:NamedNode[] = [];
                             for (const value of enumeration){
                                 //We get the values from the mapping, else we create new terms
@@ -189,6 +187,9 @@ export class RDFVocabulary {
                         }
                         
                     }
+
+                    
+                    
                 }
 
                 // If it is not an object nor an array, then it is a property
@@ -206,6 +207,24 @@ export class RDFVocabulary {
                         this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString() ));
                         // Might be a more complex type, e.g. oneOf
                     }
+                }
+
+                if(directEnum != undefined) {
+                    console.log("DIRECT ENUM", directEnum);
+                    // this code is repeated above, and needs to be put in a method
+                    let oneOfValues:NamedNode[] = [];
+                    for (const value of directEnum){
+                        //We get the values from the mapping, else we create new terms
+                        if (this.map.get(value)!= undefined) {
+                            oneOfValues.push(namedNode(this.map.get(value)));
+                        }
+                        else{
+                            oneOfValues.push(namedNode(value));
+                        }
+                    }
+                    console.log("this is the list of values", oneOfValues);
+                    let subPropQuad = this.node_node_list('gbfsvcb:'+term, 'owl:oneOf', oneOfValues);
+                    this.writer.addQuad(subPropQuad);
                 }
             }
             else{

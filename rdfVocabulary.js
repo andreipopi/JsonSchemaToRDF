@@ -72,7 +72,7 @@ var RDFVocabulary = /** @class */ (function () {
         console.log("properties", properties);
         // Properties of the main object (e.g.'Station')
         for (var term in properties) {
-            console.log(term);
+            console.log("Property: ", term);
             // Get the term type, subproperties, and description
             var termType = this.jsonSchema.properties.data.properties[this.mainJsonObject];
             if (termType == undefined) {
@@ -84,6 +84,7 @@ var RDFVocabulary = /** @class */ (function () {
             }
             var termProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties;
             var termDescription = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].description;
+            var directEnum = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term]["enum"];
             // If the property does not exist in the mapping, then we add it to the vocabulary
             if (this.map.has(term) == false) {
                 // Update our mapping with the new term: add   < term, 'gbfsvcb:'+term >
@@ -127,7 +128,6 @@ var RDFVocabulary = /** @class */ (function () {
                         var enumeration = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].items["enum"];
                         // Then we assume there is an enum
                         if (enumeration != undefined) {
-                            //let oneOfValues ='(';
                             var oneOfValues = [];
                             for (var _i = 0, enumeration_1 = enumeration; _i < enumeration_1.length; _i++) {
                                 var value = enumeration_1[_i];
@@ -161,6 +161,24 @@ var RDFVocabulary = /** @class */ (function () {
                         // Might be a more complex type, e.g. oneOf
                     }
                 }
+                if (directEnum != undefined) {
+                    console.log("DIRECT ENUM", directEnum);
+                    // this code is repeated above, and needs to be put in a method
+                    var oneOfValues = [];
+                    for (var _a = 0, directEnum_1 = directEnum; _a < directEnum_1.length; _a++) {
+                        var value = directEnum_1[_a];
+                        //We get the values from the mapping, else we create new terms
+                        if (this.map.get(value) != undefined) {
+                            oneOfValues.push(namedNode(this.map.get(value)));
+                        }
+                        else {
+                            oneOfValues.push(namedNode(value));
+                        }
+                    }
+                    console.log("this is the list of values", oneOfValues);
+                    var subPropQuad = this.node_node_list('gbfsvcb:' + term, 'owl:oneOf', oneOfValues);
+                    this.writer.addQuad(subPropQuad);
+                }
             }
             else {
                 // The property is available in map
@@ -187,7 +205,7 @@ var RDFVocabulary = /** @class */ (function () {
             }
         }
         // Write the content of the writer in the .ttl
-        this.writer.end(function (error, result) { return _this.fs.writeFile("build/".concat(_this.fileName, ".ttl"), result, function (err) {
+        this.writer.end(function (error, result) { return _this.fs.writeFile("build/" + _this.fileName + ".ttl", result, function (err) {
             // throws an error, you could also catch it here
             if (err)
                 throw err;
@@ -195,7 +213,7 @@ var RDFVocabulary = /** @class */ (function () {
             console.log('Turtle saved!');
         }); });
         // Write the Shacl shape on file
-        this.fs.writeFileSync("build/".concat(this.fileName, "shacl.ttl"), this.shaclFileText, function (err) {
+        this.fs.writeFileSync("build/" + this.fileName + "shacl.ttl", this.shaclFileText, function (err) {
             if (err) {
                 return console.log("error");
             }

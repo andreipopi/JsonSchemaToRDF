@@ -19,9 +19,10 @@ var Configuration = /** @class */ (function () {
         this.map.set('alert_id', 'dcterms:identifier');
         this.map.set('station_id', 'dcterms:identifier');
         this.map.set('vehicle_type_id', 'dcterms:identifier');
+        this.map.set('region_id', 'dbpedia-owl:region');
         this.map.set('description', 'dcterms:description');
-        this.map.set('last_updated', 'dcterms:modified');
         this.map.set('type', 'rdf:type');
+        this.map.set('last_updated', 'dcterms:modified');
         this.map.set('url', 'schema:url');
         this.map.set('summary', 'ebucore:summary');
         // Station properties terms
@@ -30,7 +31,6 @@ var Configuration = /** @class */ (function () {
         this.map.set('lat', 'geo:lat');
         this.map.set('lon', 'geo:long');
         this.map.set('cross_street', 'airs:locatedAtCrossStreet');
-        this.map.set('region_id', 'dbpedia-owl:region');
         this.map.set('post_code', 'dbpedia-owl:postalCode');
         this.map.set('capacity', 'dbpedia-owl:capacity');
         // FreeBikeStatus properties terms

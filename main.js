@@ -27,16 +27,16 @@ var mapping = config.getTermMapping();
 var context = "{ \n \t \"@context\": { \n \t";
 for (var prefix in prefixes) {
     //if( prefix != Array.from(Object.keys(prefixes))[size-1])
-    context += "\t \t \"".concat(prefix, "\": ") + "\"".concat(prefixes[prefix], "\"") + ", \n";
+    context += "\t \t \"" + prefix + "\": " + ("\"" + prefixes[prefix] + "\"") + ", \n";
 }
 ;
 for (var _a = 0, _b = Array.from(mapping.entries()); _a < _b.length; _a++) {
     var _c = _b[_a], key = _c[0], value = _c[1];
     if (key != Array.from(mapping.keys()).pop()) {
-        context += "\t \t \"".concat(key, "\": ") + "\"".concat(value, "\"") + ", \n";
+        context += "\t \t \"" + key + "\": " + ("\"" + value + "\"") + ", \n";
     }
     else {
-        context += "\t \t \"".concat(key, "\": ") + "\"".concat(value, "\"") + "\n";
+        context += "\t \t \"" + key + "\": " + ("\"" + value + "\"") + "\n";
     }
 }
 ;

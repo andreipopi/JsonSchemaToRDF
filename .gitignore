@@ -4,4 +4,5 @@ node_modules
 steps.txt
 shacl.ttl
 turtleTranslation.ttl
-.build
+build
+.mappingProblems.txt
