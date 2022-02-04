@@ -10,8 +10,9 @@ job1:
     - npm install -g typescript
     - npm run build
     - node main.js
-  #artifacts:
-  #  paths:
+  artifacts:
+    paths:
+      - build
   #    - build/shacl.ttl
   #    - build/turtleTranslation.ttl
    
