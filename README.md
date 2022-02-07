@@ -34,7 +34,8 @@ Andrei Popescu <andrei.popescu@ugent.be>
  * update the term map with existing terms from LOV
  * test
     # List of unmanaged details
-    - new classes are created as range of properties. These classes need to be explored as well.
+    - (ongoing refactor) new classes are created as range of properties. These classes need to be explored as well.
+    - required properties of nested Classes.
     - start_time, end_time patter in system_hours.json 
     - minimum/maximum in system_calendar.json
     - minimum in vehicle_types.json
