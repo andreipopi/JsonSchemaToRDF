@@ -72,7 +72,7 @@ var RDFVocabulary = /** @class */ (function () {
         // Add new (not availalbe in config.map) properties to the vocabulary
         var path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
         var properties = path.items.properties;
-        if (depth == 1 && (this.mainObject == "gbfsvcb:Per_min_pricing" || this.mainObject == "gbfsvcb:Per_km_pricing" || this.mainObject == "gbfsvcb:Times" || this.mainObject == "gbfsvcb:Region_ids" || this.mainObject == "gbfsvcb:Station_ids" || this.mainObject == "gbfsvcb:User_types")) { //only take care of system_pricing.json for now
+        if (depth == 1 && (this.mainObject == "gbfsvcb:Per_min_pricing" || this.mainObject == "gbfsvcb:Per_km_pricing" || this.mainObject == "gbfsvcb:Times" || this.mainObject == "gbfsvcb:Region_ids" || this.mainObject == "gbfsvcb:Station_ids" || this.mainObject == "gbfsvcb:User_types" || this.mainObject == "gbfsvcb:Days")) { //only take care of system_pricing.json for now
             // Then we need the path to the nested object/array
             path = path.items.properties[this.getMainJsonObject(this.mainObject)];
             properties = path.items.properties;
@@ -374,6 +374,15 @@ var RDFVocabulary = /** @class */ (function () {
             // Rental Hour
             case 'gbfsvcb:User_types': {
                 return 'user_types';
+                break;
+            }
+            case 'gbfsvcb:Days': {
+                return 'days';
+                break;
+            }
+            // VehicleTypes
+            case 'gbfsvcb:Vehicle_assets': {
+                return 'vehicle_assets';
                 break;
             }
             default: {

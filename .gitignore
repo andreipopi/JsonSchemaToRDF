@@ -5,3 +5,4 @@ steps.txt
 shacl.ttl
 turtleTranslation.ttl
 .mappingProblems.txt
+.rdfVocabularyOriginal.ts
