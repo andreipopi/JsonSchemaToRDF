@@ -4,6 +4,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 @prefix dcterms: <http://purl.org/dc/terms/>.
 @prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>.
 @prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
@@ -25,19 +26,19 @@ gbfsvcb:Calendar rdf:type rdfs:Class;
     rdfs:label "Calendar"@en.
 gbfsvcb:start_month rdf:type rdf:Property;
     rdfs:label "Starting month for the system operations."@en;
-    rdfs:range "xsd:integer".
+    rdfs:range xsd:integer.
 gbfsvcb:start_day rdf:type rdf:Property;
     rdfs:label "Starting day for the system operations."@en;
-    rdfs:range "xsd:integer".
+    rdfs:range xsd:integer.
 gbfsvcb:start_year rdf:type rdf:Property;
     rdfs:label "Starting year for the system operations."@en;
-    rdfs:range "xsd:integer".
+    rdfs:range xsd:integer.
 gbfsvcb:end_month rdf:type rdf:Property;
     rdfs:label "End month for the system operations."@en;
-    rdfs:range "xsd:integer".
+    rdfs:range xsd:integer.
 gbfsvcb:end_day rdf:type rdf:Property;
     rdfs:label "End day for the system operations."@en;
-    rdfs:range "xsd:integer".
+    rdfs:range xsd:integer.
 gbfsvcb:end_year rdf:type rdf:Property;
     rdfs:label "End year for the system operations."@en;
-    rdfs:range "xsd:integer".
+    rdfs:range xsd:integer.

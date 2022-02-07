@@ -4,6 +4,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 @prefix dcterms: <http://purl.org/dc/terms/>.
 @prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>.
 @prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
@@ -35,7 +36,7 @@ gbfsvcb:max_range_meters rdf:type rdf:Property;
 gbfsvcb:VehicleType rdf:Property foaf:name.
 gbfsvcb:default_reserve_time rdf:type rdf:Property;
     rdfs:label "Maximum time in minutes that a vehicle can be reserved before a rental begins added in v2.3-RC."@en;
-    rdfs:range "xsd:integer".
+    rdfs:range xsd:integer.
 gbfsvcb:return_type rdf:type rdf:Property;
     rdfs:label "The conditions for returning the vehicle at the end of the trip added in v2.3-RC."@en;
     rdfs:range gbfsvcb:Return_type.

@@ -27,6 +27,7 @@ var RDFVocabulary = /** @class */ (function () {
                 rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
                 rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
                 foaf: 'http://xmlns.com/foaf/0.1/',
+                xsd: 'http://www.w3.org/2001/XMLSchema#',
                 dcterms: 'http://purl.org/dc/terms/',
                 vs: 'http://www.w3.org/2003/06/sw-vocab-status/ns#',
                 geo: 'http://www.w3.org/2003/01/geo/wgs84_pos#',
@@ -181,7 +182,7 @@ var RDFVocabulary = /** @class */ (function () {
                     this.writer.addQuad(subPropQuad);
                 }
                 if (termType == 'integer') {
-                    this.writer.addQuad(this.node_node_literal('gbfsvcb:' + term, 'rdfs:range', this.getXsdType("integer")));
+                    this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdfs:range', 'xsd:integer'));
                 }
             }
             else {
