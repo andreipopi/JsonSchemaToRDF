@@ -34,7 +34,8 @@ gbfsvcb:rental_methods rdf:type rdf:Property;
 gbfsvcb:Rental_methods rdf:type rdfs:Class;
     owl:oneOf (<key> schema:CreditCard <paypass> <applepay> <androidpay> <transitcard> <accountnumber> foaf:phone).
 gbfsvcb:is_virtual_station rdf:type rdf:Property;
-    rdfs:label "Is this station a location with or without physical infrastructure? (added in v2.1-RC)"@en.
+    rdfs:label "Is this station a location with or without physical infrastructure? (added in v2.1-RC)"@en;
+    rdfs:range xsd:boolean.
 gbfsvcb:station_area rdf:type rdf:Property;
     rdfs:label "A multipolygon that describes the area of a virtual station (added in v2.1-RC)."@en;
     rdfs:range gbfsvcb:Station_area.
@@ -43,9 +44,11 @@ gbfsvcb:Station_area rdf:type rdfs:Class;
 gbfsvcb:coordinates rdf:type "array".
 gbfsvcb:Station rdf:Property dbpedia-owl:capacity.
 gbfsvcb:is_valet_station rdf:type rdf:Property;
-    rdfs:label "Are valet services provided at this station? (added in v2.1-RC)"@en.
+    rdfs:label "Are valet services provided at this station? (added in v2.1-RC)"@en;
+    rdfs:range xsd:boolean.
 gbfsvcb:is_charging_station rdf:type rdf:Property;
-    rdfs:label "Does the station support charging of electric vehicles? (added in v2.3-RC)"@en.
+    rdfs:label "Does the station support charging of electric vehicles? (added in v2.3-RC)"@en;
+    rdfs:range xsd:boolean.
 gbfsvcb:rental_uris rdf:type rdf:Property;
     rdfs:label "Contains rental uris for Android, iOS, and web in the android, ios, and web fields (added in v1.1)."@en;
     rdfs:range gbfsvcb:Rental_uris.

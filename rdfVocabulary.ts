@@ -233,6 +233,9 @@ export class RDFVocabulary {
                 if (termType == 'integer'){
                     this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdfs:range', 'xsd:integer'));
                 }
+                if (termType == 'boolean'){
+                    this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdfs:range', 'xsd:boolean'));
+                }
             }
             else{
                 // The property is available in map
