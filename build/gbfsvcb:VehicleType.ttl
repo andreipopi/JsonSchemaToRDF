@@ -11,6 +11,7 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
 @prefix jsonsc: <https://www.w3.org/2019/wot/json-schema#>.
 @prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
+@prefix vso: <http://purl.org/vso/ns#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
 <https://w3id.org/gbfs/vocabularies/vehicle_types> rdf:type foaf:Document;
@@ -25,7 +26,7 @@ gbfsvcb:VehicleType rdf:type rdfs:Class;
     rdf:Property dcterms:identifier.
 gbfsvcb:form_factor rdf:type rdf:Property;
     rdfs:label "The vehicle's general form factor."@en;
-    owl:oneOf (<bicycle> <car> <moped> <other> <scooter>).
+    owl:oneOf (vso:bicycle schema:car <moped> <other> <scooter>).
 gbfsvcb:propulsion_type rdf:type rdf:Property;
     rdfs:label "The primary propulsion type of the vehicle."@en;
     owl:oneOf (<human> <electric_assist> <electric> <combustion>).
@@ -33,7 +34,8 @@ gbfsvcb:max_range_meters rdf:type rdf:Property;
     rdfs:label "The furthest distance in meters that the vehicle can travel without recharging or refueling when it has the maximum amount of energy potential."@en.
 gbfsvcb:VehicleType rdf:Property foaf:name.
 gbfsvcb:default_reserve_time rdf:type rdf:Property;
-    rdfs:label "Maximum time in minutes that a vehicle can be reserved before a rental begins added in v2.3-RC."@en.
+    rdfs:label "Maximum time in minutes that a vehicle can be reserved before a rental begins added in v2.3-RC."@en;
+    rdfs:range "xsd:integer".
 gbfsvcb:return_type rdf:type rdf:Property;
     rdfs:label "The conditions for returning the vehicle at the end of the trip added in v2.3-RC."@en;
     rdfs:range gbfsvcb:Return_type.

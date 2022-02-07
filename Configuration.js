@@ -37,6 +37,8 @@ var Configuration = /** @class */ (function () {
         this.map.set('creditcard', 'schema:CreditCard');
         this.map.set('phone', 'foaf:phone');
         // vehicle types
+        this.map.set('car', 'schema:car');
+        this.map.set('bicycle', 'vso:bicycle');
     }
     ;
     Configuration.prototype.getJsonSource = function () {

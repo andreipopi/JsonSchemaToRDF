@@ -34,6 +34,7 @@ var RDFVocabulary = /** @class */ (function () {
                 owl: 'http://www.w3.org/2002/07/owl#',
                 jsonsc: 'https://www.w3.org/2019/wot/json-schema#',
                 airs: 'https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#',
+                vso: 'http://purl.org/vso/ns#',
                 "dbpedia-owl": 'http://dbpedia.org/ontology/'
             }
         };
@@ -179,6 +180,9 @@ var RDFVocabulary = /** @class */ (function () {
                     var subPropQuad = this.node_node_list('gbfsvcb:' + term, 'owl:oneOf', oneOfValues);
                     this.writer.addQuad(subPropQuad);
                 }
+                if (termType == 'integer') {
+                    this.writer.addQuad(this.node_node_literal('gbfsvcb:' + term, 'rdfs:range', this.getXsdType("integer")));
+                }
             }
             else {
                 // The property is available in map
@@ -269,6 +273,10 @@ var RDFVocabulary = /** @class */ (function () {
             }
             case 'boolean': {
                 return 'xsd:boolean';
+                break;
+            }
+            case 'integer': {
+                return 'xsd:integer';
                 break;
             }
             default: {

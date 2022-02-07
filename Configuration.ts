@@ -44,7 +44,8 @@ export class Configuration {
         
         // vehicle types
 
-
+        this.map.set('car', 'schema:car');
+        this.map.set('bicycle', 'vso:bicycle');
 
 
     };

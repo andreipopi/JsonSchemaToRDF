@@ -11,6 +11,7 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
 @prefix jsonsc: <https://www.w3.org/2019/wot/json-schema#>.
 @prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
+@prefix vso: <http://purl.org/vso/ns#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
 <https://w3id.org/gbfs/vocabularies/calendars> rdf:type foaf:Document;
@@ -23,14 +24,20 @@
 gbfsvcb:Calendar rdf:type rdfs:Class;
     rdfs:label "Calendar"@en.
 gbfsvcb:start_month rdf:type rdf:Property;
-    rdfs:label "Starting month for the system operations."@en.
+    rdfs:label "Starting month for the system operations."@en;
+    rdfs:range "xsd:integer".
 gbfsvcb:start_day rdf:type rdf:Property;
-    rdfs:label "Starting day for the system operations."@en.
+    rdfs:label "Starting day for the system operations."@en;
+    rdfs:range "xsd:integer".
 gbfsvcb:start_year rdf:type rdf:Property;
-    rdfs:label "Starting year for the system operations."@en.
+    rdfs:label "Starting year for the system operations."@en;
+    rdfs:range "xsd:integer".
 gbfsvcb:end_month rdf:type rdf:Property;
-    rdfs:label "End month for the system operations."@en.
+    rdfs:label "End month for the system operations."@en;
+    rdfs:range "xsd:integer".
 gbfsvcb:end_day rdf:type rdf:Property;
-    rdfs:label "End day for the system operations."@en.
+    rdfs:label "End day for the system operations."@en;
+    rdfs:range "xsd:integer".
 gbfsvcb:end_year rdf:type rdf:Property;
-    rdfs:label "End year for the system operations."@en.
+    rdfs:label "End year for the system operations."@en;
+    rdfs:range "xsd:integer".

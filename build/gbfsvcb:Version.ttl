@@ -11,6 +11,7 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
 @prefix jsonsc: <https://www.w3.org/2019/wot/json-schema#>.
 @prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
+@prefix vso: <http://purl.org/vso/ns#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
 <https://w3id.org/gbfs/vocabularies/versions> rdf:type foaf:Document;
