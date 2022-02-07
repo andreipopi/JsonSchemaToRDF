@@ -36,11 +36,10 @@ gbfsvcb:region_ids rdf:type rdf:Property;
     rdfs:range gbfsvcb:Region_ids.
 gbfsvcb:Alert rdf:Property schema:url, ebucore:summary, dcterms:description, dcterms:modified.
 gbfsvcb:Times rdf:type rdfs:Class;
-    rdfs:label "Times"@en;
-    rdf:Property dcterms:identifier, rdf:type, gbfsvcb:times, gbfsvcb:station_ids, gbfsvcb:region_ids, schema:url, ebucore:summary, dcterms:description, dcterms:modified.
+    rdfs:label "Times"@en.
+gbfsvcb:start rdf:type rdf:Property.
+gbfsvcb:end rdf:type rdf:Property.
 gbfsvcb:Station_ids rdf:type rdfs:Class;
-    rdfs:label "Station_ids"@en;
-    rdf:Property dcterms:identifier, rdf:type, gbfsvcb:times, gbfsvcb:station_ids, gbfsvcb:region_ids, schema:url, ebucore:summary, dcterms:description, dcterms:modified.
+    rdfs:label "Station_ids"@en.
 gbfsvcb:Region_ids rdf:type rdfs:Class;
-    rdfs:label "Region_ids"@en;
-    rdf:Property dcterms:identifier, rdf:type, gbfsvcb:times, gbfsvcb:station_ids, gbfsvcb:region_ids, schema:url, ebucore:summary, dcterms:description, dcterms:modified.
+    rdfs:label "Region_ids"@en.

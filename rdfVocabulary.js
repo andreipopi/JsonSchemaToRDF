@@ -61,7 +61,7 @@ var RDFVocabulary = /** @class */ (function () {
      * for the main object's properties,
      * by checking if new terms are encountered (against map).
     */
-    RDFVocabulary.prototype.parseMainObjectPropertiesToQuads = function (layer) {
+    RDFVocabulary.prototype.parseMainObjectPropertiesToQuads = function (depth) {
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
@@ -72,7 +72,7 @@ var RDFVocabulary = /** @class */ (function () {
         // Add new (not availalbe in config.map) properties to the vocabulary
         var path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
         var properties = path.items.properties;
-        if (layer == 1 && (this.mainObject == "gbfsvcb:Per_min_pricing" || this.mainObject == "gbfsvcb:Per_km_pricing")) { //only take care of system_pricing.json for now
+        if (depth == 1 && (this.mainObject == "gbfsvcb:Per_min_pricing" || this.mainObject == "gbfsvcb:Per_km_pricing" || this.mainObject == "gbfsvcb:Times" || this.mainObject == "gbfsvcb:Region_ids" || this.mainObject == "gbfsvcb:Station_ids" || this.mainObject == "gbfsvcb:User_types")) { //only take care of system_pricing.json for now
             // Then we need the path to the nested object/array
             path = path.items.properties[this.getMainJsonObject(this.mainObject)];
             properties = path.items.properties;
@@ -104,7 +104,8 @@ var RDFVocabulary = /** @class */ (function () {
                 if ((termType == 'object' && termProperties != undefined) || termType == 'array') {
                     // Add the property and its label
                     this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdf:type', 'rdf:Property'));
-                    this.writer.addQuad(this.node_node_literal('gbfsvcb:' + term, 'rdfs:label', termDescription.toString()));
+                    if (termDescription != undefined)
+                        this.writer.addQuad(this.node_node_literal('gbfsvcb:' + term, 'rdfs:label', termDescription.toString()));
                     // Since it is an object/array, we give it a new class as a range
                     var newClassName = this.capitalizeFirstLetter(term);
                     this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdfs:range', 'gbfsvcb:' + newClassName));
@@ -162,8 +163,10 @@ var RDFVocabulary = /** @class */ (function () {
                     if (termType != undefined) {
                         // Then create the quad and add it to the writer
                         this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdf:type', 'rdf:Property'));
-                        this.writer.addQuad(this.node_node_literal('gbfsvcb:' + term, 'rdfs:label', termDescription.toString()));
-                        this.writer.addQuad('gbfsvcb:' + term, 'rdfs:range', literal(termDescription.toString(), 'en'));
+                        if (termDescription != undefined) {
+                            this.writer.addQuad(this.node_node_literal('gbfsvcb:' + term, 'rdfs:label', termDescription.toString()));
+                            this.writer.addQuad('gbfsvcb:' + term, 'rdfs:range', literal(termDescription.toString(), 'en'));
+                        }
                     }
                     // it has some other datatype
                     else {
@@ -353,6 +356,24 @@ var RDFVocabulary = /** @class */ (function () {
             }
             case 'gbfsvcb:Per_min_pricing': {
                 return 'per_min_pricing';
+                break;
+            }
+            // Alert.ttl
+            case 'gbfsvcb:Times': {
+                return 'times';
+                break;
+            }
+            case 'gbfsvcb:Station_ids': {
+                return 'station_ids';
+                break;
+            }
+            case 'gbfsvcb:Region_ids': {
+                return 'region_ids';
+                break;
+            }
+            // Rental Hour
+            case 'gbfsvcb:User_types': {
+                return 'user_types';
                 break;
             }
             default: {

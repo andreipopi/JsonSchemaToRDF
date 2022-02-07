@@ -94,7 +94,7 @@ export class RDFVocabulary {
      * by checking if new terms are encountered (against map).  
     */
 
-    parseMainObjectPropertiesToQuads (layer){
+    parseMainObjectPropertiesToQuads (depth){
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
@@ -108,7 +108,7 @@ export class RDFVocabulary {
         let properties = path.items.properties;
 
         
-        if(layer == 1 && (this.mainObject =="gbfsvcb:Per_min_pricing" ||this.mainObject =="gbfsvcb:Per_km_pricing" )){ //only take care of system_pricing.json for now
+        if(depth == 1 && (this.mainObject =="gbfsvcb:Per_min_pricing" ||this.mainObject =="gbfsvcb:Per_km_pricing" ||this.mainObject =="gbfsvcb:Times"||this.mainObject =="gbfsvcb:Region_ids"||this.mainObject =="gbfsvcb:Station_ids"||this.mainObject =="gbfsvcb:User_types" )){ //only take care of system_pricing.json for now
             // Then we need the path to the nested object/array
             path = path.items.properties[this.getMainJsonObject(this.mainObject)];
             properties = path.items.properties;
@@ -148,7 +148,9 @@ export class RDFVocabulary {
 
                     // Add the property and its label
                     this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdf:type', 'rdf:Property'));
-                    this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString()));
+                    
+                    if( termDescription != undefined )
+                        this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString()));
         
                     // Since it is an object/array, we give it a new class as a range
                     const newClassName = this.capitalizeFirstLetter(term);
@@ -212,8 +214,10 @@ export class RDFVocabulary {
                     if(termType != undefined){
                         // Then create the quad and add it to the writer
                         this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdf:type', 'rdf:Property'));
-                        this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString()) );
+                        if( termDescription != undefined){
+                            this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString()) );
                         this.writer.addQuad('gbfsvcb:'+term, 'rdfs:range', literal(termDescription.toString(), 'en') );
+                        }
                     }
                     // it has some other datatype
                     else{
@@ -409,6 +413,24 @@ export class RDFVocabulary {
             }
             case 'gbfsvcb:Per_min_pricing':{
                 return 'per_min_pricing';
+                break;
+            }
+            // Alert.ttl
+            case 'gbfsvcb:Times':{
+                return 'times';
+                break;
+            }
+            case 'gbfsvcb:Station_ids':{
+                return 'station_ids';
+                break;
+            }
+            case 'gbfsvcb:Region_ids':{
+                return 'region_ids';
+                break;
+            }
+            // Rental Hour
+            case 'gbfsvcb:User_types':{
+                return 'user_types';
                 break;
             }
             default: { 
