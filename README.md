@@ -34,10 +34,8 @@ Andrei Popescu <andrei.popescu@ugent.be>
  * update the term map with existing terms from LOV
  * test
     # List of unmanaged details
-    - (ongoing refactor) new classes are created as range of properties. These classes need to be explored as well.
-    - required properties of nested Classes.
-    - If a new class is added in the second stage (because it was nested), its properties will just be listed in the vocabulary, but they will  not be attached to the class itself through rdf:Property. Since the new properties are added to the mapping of existing properties, the second nested class having the same properties, will have them attached. See Per_km_pricing VS Per_min_pricing in system_pricing.ttl.
-    - start_time, end_time patter in system_hours.json 
+    - Shacl shapes creation needs better integration in the code.
+    - start_time, end_time pattern in system_hours.json 
     - minimum/maximum in system_calendar.json
     - minimum in vehicle_types.json
     - ? (any other missing)
