@@ -4,6 +4,7 @@ import {ShaclShape} from './shaclShape';
 import {DataFactory, Literal, Quad, Store} from "n3";
 import literal = DataFactory.literal;
 import { NamedNode } from "n3/lib/N3DataFactory";
+import { off } from "process";
 
 
 const N3 = require('n3');
@@ -42,16 +43,13 @@ export class RDFVocabulary {
 
     // Constructors
     constructor (termMapping: Map<string, string>, source:string, mainObj: string ){
-        this.jsonSource = source; //needed when creating a ShaclShape object
+        this.jsonSource = source; // Needed when creating a ShaclShape object
         this.jsonSchema = require(source);
-        this.map = termMapping;
-
+        this.map = termMapping; // Initialiszed in Configuration.ts
         this.mainObject = mainObj; 
         this.mainJsonObject = this.getMainJsonObject(this.mainObject);
-
-        this.exploredObject = mainObj; // the main object for the first iteration
-
         this.fileName = mainObj;
+
         this.prefixes = {
             prefixes: {
                 gbfsvcb: 'https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject+'#',
@@ -69,15 +67,14 @@ export class RDFVocabulary {
                 jsonsc: 'https://www.w3.org/2019/wot/json-schema#',
                 airs: 'https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#',
                 vso: 'http://purl.org/vso/ns#',
-                "dbpedia-owl": 'http://dbpedia.org/ontology/', //ERROR, should be dbpedia-owl but the - gives an error, not sure how to escape it
+                "dbpedia-owl": 'http://dbpedia.org/ontology/',
             }};
 
             this.writer = new N3.Writer(this.prefixes);
     }
     // Methods
-    /** creates and writes quads for the basic properties of a jsonSchema of the bike sharing system */
-    parseBasicsToQuads (){
-        this.schema  = this.jsonSchema.$schema;
+    /** Creates and writes quads for the basic properties of a jsonSchema of the bike sharing system */
+    basicsToQuads (){
         this.description = this.jsonSchema.description;
         this.id = this.jsonSchema.$id;
         this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject, 'rdf:type', 'foaf:Document'));
@@ -89,31 +86,40 @@ export class RDFVocabulary {
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
     }
-    /** creates and writes quads
-     * for the main object's properties, 
-     * by checking if new terms are encountered (against map).  
-    */
 
-    parseMainObjectPropertiesToQuads (depth){
+    /** Creates and writes quads for the main object's properties, 
+     * by checking if new terms are encountered (against a map of terms).  
+    */
+    objectPropertiesToQuads (depth){
+
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
+        
         // Create a ShaclShape object and insert the first entries
         this.shape = new ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
         this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText+this.shape.getShaclTargetClass()+'\n';
-
-        // Add new (not availalbe in config.map) properties to the vocabulary
+ 
         let path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
-        let properties = path.items.properties;
+        let properties = path.items.properties; // Path to the properties of the main object
 
-        
+        // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
         if(depth == 1 && (this.mainObject =="gbfsvcb:Per_min_pricing" ||this.mainObject =="gbfsvcb:Per_km_pricing" ||this.mainObject =="gbfsvcb:Times"||this.mainObject =="gbfsvcb:Region_ids"||this.mainObject =="gbfsvcb:Station_ids"||this.mainObject =="gbfsvcb:User_types"||this.mainObject =="gbfsvcb:Days" 
-                      )){ //only take care of system_pricing.json for now
+                   || this.mainObject =="gbfsvcb:Station_area"   )){ //only take care of system_pricing.json for now
             // Then we need the path to the nested object/array
+        //if(depth == 1){   
             path = path.items.properties[this.getMainJsonObject(this.mainObject)];
-            properties = path.items.properties;
+
+            if( this.mainObject =="gbfsvcb:Station_area" ){
+                properties = path.properties;
+            }
+            else{
+                properties = path.items.properties;
+
+            }
         }
+
 
         console.log("properties",properties);
         // Properties of the main object (e.g.'Station')
@@ -125,17 +131,47 @@ export class RDFVocabulary {
             //let termType = this.jsonSchema.properties.data.properties[this.mainJsonObject];
 
             let termType = path;
-            if ( termType == undefined){
-                // Exception of the gbfs.json which has patternProperties.properties......
-                termType = path.items.properties[term].type;
+            
+            let termProperties = path; 
+            let termDescription = path;
+            let directEnum = path;
+            let subItems = path;
+            let subProperties = path;
+
+
+            // Some nested classes have no items, but directly properties. station_area in station_information requires this exception for example.
+            
+            if (depth > 0){
+                if(path.items == undefined ){
+                    console.log("ciao is undefined");
+                    termType = path.properties[term].type;
+                    termProperties = path.properties[term].properties; 
+                    termDescription = path.properties[term].description;
+                    directEnum = path.properties[term].enum;
+                    subProperties = path.properties[term].properties;
+                    subItems = path.properties[term].items;
+                }
+                else{
+                    termType = path.items.properties[term].type;
+                    termProperties = path.items.properties[term].properties;
+                    termDescription = path.items.properties[term].description;
+                    directEnum = path.items.properties[term].enum;
+                    subProperties = path.items.properties[term].properties;
+                    subItems = path.items.properties[term].items;
+                }
             }
             else{
                 termType = path.items.properties[term].type;
+                termProperties = path.items.properties[term].properties;
+                termDescription = path.items.properties[term].description;
+                directEnum = path.items.properties[term].enum;
+                subProperties = path.items.properties[term].properties;
+                subItems = path.items.properties[term].items;
             }
-            let termProperties = path.items.properties[term].properties; 
-            let termDescription = path.items.properties[term].description;
-
-            let directEnum = path.items.properties[term].enum;
+            
+            
+           
+        
 
             // If the property does not exist in the mapping, then we add it to the vocabulary
             if (this.map.has(term) == false) {
@@ -161,8 +197,6 @@ export class RDFVocabulary {
                     hiddenClasses = hiddenClasses.concat('gbfsvcb:'+newClassName);
                     console.log('HIDDEN CLASSES: ',hiddenClasses);
 
-                    const subProperties = path.items.properties[term].properties;
-                    const subItems = path.items.properties[term].items;
 
                     console.log("subItems",subItems);
                     // Either properties
@@ -188,9 +222,18 @@ export class RDFVocabulary {
 
                     // Or items (at least in the case of station_information)
                     if (subItems != undefined) {
-                        const enumeration = path.items.properties[term].items.enum;
+
+                        let enumeration = path;
+
+                        if(subItems.items != undefined){
+                            // Exception: there is no enumeration enountered here so far
+                            enumeration = undefined;
+                        }
+                        else{
+                            enumeration = path.items.properties[term].items.enum;
+                        }
+
                         // Then we assume there is an enum
-                       
                         if (enumeration != undefined){
                             let oneOfValues:NamedNode[] = [];
                             for (const value of enumeration){
@@ -326,21 +369,19 @@ export class RDFVocabulary {
             return myQuad;
         }
     }
-
     node_node_node (subj: string, pred:string, obj:string) {
         const myQuad = quad( namedNode(subj), namedNode(pred), namedNode(obj), defaultGraph());
         return myQuad;
     }
-
     node_node_list (subj: string, pred:string, list:NamedNode[]) {
         const myQuad = quad( namedNode(subj), namedNode(pred), this.writer.list(list), defaultGraph());
         return myQuad;
     }
-
     node_literal_literal (subj: string, pred:string, obj:string) {
         const myQuad = quad( namedNode(subj), literal(pred), literal(obj), defaultGraph());
         return myQuad;
     }
+
     getXsdType (t:string) {
         switch(t) { 
             case 'string': { 
@@ -436,6 +477,16 @@ export class RDFVocabulary {
             }
             case 'gbfsvcb:Days':{
                 return 'days';
+                break;
+            }
+
+            // Station Information
+            case 'gbfsvcb:Rental_methods':{
+                return 'rental_methods';
+                break;
+            }
+            case 'gbfsvcb:Station_area':{
+                return 'station_area';
                 break;
             }
            

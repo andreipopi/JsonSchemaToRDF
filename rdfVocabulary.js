@@ -13,12 +13,11 @@ var RDFVocabulary = /** @class */ (function () {
         this.shaclFileText = '';
         this.creator1 = 'https://pietercolpaert.be/#me';
         this.creator2 = 'https://www.linkedin.com/in/andrei-popescu/';
-        this.jsonSource = source; //needed when creating a ShaclShape object
+        this.jsonSource = source; // Needed when creating a ShaclShape object
         this.jsonSchema = require(source);
-        this.map = termMapping;
+        this.map = termMapping; // Initialiszed in Configuration.ts
         this.mainObject = mainObj;
         this.mainJsonObject = this.getMainJsonObject(this.mainObject);
-        this.exploredObject = mainObj; // the main object for the first iteration
         this.fileName = mainObj;
         this.prefixes = {
             prefixes: {
@@ -43,9 +42,8 @@ var RDFVocabulary = /** @class */ (function () {
         this.writer = new N3.Writer(this.prefixes);
     }
     // Methods
-    /** creates and writes quads for the basic properties of a jsonSchema of the bike sharing system */
-    RDFVocabulary.prototype.parseBasicsToQuads = function () {
-        this.schema = this.jsonSchema.$schema;
+    /** Creates and writes quads for the basic properties of a jsonSchema of the bike sharing system */
+    RDFVocabulary.prototype.basicsToQuads = function () {
         this.description = this.jsonSchema.description;
         this.id = this.jsonSchema.$id;
         this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/vocabularies/' + this.mainJsonObject, 'rdf:type', 'foaf:Document'));
@@ -57,11 +55,10 @@ var RDFVocabulary = /** @class */ (function () {
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
     };
-    /** creates and writes quads
-     * for the main object's properties,
-     * by checking if new terms are encountered (against map).
+    /** Creates and writes quads for the main object's properties,
+     * by checking if new terms are encountered (against a map of terms).
     */
-    RDFVocabulary.prototype.parseMainObjectPropertiesToQuads = function (depth) {
+    RDFVocabulary.prototype.objectPropertiesToQuads = function (depth) {
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
@@ -69,13 +66,20 @@ var RDFVocabulary = /** @class */ (function () {
         this.shape = new shaclShape_1.ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
         this.shaclFileText = this.shaclFileText + this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText + this.shape.getShaclTargetClass() + '\n';
-        // Add new (not availalbe in config.map) properties to the vocabulary
         var path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
-        var properties = path.items.properties;
-        if (depth == 1 && (this.mainObject == "gbfsvcb:Per_min_pricing" || this.mainObject == "gbfsvcb:Per_km_pricing" || this.mainObject == "gbfsvcb:Times" || this.mainObject == "gbfsvcb:Region_ids" || this.mainObject == "gbfsvcb:Station_ids" || this.mainObject == "gbfsvcb:User_types" || this.mainObject == "gbfsvcb:Days")) { //only take care of system_pricing.json for now
+        var properties = path.items.properties; // Path to the properties of the main object
+        // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
+        if (depth == 1 && (this.mainObject == "gbfsvcb:Per_min_pricing" || this.mainObject == "gbfsvcb:Per_km_pricing" || this.mainObject == "gbfsvcb:Times" || this.mainObject == "gbfsvcb:Region_ids" || this.mainObject == "gbfsvcb:Station_ids" || this.mainObject == "gbfsvcb:User_types" || this.mainObject == "gbfsvcb:Days"
+            || this.mainObject == "gbfsvcb:Station_area")) { //only take care of system_pricing.json for now
             // Then we need the path to the nested object/array
+            //if(depth == 1){   
             path = path.items.properties[this.getMainJsonObject(this.mainObject)];
-            properties = path.items.properties;
+            if (this.mainObject == "gbfsvcb:Station_area") {
+                properties = path.properties;
+            }
+            else {
+                properties = path.items.properties;
+            }
         }
         console.log("properties", properties);
         // Properties of the main object (e.g.'Station')
@@ -85,16 +89,39 @@ var RDFVocabulary = /** @class */ (function () {
             // Get the term type, subproperties, and description
             //let termType = this.jsonSchema.properties.data.properties[this.mainJsonObject];
             var termType = path;
-            if (termType == undefined) {
-                // Exception of the gbfs.json which has patternProperties.properties......
-                termType = path.items.properties[term].type;
+            var termProperties = path;
+            var termDescription = path;
+            var directEnum = path;
+            var subItems = path;
+            var subProperties = path;
+            // Some nested classes have no items, but directly properties. station_area in station_information requires this exception for example.
+            if (depth > 0) {
+                if (path.items == undefined) {
+                    console.log("ciao is undefined");
+                    termType = path.properties[term].type;
+                    termProperties = path.properties[term].properties;
+                    termDescription = path.properties[term].description;
+                    directEnum = path.properties[term]["enum"];
+                    subProperties = path.properties[term].properties;
+                    subItems = path.properties[term].items;
+                }
+                else {
+                    termType = path.items.properties[term].type;
+                    termProperties = path.items.properties[term].properties;
+                    termDescription = path.items.properties[term].description;
+                    directEnum = path.items.properties[term]["enum"];
+                    subProperties = path.items.properties[term].properties;
+                    subItems = path.items.properties[term].items;
+                }
             }
             else {
                 termType = path.items.properties[term].type;
+                termProperties = path.items.properties[term].properties;
+                termDescription = path.items.properties[term].description;
+                directEnum = path.items.properties[term]["enum"];
+                subProperties = path.items.properties[term].properties;
+                subItems = path.items.properties[term].items;
             }
-            var termProperties = path.items.properties[term].properties;
-            var termDescription = path.items.properties[term].description;
-            var directEnum = path.items.properties[term]["enum"];
             // If the property does not exist in the mapping, then we add it to the vocabulary
             if (this.map.has(term) == false) {
                 // Update our mapping with the new term: add   < term, 'gbfsvcb:'+term >
@@ -112,8 +139,6 @@ var RDFVocabulary = /** @class */ (function () {
                     // Add the new classes to a hiddenClasses array; these will be explored by this function in a second stage.
                     hiddenClasses = hiddenClasses.concat('gbfsvcb:' + newClassName);
                     console.log('HIDDEN CLASSES: ', hiddenClasses);
-                    var subProperties = path.items.properties[term].properties;
-                    var subItems = path.items.properties[term].items;
                     console.log("subItems", subItems);
                     // Either properties
                     if (subProperties != undefined) {
@@ -137,7 +162,14 @@ var RDFVocabulary = /** @class */ (function () {
                     }
                     // Or items (at least in the case of station_information)
                     if (subItems != undefined) {
-                        var enumeration = path.items.properties[term].items["enum"];
+                        var enumeration = path;
+                        if (subItems.items != undefined) {
+                            // Exception: there is no enumeration enountered here so far
+                            enumeration = undefined;
+                        }
+                        else {
+                            enumeration = path.items.properties[term].items["enum"];
+                        }
                         // Then we assume there is an enum
                         if (enumeration != undefined) {
                             var oneOfValues = [];
@@ -380,9 +412,13 @@ var RDFVocabulary = /** @class */ (function () {
                 return 'days';
                 break;
             }
-            // VehicleTypes
-            case 'gbfsvcb:Vehicle_assets': {
-                return 'vehicle_assets';
+            // Station Information
+            case 'gbfsvcb:Rental_methods': {
+                return 'rental_methods';
+                break;
+            }
+            case 'gbfsvcb:Station_area': {
+                return 'station_area';
                 break;
             }
             default: {

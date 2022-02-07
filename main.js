@@ -4,6 +4,8 @@ var Configuration_1 = require("./Configuration");
 var rdfVocabulary_1 = require("./rdfVocabulary");
 //import {ShaclShape} from './shaclShape';
 var files = ['./files/station_information.json', './files/free_bike_status.json', './files/system_alerts.json', './files/system_regions.json', './files/vehicle_types.json', './files/system_pricing_plan.json', './files/gbfs_versions.json', './files/system_calendar.json', './files/system_hours.json'];
+// Main objects that are passed to the rdfVocabulary.ts.
+// there is one per json schema.
 var objects = ['gbfsvcb:Station', 'gbfsvcb:Bike', 'gbfsvcb:Alert', 'gbfsvcb:Region', 'gbfsvcb:VehicleType', 'gbfsvcb:PricingPlan', 'gbfsvcb:Version', 'gbfsvcb:Calendar', 'gbfsvcb:RentalHour'];
 var fs = require('fs');
 var hiddenClasses = [];
@@ -14,14 +16,14 @@ for (var _i = 0, objects_1 = objects; _i < objects_1.length; _i++) {
     i += 1;
     var rdfVocab_1 = new rdfVocabulary_1.RDFVocabulary(config_1.getTermMapping(), config_1.getJsonSource(), obj);
     console.log(config_1.getVocabURI());
-    rdfVocab_1.parseBasicsToQuads();
-    hiddenClasses = rdfVocab_1.parseMainObjectPropertiesToQuads(0);
+    rdfVocab_1.basicsToQuads();
+    hiddenClasses = rdfVocab_1.objectPropertiesToQuads(0);
     // New classes might be have been added as range value for some properties. It is now time to explore those classes, 
     // e.g. "per_km_pricing" in system_pricing.json
     for (var _a = 0, hiddenClasses_1 = hiddenClasses; _a < hiddenClasses_1.length; _a++) {
         var cls = hiddenClasses_1[_a];
         rdfVocab_1.setMainObject(cls);
-        rdfVocab_1.parseMainObjectPropertiesToQuads(1);
+        rdfVocab_1.objectPropertiesToQuads(1);
     }
     rdfVocab_1.writeTurtle();
     rdfVocab_1.writeShacl();

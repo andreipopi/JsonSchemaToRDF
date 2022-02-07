@@ -4,6 +4,8 @@ import {ShaclShape} from './shaclShape';
 
 //import {ShaclShape} from './shaclShape';
 const files: string[] = ['./files/station_information.json', './files/free_bike_status.json', './files/system_alerts.json', './files/system_regions.json', './files/vehicle_types.json', './files/system_pricing_plan.json', './files/gbfs_versions.json', './files/system_calendar.json', './files/system_hours.json'];
+// Main objects that are passed to the rdfVocabulary.ts.
+// there is one per json schema.
 const objects: string[] = [ 'gbfsvcb:Station', 'gbfsvcb:Bike', 'gbfsvcb:Alert', 'gbfsvcb:Region', 'gbfsvcb:VehicleType', 'gbfsvcb:PricingPlan', 'gbfsvcb:Version', 'gbfsvcb:Calendar', 'gbfsvcb:RentalHour' ];
 const  fs = require('fs');
 
@@ -14,9 +16,9 @@ for (const obj of objects){
     i +=1;
     const rdfVocab = new RDFVocabulary(config.getTermMapping(), config.getJsonSource(), obj);
     console.log(config.getVocabURI());
-    rdfVocab.parseBasicsToQuads();
+    rdfVocab.basicsToQuads();
 
-    hiddenClasses = rdfVocab.parseMainObjectPropertiesToQuads(0);
+    hiddenClasses = rdfVocab.objectPropertiesToQuads(0);
 
     // New classes might be have been added as range value for some properties. It is now time to explore those classes, 
     // e.g. "per_km_pricing" in system_pricing.json
@@ -24,7 +26,7 @@ for (const obj of objects){
     for (const cls of hiddenClasses){
 
         rdfVocab.setMainObject(cls);
-        rdfVocab.parseMainObjectPropertiesToQuads(1);
+        rdfVocab.objectPropertiesToQuads(1);
     }
     
     rdfVocab.writeTurtle();
