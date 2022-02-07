@@ -31,9 +31,13 @@ Andrei Popescu <andrei.popescu@ugent.be>
 
 ## ToDos
 
- * add all GBFS schemas to `files`
- * adapt the term map for all of them
+ * update the term map with existing terms from LOV
  * test
+    # List of unmanaged details
+    - start_time, end_time patter in system_hours.json 
+    - minimum/maximum in system_calendar.json
+    - minimum in vehicle_types.json
+    - ? (any other missing)
 
 ## Future Work
 * gbfs.json apparently has a slightly different structure, so it needs special treatment -> ignored for now
