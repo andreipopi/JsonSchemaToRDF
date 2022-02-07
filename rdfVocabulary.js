@@ -18,6 +18,7 @@ var RDFVocabulary = /** @class */ (function () {
         this.map = termMapping;
         this.mainObject = mainObj;
         this.mainJsonObject = this.getMainJsonObject(this.mainObject);
+        this.exploredObject = mainObj; // the main object for the first iteration
         this.fileName = mainObj;
         this.prefixes = {
             prefixes: {
@@ -60,8 +61,7 @@ var RDFVocabulary = /** @class */ (function () {
      * for the main object's properties,
      * by checking if new terms are encountered (against map).
     */
-    RDFVocabulary.prototype.parseMainObjectPropertiesToQuads = function () {
-        var _this = this;
+    RDFVocabulary.prototype.parseMainObjectPropertiesToQuads = function (layer) {
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
@@ -70,23 +70,31 @@ var RDFVocabulary = /** @class */ (function () {
         this.shaclFileText = this.shaclFileText + this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText + this.shape.getShaclTargetClass() + '\n';
         // Add new (not availalbe in config.map) properties to the vocabulary
-        var properties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties;
+        var path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
+        var properties = path.items.properties;
+        if (layer == 1 && (this.mainObject == "gbfsvcb:Per_min_pricing" || this.mainObject == "gbfsvcb:Per_km_pricing")) { //only take care of system_pricing.json for now
+            // Then we need the path to the nested object/array
+            path = path.items.properties[this.getMainJsonObject(this.mainObject)];
+            properties = path.items.properties;
+        }
         console.log("properties", properties);
         // Properties of the main object (e.g.'Station')
+        var hiddenClasses = [];
         for (var term in properties) {
             console.log("Property: ", term);
             // Get the term type, subproperties, and description
-            var termType = this.jsonSchema.properties.data.properties[this.mainJsonObject];
+            //let termType = this.jsonSchema.properties.data.properties[this.mainJsonObject];
+            var termType = path;
             if (termType == undefined) {
                 // Exception of the gbfs.json which has patternProperties.properties......
-                termType = this.jsonSchema.properties.data.patternProperties.properties[this.mainJsonObject].items.properties[term].type;
+                termType = path.items.properties[term].type;
             }
             else {
-                termType = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].type;
+                termType = path.items.properties[term].type;
             }
-            var termProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties;
-            var termDescription = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].description;
-            var directEnum = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term]["enum"];
+            var termProperties = path.items.properties[term].properties;
+            var termDescription = path.items.properties[term].description;
+            var directEnum = path.items.properties[term]["enum"];
             // If the property does not exist in the mapping, then we add it to the vocabulary
             if (this.map.has(term) == false) {
                 // Update our mapping with the new term: add   < term, 'gbfsvcb:'+term >
@@ -100,15 +108,16 @@ var RDFVocabulary = /** @class */ (function () {
                     // Since it is an object/array, we give it a new class as a range
                     var newClassName = this.capitalizeFirstLetter(term);
                     this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdfs:range', 'gbfsvcb:' + newClassName));
-                    // e.g. we create a new 'Rental_methods' class (in the case of rental_methods)
-                    this.writer.addQuad(this.node_node_node('gbfsvcb:' + this.capitalizeFirstLetter(term), 'rdf:type', 'rdfs:Class'));
-                    var subProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties;
-                    var subItems = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].items;
+                    // Add the new classes to a hiddenClasses array; these will be explored by this function in a second stage.
+                    hiddenClasses = hiddenClasses.concat('gbfsvcb:' + newClassName);
+                    console.log('HIDDEN CLASSES: ', hiddenClasses);
+                    var subProperties = path.items.properties[term].properties;
+                    var subItems = path.items.properties[term].items;
                     console.log("subItems", subItems);
                     // Either properties
                     if (subProperties != undefined) {
                         for (var subProperty in subProperties) {
-                            var subsubProperty = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties[subProperty];
+                            var subsubProperty = path.items.properties[term].properties[subProperty];
                             if (subProperty != 'type') {
                                 console.log("subproperty", subProperty);
                                 console.log(subsubProperty);
@@ -127,7 +136,7 @@ var RDFVocabulary = /** @class */ (function () {
                     }
                     // Or items (at least in the case of station_information)
                     if (subItems != undefined) {
-                        var enumeration = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].items["enum"];
+                        var enumeration = path.items.properties[term].items["enum"];
                         // Then we assume there is an enum
                         if (enumeration != undefined) {
                             var oneOfValues = [];
@@ -212,6 +221,10 @@ var RDFVocabulary = /** @class */ (function () {
                 }
             }
         }
+        return hiddenClasses;
+    };
+    RDFVocabulary.prototype.writeTurtle = function () {
+        var _this = this;
         // Write the content of the writer in the .ttl
         this.writer.end(function (error, result) { return _this.fs.writeFile("build/" + _this.fileName + ".ttl", result, function (err) {
             // throws an error, you could also catch it here
@@ -220,6 +233,8 @@ var RDFVocabulary = /** @class */ (function () {
             // success case, the file was saved
             console.log('Turtle saved!');
         }); });
+    };
+    RDFVocabulary.prototype.writeShacl = function () {
         // Write the Shacl shape on file
         this.fs.writeFileSync("build/" + this.fileName + "shacl.ttl", this.shaclFileText, function (err) {
             if (err) {
@@ -331,11 +346,23 @@ var RDFVocabulary = /** @class */ (function () {
                 return 'feeds';
                 break;
             }
+            // Nested classes
+            case 'gbfsvcb:Per_km_pricing': {
+                return 'per_km_pricing';
+                break;
+            }
+            case 'gbfsvcb:Per_min_pricing': {
+                return 'per_min_pricing';
+                break;
+            }
             default: {
                 //statements; 
                 break;
             }
         }
+    };
+    RDFVocabulary.prototype.setMainObject = function (mainObject) {
+        this.mainObject = mainObject;
     };
     RDFVocabulary.prototype.capitalizeFirstLetter = function (string) {
         return string.charAt(0).toUpperCase() + string.slice(1);

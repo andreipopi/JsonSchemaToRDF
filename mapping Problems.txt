@@ -24,3 +24,24 @@ VS
                       "phone"
                     ]
                   },
+
+
+If a new class is added in the second stage (because it was nested), its properties will just be listed in the vocabulary, but they will not 
+be attached to the class itself. See Per_km_pricing VS Per_min_pricing in system_pricing.ttl.
+
+gbfsvcb:Per_km_pricing rdf:type rdfs:Class;
+    rdfs:label "Per_km_pricing"@en.
+gbfsvcb:start rdf:type rdf:Property;
+    rdfs:label "Number of kilometers that have to elapse before this segment starts applying (added in v2.1-RC2)."@en;
+    rdfs:range xsd:integer.
+gbfsvcb:rate rdf:type rdf:Property;
+    rdfs:label "Rate that is charged for each kilometer interval after the start (added in v2.1-RC2)."@en.
+gbfsvcb:interval rdf:type rdf:Property;
+    rdfs:label "Interval in kilometers at which the rate of this segment is either reapplied indefinitely, or if defined, up until (but not including) end kilometer (added in v2.1-RC2)."@en;
+    rdfs:range xsd:integer.
+gbfsvcb:end rdf:type rdf:Property;
+    rdfs:label "The kilometer at which the rate will no longer apply (added in v2.1-RC2)."@en;
+    rdfs:range xsd:integer.
+gbfsvcb:Per_min_pricing rdf:type rdfs:Class;
+    rdfs:label "Per_min_pricing"@en;
+    rdf:Property gbfsvcb:start, gbfsvcb:rate, gbfsvcb:interval, gbfsvcb:end.

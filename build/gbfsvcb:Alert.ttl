@@ -28,13 +28,19 @@ gbfsvcb:Alert rdf:type rdfs:Class;
 gbfsvcb:times rdf:type rdf:Property;
     rdfs:label "Array of objects indicating when the alert is in effect."@en;
     rdfs:range gbfsvcb:Times.
-gbfsvcb:Times rdf:type rdfs:Class.
 gbfsvcb:station_ids rdf:type rdf:Property;
     rdfs:label "Array of identifiers of the stations for which this alert applies."@en;
     rdfs:range gbfsvcb:Station_ids.
-gbfsvcb:Station_ids rdf:type rdfs:Class.
 gbfsvcb:region_ids rdf:type rdf:Property;
     rdfs:label "Array of identifiers of the regions for which this alert applies."@en;
     rdfs:range gbfsvcb:Region_ids.
-gbfsvcb:Region_ids rdf:type rdfs:Class.
 gbfsvcb:Alert rdf:Property schema:url, ebucore:summary, dcterms:description, dcterms:modified.
+gbfsvcb:Times rdf:type rdfs:Class;
+    rdfs:label "Times"@en;
+    rdf:Property dcterms:identifier, rdf:type, gbfsvcb:times, gbfsvcb:station_ids, gbfsvcb:region_ids, schema:url, ebucore:summary, dcterms:description, dcterms:modified.
+gbfsvcb:Station_ids rdf:type rdfs:Class;
+    rdfs:label "Station_ids"@en;
+    rdf:Property dcterms:identifier, rdf:type, gbfsvcb:times, gbfsvcb:station_ids, gbfsvcb:region_ids, schema:url, ebucore:summary, dcterms:description, dcterms:modified.
+gbfsvcb:Region_ids rdf:type rdfs:Class;
+    rdfs:label "Region_ids"@en;
+    rdf:Property dcterms:identifier, rdf:type, gbfsvcb:times, gbfsvcb:station_ids, gbfsvcb:region_ids, schema:url, ebucore:summary, dcterms:description, dcterms:modified.

@@ -31,16 +31,14 @@ gbfsvcb:Station rdf:Property airs:locatedAtCrossStreet, dbpedia-owl:region, dbpe
 gbfsvcb:rental_methods rdf:type rdf:Property;
     rdfs:label "Payment methods accepted at this station."@en;
     rdfs:range gbfsvcb:Rental_methods.
-gbfsvcb:Rental_methods rdf:type rdfs:Class;
-    owl:oneOf (<key> schema:CreditCard <paypass> <applepay> <androidpay> <transitcard> <accountnumber> foaf:phone).
+gbfsvcb:Rental_methods owl:oneOf (<key> schema:CreditCard <paypass> <applepay> <androidpay> <transitcard> <accountnumber> foaf:phone).
 gbfsvcb:is_virtual_station rdf:type rdf:Property;
     rdfs:label "Is this station a location with or without physical infrastructure? (added in v2.1-RC)"@en;
     rdfs:range xsd:boolean.
 gbfsvcb:station_area rdf:type rdf:Property;
     rdfs:label "A multipolygon that describes the area of a virtual station (added in v2.1-RC)."@en;
     rdfs:range gbfsvcb:Station_area.
-gbfsvcb:Station_area rdf:type rdfs:Class;
-    rdf:Property gbfsvcb:coordinates.
+gbfsvcb:Station_area rdf:Property gbfsvcb:coordinates.
 gbfsvcb:coordinates rdf:type "array".
 gbfsvcb:Station rdf:Property dbpedia-owl:capacity.
 gbfsvcb:is_valet_station rdf:type rdf:Property;
@@ -52,8 +50,7 @@ gbfsvcb:is_charging_station rdf:type rdf:Property;
 gbfsvcb:rental_uris rdf:type rdf:Property;
     rdfs:label "Contains rental uris for Android, iOS, and web in the android, ios, and web fields (added in v1.1)."@en;
     rdfs:range gbfsvcb:Rental_uris.
-gbfsvcb:Rental_uris rdf:type rdfs:Class;
-    rdf:Property gbfsvcb:android.
+gbfsvcb:Rental_uris rdf:Property gbfsvcb:android.
 gbfsvcb:android rdfs:label "URI that can be passed to an Android app with an intent (added in v1.1)."@en;
     rdf:type "string".
 gbfsvcb:Rental_uris rdf:Property gbfsvcb:ios.
@@ -62,3 +59,12 @@ gbfsvcb:ios rdfs:label "URI that can be used on iOS to launch the rental app for
 gbfsvcb:Rental_uris rdf:Property gbfsvcb:web.
 gbfsvcb:web rdfs:label "URL that can be used by a web browser to show more information about renting a vehicle at this station (added in v1.1)."@en;
     rdf:type "string".
+gbfsvcb:Rental_methods rdf:type rdfs:Class;
+    rdfs:label "Rental_methods"@en;
+    rdf:Property dcterms:identifier, foaf:name, rdfs:label, geo:lat, geo:long, gbfsvcb:address, airs:locatedAtCrossStreet, dbpedia-owl:region, dbpedia-owl:postalCode, gbfsvcb:rental_methods, gbfsvcb:is_virtual_station, gbfsvcb:station_area, dbpedia-owl:capacity, gbfsvcb:vehicle_capacity, gbfsvcb:is_valet_station, gbfsvcb:is_charging_station, gbfsvcb:rental_uris, gbfsvcb:vehicle_type_capacity.
+gbfsvcb:Station_area rdf:type rdfs:Class;
+    rdfs:label "Station_area"@en;
+    rdf:Property dcterms:identifier, foaf:name, rdfs:label, geo:lat, geo:long, gbfsvcb:address, airs:locatedAtCrossStreet, dbpedia-owl:region, dbpedia-owl:postalCode, gbfsvcb:rental_methods, gbfsvcb:is_virtual_station, gbfsvcb:station_area, dbpedia-owl:capacity, gbfsvcb:vehicle_capacity, gbfsvcb:is_valet_station, gbfsvcb:is_charging_station, gbfsvcb:rental_uris, gbfsvcb:vehicle_type_capacity.
+gbfsvcb:Rental_uris rdf:type rdfs:Class;
+    rdfs:label "Rental_uris"@en;
+    rdf:Property dcterms:identifier, foaf:name, rdfs:label, geo:lat, geo:long, gbfsvcb:address, airs:locatedAtCrossStreet, dbpedia-owl:region, dbpedia-owl:postalCode, gbfsvcb:rental_methods, gbfsvcb:is_virtual_station, gbfsvcb:station_area, dbpedia-owl:capacity, gbfsvcb:vehicle_capacity, gbfsvcb:is_valet_station, gbfsvcb:is_charging_station, gbfsvcb:rental_uris, gbfsvcb:vehicle_type_capacity.

@@ -17,7 +17,6 @@ export class RDFVocabulary {
     jsonSource:any;
     jsonSchema: any;
     mainObject: any;
-    exploredObject:any; //object we are currently parsing: [0]: mainObject, [1]: nested object depth 1
     mainJsonObject: any;
     prefixes: any;
     writer: any;
@@ -46,10 +45,8 @@ export class RDFVocabulary {
         this.jsonSchema = require(source);
         this.map = termMapping;
 
-        this.mainObject = mainObj; 
+        this.mainObject = mainObj;
         this.mainJsonObject = this.getMainJsonObject(this.mainObject);
-
-        this.exploredObject = mainObj; // the main object for the first iteration
 
         this.fileName = mainObj;
         this.prefixes = {
@@ -94,47 +91,37 @@ export class RDFVocabulary {
      * by checking if new terms are encountered (against map).  
     */
 
-    parseMainObjectPropertiesToQuads (layer){
+    parseMainObjectPropertiesToQuads (){
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
+
         // Create a ShaclShape object and insert the first entries
         this.shape = new ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
         this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText+this.shape.getShaclTargetClass()+'\n';
 
         // Add new (not availalbe in config.map) properties to the vocabulary
-        let path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
-        let properties = path.items.properties;
-
-        
-        if(layer == 1 && (this.mainObject =="gbfsvcb:Per_min_pricing" ||this.mainObject =="gbfsvcb:Per_km_pricing" )){ //only take care of system_pricing.json for now
-            // Then we need the path to the nested object/array
-            path = path.items.properties[this.getMainJsonObject(this.mainObject)];
-            properties = path.items.properties;
-        }
-
+        const properties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties;
         console.log("properties",properties);
         // Properties of the main object (e.g.'Station')
-        let hiddenClasses = []
         for (const term in properties){
 
             console.log("Property: ", term);
             // Get the term type, subproperties, and description
-            //let termType = this.jsonSchema.properties.data.properties[this.mainJsonObject];
+            let termType = this.jsonSchema.properties.data.properties[this.mainJsonObject];
 
-            let termType = path;
             if ( termType == undefined){
                 // Exception of the gbfs.json which has patternProperties.properties......
-                termType = path.items.properties[term].type;
+                termType = this.jsonSchema.properties.data.patternProperties.properties[this.mainJsonObject].items.properties[term].type;
             }
             else{
-                termType = path.items.properties[term].type;
+                termType = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].type;
             }
-            let termProperties = path.items.properties[term].properties; 
-            let termDescription = path.items.properties[term].description;
+            let termProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties; 
+            let termDescription = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].description;
 
-            let directEnum = path.items.properties[term].enum;
+            let directEnum = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].enum;
 
             // If the property does not exist in the mapping, then we add it to the vocabulary
             if (this.map.has(term) == false) {
@@ -153,19 +140,17 @@ export class RDFVocabulary {
                     // Since it is an object/array, we give it a new class as a range
                     const newClassName = this.capitalizeFirstLetter(term);
                     this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdfs:range', 'gbfsvcb:'+newClassName));
-                  
-                    // Add the new classes to a hiddenClasses array; these will be explored by this function in a second stage.
-                    hiddenClasses = hiddenClasses.concat('gbfsvcb:'+newClassName);
-                    console.log('HIDDEN CLASSES: ',hiddenClasses);
+                    // e.g. we create a new 'Rental_methods' class (in the case of rental_methods)
+                    this.writer.addQuad(this.node_node_node('gbfsvcb:'+this.capitalizeFirstLetter(term), 'rdf:type', 'rdfs:Class'));
 
-                    const subProperties = path.items.properties[term].properties;
-                    const subItems = path.items.properties[term].items;
+                    const subProperties = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties;
+                    const subItems = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].items;
 
                     console.log("subItems",subItems);
                     // Either properties
                     if (subProperties != undefined) {
                         for (const subProperty in subProperties){
-                            const subsubProperty = path.items.properties[term].properties[subProperty];
+                            const subsubProperty = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].properties[subProperty];
                             if(subProperty != 'type'){
                                 console.log("subproperty", subProperty);
                                 console.log(subsubProperty);
@@ -185,7 +170,7 @@ export class RDFVocabulary {
 
                     // Or items (at least in the case of station_information)
                     if (subItems != undefined) {
-                        const enumeration = path.items.properties[term].items.enum;
+                        const enumeration = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.properties[term].items.enum;
                         // Then we assume there is an enum
                        
                         if (enumeration != undefined){
@@ -206,6 +191,7 @@ export class RDFVocabulary {
                         
                     }   
                 }
+
                 // If it is not an object nor an array, then it is a property
                 if(termType !='array' && termType !='object'){
                     // it has a primitive datatype
@@ -273,18 +259,14 @@ export class RDFVocabulary {
             }
         }
 
-        return hiddenClasses;
-    }
-
-    writeTurtle (){
         // Write the content of the writer in the .ttl
         this.writer.end((error, result) => this.fs.writeFile(`build/${this.fileName}.ttl`, result, (err) => {
             // throws an error, you could also catch it here
             if (err) throw err;
             // success case, the file was saved
             console.log('Turtle saved!');}));
-    }
-    writeShacl (){
+
+
         // Write the Shacl shape on file
         this.fs.writeFileSync(`build/${this.fileName}shacl.ttl`, this.shaclFileText , function(err){
             if(err){
@@ -292,6 +274,7 @@ export class RDFVocabulary {
             }
         });
     }
+    
     /** returns the properties of the main object which are required. Useful in the shaclshape class in order to create the shacl shape */
     getRequiredProperties () {
         let requiredMap = new Map<string, string>();
@@ -402,24 +385,11 @@ export class RDFVocabulary {
                 return 'feeds';
                 break;
             }
-            // Nested classes
-            case 'gbfsvcb:Per_km_pricing':{
-                return 'per_km_pricing';
-                break;
-            }
-            case 'gbfsvcb:Per_min_pricing':{
-                return 'per_min_pricing';
-                break;
-            }
             default: { 
                //statements; 
                break; 
             } 
          } 
-    }
-
-    setMainObject(mainObject: string){
-        this.mainObject= mainObject;
     }
     capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);

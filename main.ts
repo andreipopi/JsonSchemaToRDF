@@ -7,6 +7,7 @@ const files: string[] = ['./files/station_information.json', './files/free_bike_
 const objects: string[] = [ 'gbfsvcb:Station', 'gbfsvcb:Bike', 'gbfsvcb:Alert', 'gbfsvcb:Region', 'gbfsvcb:VehicleType', 'gbfsvcb:PricingPlan', 'gbfsvcb:Version', 'gbfsvcb:Calendar', 'gbfsvcb:RentalHour' ];
 const  fs = require('fs');
 
+let hiddenClasses = []
 let i = 0;
 for (const obj of objects){
     const config = new Configuration(files[i]);
@@ -14,8 +15,22 @@ for (const obj of objects){
     const rdfVocab = new RDFVocabulary(config.getTermMapping(), config.getJsonSource(), obj);
     console.log(config.getVocabURI());
     rdfVocab.parseBasicsToQuads();
-    rdfVocab.parseMainObjectPropertiesToQuads();
+
+    hiddenClasses = rdfVocab.parseMainObjectPropertiesToQuads(0);
+
+    // New classes might be have been added as range value for some properties. It is now time to explore those classes, 
+    // e.g. "per_km_pricing" in system_pricing.json
+
+    for (const cls of hiddenClasses){
+
+        rdfVocab.setMainObject(cls);
+        rdfVocab.parseMainObjectPropertiesToQuads(1);
+    }
+    
+    rdfVocab.writeTurtle();
+    rdfVocab.writeShacl();
 }
+
 
 /**
  * Creating the json-ld context: hard-coded since common to all files. A static solution could be found.

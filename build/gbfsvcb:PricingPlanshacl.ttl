@@ -54,3 +54,41 @@ sh:property [
  sh:maxCount 1; 
  sh:datatype xsd:boolean; 
  ];
+<https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
+sh:targetClass undefined;
+sh:property [ 
+ sh:path start; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path rate; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path interval; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path end; 
+ sh:maxCount 1; 
+ ];
+<https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
+sh:targetClass undefined;
+sh:property [ 
+ sh:path start; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path rate; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path interval; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path end; 
+ sh:maxCount 1; 
+ ];

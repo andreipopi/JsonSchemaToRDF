@@ -40,13 +40,11 @@ gbfsvcb:default_reserve_time rdf:type rdf:Property;
 gbfsvcb:return_type rdf:type rdf:Property;
     rdfs:label "The conditions for returning the vehicle at the end of the trip added in v2.3-RC."@en;
     rdfs:range gbfsvcb:Return_type.
-gbfsvcb:Return_type rdf:type rdfs:Class;
-    owl:oneOf (<free_floating> <roundtrip_station> <any_station>).
+gbfsvcb:Return_type owl:oneOf (<free_floating> <roundtrip_station> <any_station>).
 gbfsvcb:vehicle_assets rdf:type rdf:Property;
     rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en;
     rdfs:range gbfsvcb:Vehicle_assets.
-gbfsvcb:Vehicle_assets rdf:type rdfs:Class;
-    rdf:Property gbfsvcb:icon_url.
+gbfsvcb:Vehicle_assets rdf:Property gbfsvcb:icon_url.
 gbfsvcb:icon_url rdfs:label "A fully qualified URL pointing to the location of a graphic icon file that MAY be used to represent this vehicle type on maps and in other applications added in v2.3-RC."@en;
     rdf:type "string".
 gbfsvcb:Vehicle_assets rdf:Property gbfsvcb:icon_url_dark.
@@ -61,3 +59,9 @@ gbfsvcb:default_pricing_plan_id rdfs:label "A plan_id as defined in system_prici
 gbfsvcb:Vehicle_assets rdf:Property gbfsvcb:pricing_plan_ids.
 gbfsvcb:pricing_plan_ids rdfs:label "Array of all pricing plan IDs as defined in system_pricing_plans.json added in v2.3-RC."@en;
     rdf:type "array".
+gbfsvcb:Return_type rdf:type rdfs:Class;
+    rdfs:label "Return_type"@en;
+    rdf:Property dcterms:identifier, gbfsvcb:form_factor, gbfsvcb:propulsion_type, gbfsvcb:max_range_meters, foaf:name, gbfsvcb:default_reserve_time, gbfsvcb:return_type, gbfsvcb:vehicle_assets.
+gbfsvcb:Vehicle_assets rdf:type rdfs:Class;
+    rdfs:label "Vehicle_assets"@en;
+    rdf:Property dcterms:identifier, gbfsvcb:form_factor, gbfsvcb:propulsion_type, gbfsvcb:max_range_meters, foaf:name, gbfsvcb:default_reserve_time, gbfsvcb:return_type, gbfsvcb:vehicle_assets.
