@@ -68,12 +68,14 @@ var RDFVocabulary = /** @class */ (function () {
         this.shaclFileText = this.shaclFileText + this.shape.getShaclTargetClass() + '\n';
         var path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
         var properties = path.items.properties; // Path to the properties of the main object
+        // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
         if (depth == 1 && (this.mainObject == "gbfsvcb:Per_min_pricing" || this.mainObject == "gbfsvcb:Per_km_pricing" || this.mainObject == "gbfsvcb:Times" || this.mainObject == "gbfsvcb:Region_ids" || this.mainObject == "gbfsvcb:Station_ids" || this.mainObject == "gbfsvcb:User_types" || this.mainObject == "gbfsvcb:Days"
             || this.mainObject == "gbfsvcb:Station_area")) { //only take care of system_pricing.json for now
             // Then we need the path to the nested object/array
             //if(depth == 1){   
             path = path.items.properties[this.getMainJsonObject(this.mainObject)];
+            // 
             if (this.mainObject == "gbfsvcb:Station_area") {
                 properties = path.properties;
             }
@@ -81,13 +83,11 @@ var RDFVocabulary = /** @class */ (function () {
                 properties = path.items.properties;
             }
         }
-        console.log("properties", properties);
         // Properties of the main object (e.g.'Station')
         var hiddenClasses = [];
         for (var term in properties) {
             console.log("Property: ", term);
             // Get the term type, subproperties, and description
-            //let termType = this.jsonSchema.properties.data.properties[this.mainJsonObject];
             var termType = path;
             var termProperties = path;
             var termDescription = path;
@@ -95,9 +95,9 @@ var RDFVocabulary = /** @class */ (function () {
             var subItems = path;
             var subProperties = path;
             // Some nested classes have no items, but directly properties. station_area in station_information requires this exception for example.
+            // If we are at the second iteration, we have variable structure: some objects have items.properties, some only .properties
             if (depth > 0) {
                 if (path.items == undefined) {
-                    console.log("ciao is undefined");
                     termType = path.properties[term].type;
                     termProperties = path.properties[term].properties;
                     termDescription = path.properties[term].description;
@@ -114,6 +114,7 @@ var RDFVocabulary = /** @class */ (function () {
                     subItems = path.items.properties[term].items;
                 }
             }
+            // Else we are at iteration 0 and we assume all having items.properties
             else {
                 termType = path.items.properties[term].type;
                 termProperties = path.items.properties[term].properties;
@@ -148,7 +149,7 @@ var RDFVocabulary = /** @class */ (function () {
                                 console.log("subproperty", subProperty);
                                 console.log(subsubProperty);
                                 // Add the subproperty to the vocabulary
-                                this.writer.addQuad(this.node_node_node('gbfsvcb:' + newClassName, 'rdf:Property', 'gbfsvcb:' + subProperty));
+                                //this.writer.addQuad(this.node_node_node('gbfsvcb:'+newClassName, 'rdf:Property','gbfsvcb:'+ subProperty));
                                 // Check if there is an available description
                                 if (subsubProperty.description != undefined) {
                                     this.writer.addQuad(this.node_node_literal('gbfsvcb:' + subProperty, 'rdfs:label', subsubProperty.description));
@@ -234,7 +235,7 @@ var RDFVocabulary = /** @class */ (function () {
             }
             else {
                 // The property is available in map
-                this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:Property', this.map.get(term)));
+                //this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:Property', this.map.get(term)));
             }
             // Write the property to the Shacl shape
             if (this.shape.isRequired(term)) {

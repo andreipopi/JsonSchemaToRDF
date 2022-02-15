@@ -23,5 +23,4 @@
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
 gbfsvcb:Region rdf:type rdfs:Class;
-    rdfs:label "Region"@en;
-    rdf:Property dbpedia-owl:region, foaf:name.
+    rdfs:label "Region"@en.

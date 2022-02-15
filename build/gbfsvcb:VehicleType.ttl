@@ -23,8 +23,7 @@
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
 gbfsvcb:VehicleType rdf:type rdfs:Class;
-    rdfs:label "VehicleType"@en;
-    rdf:Property dcterms:identifier.
+    rdfs:label "VehicleType"@en.
 gbfsvcb:form_factor rdf:type rdf:Property;
     rdfs:label "The vehicle's general form factor."@en;
     owl:oneOf (vso:bicycle schema:car <moped> <other> <scooter>).
@@ -33,7 +32,6 @@ gbfsvcb:propulsion_type rdf:type rdf:Property;
     owl:oneOf (<human> <electric_assist> <electric> <combustion>).
 gbfsvcb:max_range_meters rdf:type rdf:Property;
     rdfs:label "The furthest distance in meters that the vehicle can travel without recharging or refueling when it has the maximum amount of energy potential."@en.
-gbfsvcb:VehicleType rdf:Property foaf:name.
 gbfsvcb:default_reserve_time rdf:type rdf:Property;
     rdfs:label "Maximum time in minutes that a vehicle can be reserved before a rental begins added in v2.3-RC."@en;
     rdfs:range xsd:integer.
@@ -44,24 +42,17 @@ gbfsvcb:Return_type owl:oneOf (<free_floating> <roundtrip_station> <any_station>
 gbfsvcb:vehicle_assets rdf:type rdf:Property;
     rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en;
     rdfs:range gbfsvcb:Vehicle_assets.
-gbfsvcb:Vehicle_assets rdf:Property gbfsvcb:icon_url.
 gbfsvcb:icon_url rdfs:label "A fully qualified URL pointing to the location of a graphic icon file that MAY be used to represent this vehicle type on maps and in other applications added in v2.3-RC."@en;
     rdf:type "string".
-gbfsvcb:Vehicle_assets rdf:Property gbfsvcb:icon_url_dark.
 gbfsvcb:icon_url_dark rdfs:label "A fully qualified URL pointing to the location of a graphic icon file to be used to represent this vehicle type when in dark mode added in v2.3-RC."@en;
     rdf:type "string".
-gbfsvcb:Vehicle_assets rdf:Property gbfsvcb:icon_last_modified.
 gbfsvcb:icon_last_modified rdfs:label "Date that indicates the last time any included vehicle icon images were modified or updated added in v2.3-RC."@en;
     rdf:type "string".
-gbfsvcb:Vehicle_assets rdf:Property gbfsvcb:default_pricing_plan_id.
 gbfsvcb:default_pricing_plan_id rdfs:label "A plan_id as defined in system_pricing_plans.json added in v2.3-RC."@en;
     rdf:type "string".
-gbfsvcb:Vehicle_assets rdf:Property gbfsvcb:pricing_plan_ids.
 gbfsvcb:pricing_plan_ids rdfs:label "Array of all pricing plan IDs as defined in system_pricing_plans.json added in v2.3-RC."@en;
     rdf:type "array".
 gbfsvcb:Return_type rdf:type rdfs:Class;
-    rdfs:label "Return_type"@en;
-    rdf:Property dcterms:identifier, gbfsvcb:form_factor, gbfsvcb:propulsion_type, gbfsvcb:max_range_meters, foaf:name, gbfsvcb:default_reserve_time, gbfsvcb:return_type, gbfsvcb:vehicle_assets.
+    rdfs:label "Return_type"@en.
 gbfsvcb:Vehicle_assets rdf:type rdfs:Class;
-    rdfs:label "Vehicle_assets"@en;
-    rdf:Property dcterms:identifier, gbfsvcb:form_factor, gbfsvcb:propulsion_type, gbfsvcb:max_range_meters, foaf:name, gbfsvcb:default_reserve_time, gbfsvcb:return_type, gbfsvcb:vehicle_assets.
+    rdfs:label "Vehicle_assets"@en.

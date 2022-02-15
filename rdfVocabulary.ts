@@ -6,7 +6,6 @@ import literal = DataFactory.literal;
 import { NamedNode } from "n3/lib/N3DataFactory";
 import { off } from "process";
 
-
 const N3 = require('n3');
 const { DataFactory } = N3;
 const { namedNode, literal, defaultGraph, quad } = DataFactory;
@@ -104,6 +103,7 @@ export class RDFVocabulary {
         let path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
         let properties = path.items.properties; // Path to the properties of the main object
 
+        // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
         if(depth == 1 && (this.mainObject =="gbfsvcb:Per_min_pricing" ||this.mainObject =="gbfsvcb:Per_km_pricing" ||this.mainObject =="gbfsvcb:Times"||this.mainObject =="gbfsvcb:Region_ids"||this.mainObject =="gbfsvcb:Station_ids"||this.mainObject =="gbfsvcb:User_types"||this.mainObject =="gbfsvcb:Days" 
                    || this.mainObject =="gbfsvcb:Station_area"   )){ //only take care of system_pricing.json for now
@@ -111,6 +111,7 @@ export class RDFVocabulary {
         //if(depth == 1){   
             path = path.items.properties[this.getMainJsonObject(this.mainObject)];
 
+            // 
             if( this.mainObject =="gbfsvcb:Station_area" ){
                 properties = path.properties;
             }
@@ -119,31 +120,21 @@ export class RDFVocabulary {
 
             }
         }
-
-
-        console.log("properties",properties);
         // Properties of the main object (e.g.'Station')
         let hiddenClasses = []
         for (const term in properties){
-
             console.log("Property: ", term);
             // Get the term type, subproperties, and description
-            //let termType = this.jsonSchema.properties.data.properties[this.mainJsonObject];
-
             let termType = path;
-            
             let termProperties = path; 
             let termDescription = path;
             let directEnum = path;
             let subItems = path;
             let subProperties = path;
-
-
             // Some nested classes have no items, but directly properties. station_area in station_information requires this exception for example.
-            
+            // If we are at the second iteration, we have variable structure: some objects have items.properties, some only .properties
             if (depth > 0){
                 if(path.items == undefined ){
-                    console.log("ciao is undefined");
                     termType = path.properties[term].type;
                     termProperties = path.properties[term].properties; 
                     termDescription = path.properties[term].description;
@@ -160,6 +151,7 @@ export class RDFVocabulary {
                     subItems = path.items.properties[term].items;
                 }
             }
+            // Else we are at iteration 0 and we assume all having items.properties
             else{
                 termType = path.items.properties[term].type;
                 termProperties = path.items.properties[term].properties;
@@ -169,13 +161,8 @@ export class RDFVocabulary {
                 subItems = path.items.properties[term].items;
             }
             
-            
-           
-        
-
             // If the property does not exist in the mapping, then we add it to the vocabulary
             if (this.map.has(term) == false) {
-                
                 // Update our mapping with the new term: add   < term, 'gbfsvcb:'+term >
                 this.map.set(term, 'gbfsvcb:'+term);
                 
@@ -196,18 +183,18 @@ export class RDFVocabulary {
                     // Add the new classes to a hiddenClasses array; these will be explored by this function in a second stage.
                     hiddenClasses = hiddenClasses.concat('gbfsvcb:'+newClassName);
                     console.log('HIDDEN CLASSES: ',hiddenClasses);
-
-
                     console.log("subItems",subItems);
                     // Either properties
                     if (subProperties != undefined) {
                         for (const subProperty in subProperties){
                             const subsubProperty = path.items.properties[term].properties[subProperty];
                             if(subProperty != 'type'){
+                                
                                 console.log("subproperty", subProperty);
                                 console.log(subsubProperty);
                                 // Add the subproperty to the vocabulary
-                                this.writer.addQuad(this.node_node_node('gbfsvcb:'+newClassName, 'rdf:Property','gbfsvcb:'+ subProperty));
+                                //this.writer.addQuad(this.node_node_node('gbfsvcb:'+newClassName, 'rdf:Property','gbfsvcb:'+ subProperty));
+                                
                                 // Check if there is an available description
                                 if(subsubProperty.description != undefined){
                                     this.writer.addQuad(this.node_node_literal('gbfsvcb:'+subProperty, 'rdfs:label', subsubProperty.description));
@@ -298,7 +285,7 @@ export class RDFVocabulary {
             }
             else{
                 // The property is available in map
-                this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:Property', this.map.get(term)));
+                //this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:Property', this.map.get(term)));
             }
 
             // Write the property to the Shacl shape

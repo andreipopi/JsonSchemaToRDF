@@ -26,7 +26,6 @@ gbfsvcb:PricingPlan rdf:type rdfs:Class;
     rdfs:label "PricingPlan"@en.
 gbfsvcb:plan_id rdf:type rdf:Property;
     rdfs:label "Identifier of a pricing plan in the system."@en.
-gbfsvcb:PricingPlan rdf:Property schema:url, foaf:name.
 gbfsvcb:currency rdf:type rdf:Property;
     rdfs:label "Currency used to pay the fare in ISO 4217 code."@en.
 gbfsvcb:price rdf:type rdf:Property;
@@ -34,7 +33,6 @@ gbfsvcb:price rdf:type rdf:Property;
 gbfsvcb:is_taxable rdf:type rdf:Property;
     rdfs:label "Will additional tax be added to the base price?"@en;
     rdfs:range xsd:boolean.
-gbfsvcb:PricingPlan rdf:Property dcterms:description.
 gbfsvcb:per_km_pricing rdf:type rdf:Property;
     rdfs:label "Array of segments when the price is a function of distance travelled, displayed in kilometers (added in v2.1-RC2)."@en;
     rdfs:range gbfsvcb:Per_km_pricing.
@@ -58,5 +56,4 @@ gbfsvcb:end rdf:type rdf:Property;
     rdfs:label "The kilometer at which the rate will no longer apply (added in v2.1-RC2)."@en;
     rdfs:range xsd:integer.
 gbfsvcb:Per_min_pricing rdf:type rdfs:Class;
-    rdfs:label "Per_min_pricing"@en;
-    rdf:Property gbfsvcb:start, gbfsvcb:rate, gbfsvcb:interval, gbfsvcb:end.
+    rdfs:label "Per_min_pricing"@en.

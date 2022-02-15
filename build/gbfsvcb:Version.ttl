@@ -27,4 +27,3 @@ gbfsvcb:Version rdf:type rdfs:Class;
 gbfsvcb:version rdf:type rdf:Property;
     rdfs:label "The semantic version of the feed in the form X.Y"@en;
     owl:oneOf (<1.1> <2.0> <2.1> <2.2> <2.3-RC>).
-gbfsvcb:Version rdf:Property schema:url.
