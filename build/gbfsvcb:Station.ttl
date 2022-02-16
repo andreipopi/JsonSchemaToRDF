@@ -23,7 +23,7 @@
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
 gbfsvcb:Station rdf:type rdfs:Class;
-    rdfs:label "Station"@en.
+    rdfs:label "undefined"@en.
 gbfsvcb:address rdf:type rdf:Property;
     rdfs:label "Address where station is located."@en.
 gbfsvcb:rental_methods rdf:type rdf:Property;
@@ -53,10 +53,10 @@ gbfsvcb:ios rdfs:label "URI that can be used on iOS to launch the rental app for
 gbfsvcb:web rdfs:label "URL that can be used by a web browser to show more information about renting a vehicle at this station (added in v1.1)."@en;
     rdf:type "string".
 gbfsvcb:Rental_methods rdf:type rdfs:Class;
-    rdfs:label "Rental_methods"@en.
+    rdfs:label "undefined"@en.
 gbfsvcb:Station_area rdf:type rdfs:Class;
-    rdfs:label "Station_area"@en.
+    rdfs:label "undefined"@en.
 gbfsvcb:coordinates rdf:type rdf:Property;
     rdfs:range gbfsvcb:Coordinates.
 gbfsvcb:Rental_uris rdf:type rdfs:Class;
-    rdfs:label "Rental_uris"@en.
+    rdfs:label "undefined"@en.

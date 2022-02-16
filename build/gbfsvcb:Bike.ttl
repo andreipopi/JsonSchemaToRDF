@@ -23,7 +23,7 @@
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
 gbfsvcb:Bike rdf:type rdfs:Class;
-    rdfs:label "Bike"@en.
+    rdfs:label "undefined"@en.
 gbfsvcb:is_reserved rdf:type rdf:Property;
     rdfs:label "Is the vehicle currently reserved?"@en.
 gbfsvcb:is_disabled rdf:type rdf:Property;

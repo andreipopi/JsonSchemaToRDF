@@ -23,7 +23,7 @@
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
 gbfsvcb:Calendar rdf:type rdfs:Class;
-    rdfs:label "Calendar"@en.
+    rdfs:label "undefined"@en.
 gbfsvcb:start_month rdf:type rdf:Property;
     rdfs:label "Starting month for the system operations."@en;
     rdfs:range xsd:integer.

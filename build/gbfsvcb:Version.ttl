@@ -23,7 +23,7 @@
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
 gbfsvcb:Version rdf:type rdfs:Class;
-    rdfs:label "Version"@en.
+    rdfs:label "Contains one object, as defined below, for each of the available versions of a feed. The array must be sorted by increasing MAJOR and MINOR version number."@en.
 gbfsvcb:version rdf:type rdf:Property;
     rdfs:label "The semantic version of the feed in the form X.Y"@en;
     owl:oneOf (<1.1> <2.0> <2.1> <2.2> <2.3-RC>).

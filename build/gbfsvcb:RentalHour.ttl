@@ -23,7 +23,7 @@
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
 gbfsvcb:RentalHour rdf:type rdfs:Class;
-    rdfs:label "RentalHour"@en.
+    rdfs:label "undefined"@en.
 gbfsvcb:user_types rdf:type rdf:Property;
     rdfs:label "Array of member and nonmember value(s) indicating that this set of rental hours applies to either members or non-members only."@en;
     rdfs:range gbfsvcb:User_types.
@@ -37,6 +37,6 @@ gbfsvcb:start_time rdf:type rdf:Property;
 gbfsvcb:end_time rdf:type rdf:Property;
     rdfs:label "End time for the hours of operation of the system."@en.
 gbfsvcb:User_types rdf:type rdfs:Class;
-    rdfs:label "User_types"@en.
+    rdfs:label "undefined"@en.
 gbfsvcb:Days rdf:type rdfs:Class;
-    rdfs:label "Days"@en.
+    rdfs:label "undefined"@en.

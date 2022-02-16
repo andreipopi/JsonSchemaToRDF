@@ -23,7 +23,7 @@
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
 gbfsvcb:Alert rdf:type rdfs:Class;
-    rdfs:label "Alert"@en.
+    rdfs:label "undefined"@en.
 gbfsvcb:times rdf:type rdf:Property;
     rdfs:label "Array of objects indicating when the alert is in effect."@en;
     rdfs:range gbfsvcb:Times.
@@ -34,10 +34,10 @@ gbfsvcb:region_ids rdf:type rdf:Property;
     rdfs:label "Array of identifiers of the regions for which this alert applies."@en;
     rdfs:range gbfsvcb:Region_ids.
 gbfsvcb:Times rdf:type rdfs:Class;
-    rdfs:label "Times"@en.
+    rdfs:label "undefined"@en.
 gbfsvcb:start rdf:type rdf:Property.
 gbfsvcb:end rdf:type rdf:Property.
 gbfsvcb:Station_ids rdf:type rdfs:Class;
-    rdfs:label "Station_ids"@en.
+    rdfs:label "undefined"@en.
 gbfsvcb:Region_ids rdf:type rdfs:Class;
-    rdfs:label "Region_ids"@en.
+    rdfs:label "undefined"@en.

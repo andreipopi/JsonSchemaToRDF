@@ -23,7 +23,7 @@
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
 gbfsvcb:VehicleType rdf:type rdfs:Class;
-    rdfs:label "VehicleType"@en.
+    rdfs:label "Array that contains one object per vehicle type in the system as defined below."@en.
 gbfsvcb:form_factor rdf:type rdf:Property;
     rdfs:label "The vehicle's general form factor."@en;
     owl:oneOf (vso:bicycle schema:car <moped> <other> <scooter>).
@@ -53,6 +53,6 @@ gbfsvcb:default_pricing_plan_id rdfs:label "A plan_id as defined in system_prici
 gbfsvcb:pricing_plan_ids rdfs:label "Array of all pricing plan IDs as defined in system_pricing_plans.json added in v2.3-RC."@en;
     rdf:type "array".
 gbfsvcb:Return_type rdf:type rdfs:Class;
-    rdfs:label "Return_type"@en.
+    rdfs:label "Array that contains one object per vehicle type in the system as defined below."@en.
 gbfsvcb:Vehicle_assets rdf:type rdfs:Class;
-    rdfs:label "Vehicle_assets"@en.
+    rdfs:label "Array that contains one object per vehicle type in the system as defined below."@en.

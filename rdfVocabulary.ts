@@ -90,23 +90,24 @@ export class RDFVocabulary {
      * by checking if new terms are encountered (against a map of terms).  
     */
     objectPropertiesToQuads (depth){
+         // Create a ShaclShape object and insert the first entries
+         this.shape = new ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
+         this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
+         this.shaclFileText = this.shaclFileText+this.shape.getShaclTargetClass()+'\n';
+  
+         let path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
+         let properties = path.items.properties; // Path to the properties of the main object
+ 
 
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
-        this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
-        
-        // Create a ShaclShape object and insert the first entries
-        this.shape = new ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
-        this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
-        this.shaclFileText = this.shaclFileText+this.shape.getShaclTargetClass()+'\n';
- 
-        let path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
-        let properties = path.items.properties; // Path to the properties of the main object
-
+        this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
+        //this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
+       
         // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
         if(depth == 1 && (this.mainObject =="gbfsvcb:Per_min_pricing" ||this.mainObject =="gbfsvcb:Per_km_pricing" ||this.mainObject =="gbfsvcb:Times"||this.mainObject =="gbfsvcb:Region_ids"||this.mainObject =="gbfsvcb:Station_ids"||this.mainObject =="gbfsvcb:User_types"||this.mainObject =="gbfsvcb:Days" 
-                   || this.mainObject =="gbfsvcb:Station_area"   )){ //only take care of system_pricing.json for now
+                   || this.mainObject =="gbfsvcb:Station_area" || this.mainObject =="gbfsvcb:Version"  )){ //only take care of system_pricing.json for now
             // Then we need the path to the nested object/array
         //if(depth == 1){   
             path = path.items.properties[this.getMainJsonObject(this.mainObject)];
@@ -161,11 +162,12 @@ export class RDFVocabulary {
                 subItems = path.items.properties[term].items;
             }
             
-            // If the property does not exist in the mapping, then we add it to the vocabulary
+
+            // If the property does not exist in the map, then we want it added to the vocabulary
             if (this.map.has(term) == false) {
-                // Update our mapping with the new term: add   < term, 'gbfsvcb:'+term >
-                this.map.set(term, 'gbfsvcb:'+term);
-                
+
+                this.map.set(term, 'gbfsvcb:'+term); // Update our mapping with the new term: add   < term, 'gbfsvcb:'+term >
+        
                 // Sub-properties of 'Station/term'
                 // if 'term' is an object and it has sub properties, or if it is an array
                 if((termType == 'object' && termProperties != undefined) || termType == 'array') {
@@ -284,8 +286,7 @@ export class RDFVocabulary {
                 }
             }
             else{
-                // The property is available in map
-                //this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:Property', this.map.get(term)));
+                // The property is available in map, so we do not add it to the vocabulary
             }
 
             // Write the property to the Shacl shape
@@ -435,7 +436,9 @@ export class RDFVocabulary {
                 return 'feeds';
                 break;
             }
-            // Nested classes
+
+
+            // ---- Nested classes ----
             case 'gbfsvcb:Per_km_pricing':{
                 return 'per_km_pricing';
                 break;
@@ -476,6 +479,7 @@ export class RDFVocabulary {
                 return 'station_area';
                 break;
             }
+
            
             default: { 
                //statements; 
