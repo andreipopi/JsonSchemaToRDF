@@ -56,3 +56,14 @@ gbfsvcb:Return_type rdf:type rdfs:Class;
     rdfs:label "Array that contains one object per vehicle type in the system as defined below."@en.
 gbfsvcb:Vehicle_assets rdf:type rdfs:Class;
     rdfs:label "Array that contains one object per vehicle type in the system as defined below."@en.
+gbfsvcb:icon_url rdf:type rdf:Property;
+    rdfs:label "A fully qualified URL pointing to the location of a graphic icon file that MAY be used to represent this vehicle type on maps and in other applications added in v2.3-RC."@en.
+gbfsvcb:icon_url_dark rdf:type rdf:Property;
+    rdfs:label "A fully qualified URL pointing to the location of a graphic icon file to be used to represent this vehicle type when in dark mode added in v2.3-RC."@en.
+gbfsvcb:icon_last_modified rdf:type rdf:Property;
+    rdfs:label "Date that indicates the last time any included vehicle icon images were modified or updated added in v2.3-RC."@en.
+gbfsvcb:default_pricing_plan_id rdf:type rdf:Property;
+    rdfs:label "A plan_id as defined in system_pricing_plans.json added in v2.3-RC."@en.
+gbfsvcb:pricing_plan_ids rdf:type rdf:Property;
+    rdfs:label "Array of all pricing plan IDs as defined in system_pricing_plans.json added in v2.3-RC."@en;
+    rdfs:range gbfsvcb:Pricing_plan_ids.

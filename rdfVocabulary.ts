@@ -106,21 +106,26 @@ export class RDFVocabulary {
        
         // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
-        if(depth == 1 && (this.mainObject =="gbfsvcb:Per_min_pricing" ||this.mainObject =="gbfsvcb:Per_km_pricing" ||this.mainObject =="gbfsvcb:Times"||this.mainObject =="gbfsvcb:Region_ids"||this.mainObject =="gbfsvcb:Station_ids"||this.mainObject =="gbfsvcb:User_types"||this.mainObject =="gbfsvcb:Days" 
-                   || this.mainObject =="gbfsvcb:Station_area" || this.mainObject =="gbfsvcb:Version"  )){ //only take care of system_pricing.json for now
+        //if(depth == 1 && (this.mainObject =="gbfsvcb:Per_min_pricing" ||this.mainObject =="gbfsvcb:Per_km_pricing" ||this.mainObject =="gbfsvcb:Times"||this.mainObject =="gbfsvcb:Region_ids"||this.mainObject =="gbfsvcb:Station_ids"||this.mainObject =="gbfsvcb:User_types"||this.mainObject =="gbfsvcb:Days" 
+         //          || this.mainObject =="gbfsvcb:Station_area" || this.mainObject =="gbfsvcb:Version"  )){ //only take care of system_pricing.json for now
             // Then we need the path to the nested object/array
-        //if(depth == 1){   
+        if(depth == 1){ 
+            console.log("main object", this.mainObject);
+            console.log("main json object", this.getMainJsonObject(this.mainObject));
             path = path.items.properties[this.getMainJsonObject(this.mainObject)];
-
-            // 
-            if( this.mainObject =="gbfsvcb:Station_area" ){
-                properties = path.properties;
+            
+            console.log("path",path);
+            // the object has either properties or items/properties
+            if (path.properties == undefined){
+                properties = path.items.properties;
             }
             else{
-                properties = path.items.properties;
-
+                properties = path.properties;
             }
+           
         }
+
+
         // Properties of the main object (e.g.'Station')
         let hiddenClasses = []
         for (const term in properties){
@@ -211,15 +216,13 @@ export class RDFVocabulary {
 
                     // Or items (at least in the case of station_information)
                     if (subItems != undefined) {
-
                         let enumeration = path;
-
                         if(subItems.items != undefined){
                             // Exception: there is no enumeration enountered here so far
                             enumeration = undefined;
                         }
                         else{
-                            enumeration = path.items.properties[term].items.enum;
+                            enumeration = properties[term].items.enum;
                         }
 
                         // Then we assume there is an enum
@@ -479,6 +482,27 @@ export class RDFVocabulary {
                 return 'station_area';
                 break;
             }
+            case 'gbfsvcb:Rental_uris':{
+                return 'rental_uris';
+                break;
+            }
+
+            // and so on...
+            case 'gbfsvcb:Return_type':{
+                return 'return_type';
+                break;
+            }
+
+            case 'gbfsvcb:Vehicle_assets':{
+                return 'vehicle_assets';
+                break;
+            }
+
+            case 'gbfsvcb:Pricing_plan_ids':{
+                return 'pricing_plan_ids';
+                break;
+            }
+
 
            
             default: { 

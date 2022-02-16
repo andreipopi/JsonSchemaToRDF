@@ -24,7 +24,6 @@ for (const obj of objects){
     // e.g. "per_km_pricing" in system_pricing.json
 
     for (const cls of hiddenClasses){
-
         rdfVocab.setMainObject(cls);
         rdfVocab.objectPropertiesToQuads(1);
     }
@@ -32,8 +31,6 @@ for (const obj of objects){
     rdfVocab.writeTurtle();
     rdfVocab.writeShacl();
 }
-
-
 /**
  * Creating the json-ld context: hard-coded since common to all files. A static solution could be found.
  */

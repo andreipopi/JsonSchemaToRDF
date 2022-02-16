@@ -90,94 +90,6 @@ sh:property [
  ];
 <https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
 sh:targetClass undefined;
-sh:property [ 
- sh:path station_id;  
- sh:minCount 1; 
- sh:maxCount 1; 
- sh:datatype xsd:string; 
- ];
-sh:property [ 
- sh:path name;  
- sh:minCount 1; 
- sh:maxCount 1; 
- sh:datatype xsd:string; 
- ];
-sh:property [ 
- sh:path short_name; 
- sh:maxCount 1; 
- sh:datatype xsd:string; 
- ];
-sh:property [ 
- sh:path lat;  
- sh:minCount 1; 
- sh:maxCount 1; 
- sh:datatype xsd:float; 
- ];
-sh:property [ 
- sh:path lon;  
- sh:minCount 1; 
- sh:maxCount 1; 
- sh:datatype xsd:float; 
- ];
-sh:property [ 
- sh:path address; 
- sh:maxCount 1; 
- sh:datatype xsd:string; 
- ];
-sh:property [ 
- sh:path cross_street; 
- sh:maxCount 1; 
- sh:datatype xsd:string; 
- ];
-sh:property [ 
- sh:path region_id; 
- sh:maxCount 1; 
- sh:datatype xsd:string; 
- ];
-sh:property [ 
- sh:path post_code; 
- sh:maxCount 1; 
- sh:datatype xsd:string; 
- ];
-sh:property [ 
- sh:path rental_methods; 
- sh:maxCount 1; 
- ];
-sh:property [ 
- sh:path is_virtual_station; 
- sh:maxCount 1; 
- sh:datatype xsd:boolean; 
- ];
-sh:property [ 
- sh:path station_area; 
- sh:maxCount 1; 
- ];
-sh:property [ 
- sh:path capacity; 
- sh:maxCount 1; 
- ];
-sh:property [ 
- sh:path vehicle_capacity; 
- sh:maxCount 1; 
- ];
-sh:property [ 
- sh:path is_valet_station; 
- sh:maxCount 1; 
- sh:datatype xsd:boolean; 
- ];
-sh:property [ 
- sh:path is_charging_station; 
- sh:maxCount 1; 
- sh:datatype xsd:boolean; 
- ];
-sh:property [ 
- sh:path rental_uris; 
- sh:maxCount 1; 
- ];
-sh:property [ 
- sh:path vehicle_type_capacity; 
- sh:maxCount 1; 
- ];
 <https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
 sh:targetClass undefined;
 sh:property [ 
@@ -192,90 +104,17 @@ sh:property [
 <https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
 sh:targetClass undefined;
 sh:property [ 
- sh:path station_id;  
- sh:minCount 1; 
+ sh:path android; 
  sh:maxCount 1; 
  sh:datatype xsd:string; 
  ];
 sh:property [ 
- sh:path name;  
- sh:minCount 1; 
+ sh:path ios; 
  sh:maxCount 1; 
  sh:datatype xsd:string; 
  ];
 sh:property [ 
- sh:path short_name; 
+ sh:path web; 
  sh:maxCount 1; 
  sh:datatype xsd:string; 
- ];
-sh:property [ 
- sh:path lat;  
- sh:minCount 1; 
- sh:maxCount 1; 
- sh:datatype xsd:float; 
- ];
-sh:property [ 
- sh:path lon;  
- sh:minCount 1; 
- sh:maxCount 1; 
- sh:datatype xsd:float; 
- ];
-sh:property [ 
- sh:path address; 
- sh:maxCount 1; 
- sh:datatype xsd:string; 
- ];
-sh:property [ 
- sh:path cross_street; 
- sh:maxCount 1; 
- sh:datatype xsd:string; 
- ];
-sh:property [ 
- sh:path region_id; 
- sh:maxCount 1; 
- sh:datatype xsd:string; 
- ];
-sh:property [ 
- sh:path post_code; 
- sh:maxCount 1; 
- sh:datatype xsd:string; 
- ];
-sh:property [ 
- sh:path rental_methods; 
- sh:maxCount 1; 
- ];
-sh:property [ 
- sh:path is_virtual_station; 
- sh:maxCount 1; 
- sh:datatype xsd:boolean; 
- ];
-sh:property [ 
- sh:path station_area; 
- sh:maxCount 1; 
- ];
-sh:property [ 
- sh:path capacity; 
- sh:maxCount 1; 
- ];
-sh:property [ 
- sh:path vehicle_capacity; 
- sh:maxCount 1; 
- ];
-sh:property [ 
- sh:path is_valet_station; 
- sh:maxCount 1; 
- sh:datatype xsd:boolean; 
- ];
-sh:property [ 
- sh:path is_charging_station; 
- sh:maxCount 1; 
- sh:datatype xsd:boolean; 
- ];
-sh:property [ 
- sh:path rental_uris; 
- sh:maxCount 1; 
- ];
-sh:property [ 
- sh:path vehicle_type_capacity; 
- sh:maxCount 1; 
  ];
