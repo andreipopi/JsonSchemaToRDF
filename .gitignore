@@ -6,3 +6,4 @@ shacl.ttl
 turtleTranslation.ttl
 .mappingProblems.txt
 .rdfVocabularyOriginal.ts
+.deprecated.txt
