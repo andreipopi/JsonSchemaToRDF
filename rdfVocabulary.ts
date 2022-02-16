@@ -84,37 +84,30 @@ export class RDFVocabulary {
         this.writer.addQuad(this.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
+
+        // Create a ShaclShape object and insert the first entries
+        this.shape = new ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
+        this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
+        this.shaclFileText = this.shaclFileText+this.shape.getShaclTargetClass()+'\n';
+
     }
 
     /** Creates and writes quads for the main object's properties, 
      * by checking if new terms are encountered (against a map of terms).  
     */
     objectPropertiesToQuads (depth){
-         // Create a ShaclShape object and insert the first entries
-         this.shape = new ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
-         this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
-         this.shaclFileText = this.shaclFileText+this.shape.getShaclTargetClass()+'\n';
-  
-         let path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
-         let properties = path.items.properties; // Path to the properties of the main object
- 
+        
+        let path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
+        let properties = path.items.properties; // Path to the properties of the main object
 
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
-        //this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', this.mainObject.split(":").pop()));
        
         // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
-        //if(depth == 1 && (this.mainObject =="gbfsvcb:Per_min_pricing" ||this.mainObject =="gbfsvcb:Per_km_pricing" ||this.mainObject =="gbfsvcb:Times"||this.mainObject =="gbfsvcb:Region_ids"||this.mainObject =="gbfsvcb:Station_ids"||this.mainObject =="gbfsvcb:User_types"||this.mainObject =="gbfsvcb:Days" 
-         //          || this.mainObject =="gbfsvcb:Station_area" || this.mainObject =="gbfsvcb:Version"  )){ //only take care of system_pricing.json for now
-            // Then we need the path to the nested object/array
-        if(depth == 1){ 
-            console.log("main object", this.mainObject);
-            console.log("main json object", this.getMainJsonObject(this.mainObject));
+        if(depth == 1){ // Then we need the path to the nested object/array
             path = path.items.properties[this.getMainJsonObject(this.mainObject)];
-            
-            console.log("path",path);
             // the object has either properties or items/properties
             if (path.properties == undefined){
                 properties = path.items.properties;
@@ -122,12 +115,10 @@ export class RDFVocabulary {
             else{
                 properties = path.properties;
             }
-           
         }
 
-
         // Properties of the main object (e.g.'Station')
-        let hiddenClasses = []
+        let hiddenClasses = [] // usefull for the next iteration (depth = 1)
         for (const term in properties){
             console.log("Property: ", term);
             // Get the term type, subproperties, and description
@@ -166,32 +157,30 @@ export class RDFVocabulary {
                 subProperties = path.items.properties[term].properties;
                 subItems = path.items.properties[term].items;
             }
-            
+
 
             // If the property does not exist in the map, then we want it added to the vocabulary
             if (this.map.has(term) == false) {
-
                 this.map.set(term, 'gbfsvcb:'+term); // Update our mapping with the new term: add   < term, 'gbfsvcb:'+term >
         
                 // Sub-properties of 'Station/term'
                 // if 'term' is an object and it has sub properties, or if it is an array
                 if((termType == 'object' && termProperties != undefined) || termType == 'array') {
 
-                    // Add the property and its label
-                    this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdf:type', 'rdf:Property'));
-                    
+                    this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdf:type', 'rdf:Property')); // Add the property and its label
+
                     if( termDescription != undefined )
                         this.writer.addQuad(this.node_node_literal('gbfsvcb:'+term, 'rdfs:label', termDescription.toString()));
         
-                    // Since it is an object/array, we give it a new class as a range
-                    const newClassName = this.capitalizeFirstLetter(term);
+                    const newClassName = this.capitalizeFirstLetter(term); // Since it is an object/array, we give it a new class as a range
                     this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdfs:range', 'gbfsvcb:'+newClassName));
                   
                     // Add the new classes to a hiddenClasses array; these will be explored by this function in a second stage.
                     hiddenClasses = hiddenClasses.concat('gbfsvcb:'+newClassName);
-                    console.log('HIDDEN CLASSES: ',hiddenClasses);
-                    console.log("subItems",subItems);
-                    // Either properties
+                    //console.log('HIDDEN CLASSES: ',hiddenClasses);
+                    //console.log("subItems",subItems);
+
+                    // Either sub properties
                     if (subProperties != undefined) {
                         for (const subProperty in subProperties){
                             const subsubProperty = path.items.properties[term].properties[subProperty];
@@ -244,6 +233,7 @@ export class RDFVocabulary {
                         
                     }   
                 }
+
                 // If it is not an object nor an array, then it is a property
                 if(termType !='array' && termType !='object'){
                     // it has a primitive datatype

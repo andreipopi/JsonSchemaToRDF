@@ -40,10 +40,6 @@ sh:property [
  sh:path vehicle_assets; 
  sh:maxCount 1; 
  ];
-<https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
-sh:targetClass undefined;
-<https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
-sh:targetClass undefined;
 sh:property [ 
  sh:path icon_url; 
  sh:maxCount 1; 

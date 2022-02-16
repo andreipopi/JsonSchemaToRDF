@@ -22,7 +22,3 @@ sh:property [
  sh:maxCount 1; 
  sh:datatype xsd:string; 
  ];
-<https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
-sh:targetClass undefined;
-<https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
-sh:targetClass undefined;

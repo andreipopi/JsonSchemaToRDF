@@ -44,8 +44,6 @@ sh:property [
  sh:path last_updated; 
  sh:maxCount 1; 
  ];
-<https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
-sh:targetClass undefined;
 sh:property [ 
  sh:path start; 
  sh:maxCount 1; 
@@ -56,7 +54,3 @@ sh:property [
  sh:maxCount 1; 
  sh:datatype xsd:float; 
  ];
-<https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
-sh:targetClass undefined;
-<https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
-sh:targetClass undefined;
