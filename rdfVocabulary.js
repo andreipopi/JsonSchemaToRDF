@@ -68,6 +68,7 @@ var RDFVocabulary = /** @class */ (function () {
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
+        // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
         if (depth == 1) { // Then we need the path to the nested object/array
             path = path.items.properties[this.getMainJsonObject(this.mainObject)];
@@ -128,9 +129,9 @@ var RDFVocabulary = /** @class */ (function () {
                     this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdf:type', 'rdf:Property')); // Add the property and its label
                     if (termDescription != undefined)
                         this.writer.addQuad(this.node_node_literal('gbfsvcb:' + term, 'rdfs:label', termDescription.toString()));
-                    var newClassName = this.capitalizeFirstLetter(term);
-                    this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdfs:range', 'gbfsvcb:' + newClassName)); // Since it is an object/array, we give it a new class as a range
-                    // Add the new classes to a hiddenClasses array; these will be explored by this function in a second stage (depth =1).
+                    var newClassName = this.capitalizeFirstLetter(term); // Since it is an object/array, we give it a new class as a range
+                    this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdfs:range', 'gbfsvcb:' + newClassName));
+                    // Add the new classes to a hiddenClasses array; these will be explored by this function in a second stage.
                     hiddenClasses = hiddenClasses.concat('gbfsvcb:' + newClassName);
                     //console.log('HIDDEN CLASSES: ',hiddenClasses);
                     //console.log("subItems",subItems);

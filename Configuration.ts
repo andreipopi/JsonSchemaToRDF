@@ -1,28 +1,20 @@
 export class Configuration {
-    //jsonSource = './files/station_information.json';
-    //jsonSource =  './files/free_bike_status.json';
     jsonSource = '';
-    //jsonSchema = require(this.jsonSource);
     baseShaclURI = 'https://mymockwebsite.com/shapes/gbfs-station_information';
     baseRdfVocabURI = ''; 
-    jsonTraverse = require('json-schema-traverse');
-    // Mapping of available terms (manually defined in the constructor)
-    map = new Map<string, string>();
+    map = new Map<string, string>(); // Map of available terms from LOV (manually defined in the constructor)
 
     // Constructors
     constructor (source: string){
 
         this.jsonSource = source;
-        
         this.baseRdfVocabURI = 'https://w3id.org/gbfs/stations#';
-    
-
+        
         this.map.set('bike_id', 'dcterms:identifier');
         this.map.set('alert_id', 'dcterms:identifier');
         this.map.set('station_id','dcterms:identifier');
         this.map.set('vehicle_type_id','dcterms:identifier');
         this.map.set( 'region_id', 'dbpedia-owl:region');
-
         this.map.set('description','dcterms:description');
         this.map.set('type', 'rdf:type');
         this.map.set('last_updated', 'dcterms:modified' );
@@ -41,13 +33,9 @@ export class Configuration {
         // FreeBikeStatus properties terms
         this.map.set('creditcard', 'schema:CreditCard');
         this.map.set('phone', 'foaf:phone');
-        
         // vehicle types
-
         this.map.set('car', 'schema:car');
         this.map.set('bicycle', 'vso:bicycle');
-
-
     };
     
     getJsonSource (){

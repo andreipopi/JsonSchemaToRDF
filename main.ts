@@ -29,7 +29,6 @@ for (let [key,obj] of Array.from(schema_object)){
     const rdfVocab = new RDFVocabulary(config.getTermMapping(), config.getJsonSource(), obj);
     console.log(config.getVocabURI());
     rdfVocab.basicsToQuads();
-
     hiddenClasses = rdfVocab.objectPropertiesToQuads(0);
 
     // New classes might be have been added as range value for some properties. It is now time to explore those classes, 
@@ -39,7 +38,6 @@ for (let [key,obj] of Array.from(schema_object)){
         rdfVocab.setMainObject(cls);
         rdfVocab.objectPropertiesToQuads(1);
     }
-    
     rdfVocab.writeTurtle();
     rdfVocab.writeShacl();
 }
