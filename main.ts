@@ -1,4 +1,3 @@
-import {Configuration}  from './Configuration';
 import {RDFVocabulary} from './rdfVocabulary';
 import {ShaclShape} from './shaclShape';
 //import {ShaclShape} from './shaclShape';
@@ -20,14 +19,12 @@ const fs = require('fs');
 
 let hiddenClasses = []
 let i = 0;
-for (let [key,obj] of Array.from(schema_object)){
-    console.log(obj);
+for (let [schema,object] of Array.from(schema_object)){
+    console.log(object);
    // const config = new Configuration(files[i]);
-    const config = new Configuration(key);
 
     i +=1;
-    const rdfVocab = new RDFVocabulary(config.getTermMapping(), config.getJsonSource(), obj);
-    console.log(config.getVocabURI());
+    const rdfVocab = new RDFVocabulary(schema, object);
     rdfVocab.basicsToQuads();
     hiddenClasses = rdfVocab.objectPropertiesToQuads(0);
 

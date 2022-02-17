@@ -1,6 +1,5 @@
 "use strict";
 exports.__esModule = true;
-var Configuration_1 = require("./Configuration");
 var rdfVocabulary_1 = require("./rdfVocabulary");
 //import {ShaclShape} from './shaclShape';
 // Main objects that are passed to the rdfVocabulary.ts.
@@ -19,13 +18,11 @@ var fs = require('fs');
 var hiddenClasses = [];
 var i = 0;
 for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
-    var _b = _a[_i], key = _b[0], obj = _b[1];
-    console.log(obj);
+    var _b = _a[_i], schema = _b[0], object = _b[1];
+    console.log(object);
     // const config = new Configuration(files[i]);
-    var config = new Configuration_1.Configuration(key);
     i += 1;
-    var rdfVocab = new rdfVocabulary_1.RDFVocabulary(config.getTermMapping(), config.getJsonSource(), obj);
-    console.log(config.getVocabURI());
+    var rdfVocab = new rdfVocabulary_1.RDFVocabulary(schema, object);
     rdfVocab.basicsToQuads();
     hiddenClasses = rdfVocab.objectPropertiesToQuads(0);
     // New classes might be have been added as range value for some properties. It is now time to explore those classes, 
