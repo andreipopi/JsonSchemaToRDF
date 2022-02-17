@@ -255,7 +255,7 @@ var RDFVocabulary = /** @class */ (function () {
     RDFVocabulary.prototype.writeTurtle = function () {
         var _this = this;
         // Write the content of the writer in the .ttl
-        this.writer.end(function (error, result) { return _this.fs.writeFile("build/" + _this.fileName + ".ttl", result, function (err) {
+        this.writer.end(function (error, result) { return _this.fs.writeFile("build/".concat(_this.fileName, ".ttl"), result, function (err) {
             // throws an error, you could also catch it here
             if (err)
                 throw err;
@@ -265,7 +265,7 @@ var RDFVocabulary = /** @class */ (function () {
     };
     RDFVocabulary.prototype.writeShacl = function () {
         // Write the Shacl shape on file
-        this.fs.writeFileSync("build/" + this.fileName + "shacl.ttl", this.shaclFileText, function (err) {
+        this.fs.writeFileSync("build/".concat(this.fileName, "shacl.ttl"), this.shaclFileText, function (err) {
             if (err) {
                 return console.log("error");
             }
