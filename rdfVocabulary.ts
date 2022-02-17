@@ -95,7 +95,7 @@ export class RDFVocabulary {
     /** Creates and writes quads for the main object's properties, 
      * by checking if new terms are encountered (against a map of terms).  
     */
-    objectPropertiesToQuads (depth){
+    objectPropertiesToQuads (depth:number){
         
         let path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
         let properties = path.items.properties; // Path to the properties of the main object
@@ -106,8 +106,11 @@ export class RDFVocabulary {
        
         // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
+        let jsonobj: any;
+        jsonobj= this.getMainJsonObject(this.mainObject);
         if(depth == 1){ // Then we need the path to the nested object/array
-            path = path.items.properties[this.getMainJsonObject(this.mainObject)];
+            
+            path = path.items.properties[jsonobj];
             // the object has either properties or items/properties
             if (path.properties == undefined){
                 properties = path.items.properties;
@@ -118,7 +121,7 @@ export class RDFVocabulary {
         }
 
         // Properties of the main object (e.g.'Station')
-        let hiddenClasses = [] // usefull for the next iteration (depth = 1)
+        let hiddenClasses:any[] =  []; // usefull for the next iteration (depth = 1)
         for (const term in properties){
             console.log("Property: ", term);
             // Get the term type, subproperties, and description
@@ -307,7 +310,7 @@ export class RDFVocabulary {
 
     writeTurtle (){
         // Write the content of the writer in the .ttl
-        this.writer.end((error, result) => this.fs.writeFile(`build/${this.fileName}.ttl`, result, (err) => {
+        this.writer.end((error:any, result:any) => this.fs.writeFile(`build/${this.fileName}.ttl`, result, (err:any) => {
             // throws an error, you could also catch it here
             if (err) throw err;
             // success case, the file was saved
@@ -315,7 +318,7 @@ export class RDFVocabulary {
     }
     writeShacl (){
         // Write the Shacl shape on file
-        this.fs.writeFileSync(`build/${this.fileName}shacl.ttl`, this.shaclFileText , function(err){
+        this.fs.writeFileSync(`build/${this.fileName}shacl.ttl`, this.shaclFileText , function(err:any){
             if(err){
                 return console.log("error");
             }
@@ -324,12 +327,14 @@ export class RDFVocabulary {
     /** returns the properties of the main object which are required. Useful in the shaclshape class in order to create the shacl shape */
     getRequiredProperties () {
         let requiredMap = new Map<string, string>();
-        // For each OF the values in the required
+        // For each of the values in the required
         console.log(this.mainJsonObject);
         console.log(this.jsonSchema.properties.data.properties[this.mainJsonObject].items.required);
 
+        let requiredPropExistingTerm:any;
         for (const requiredProp of this.jsonSchema.properties.data.properties[this.mainJsonObject].items.required){
-            requiredMap.set(requiredProp.toString(), this.map.get(requiredProp.toString()));
+            requiredPropExistingTerm = this.map.get(requiredProp.toString());
+            requiredMap.set(requiredProp.toString(), requiredPropExistingTerm );
         }
         
         return requiredMap;
@@ -505,7 +510,7 @@ export class RDFVocabulary {
     setMainObject(mainObject: string){
         this.mainObject= mainObject;
     }
-    capitalizeFirstLetter(string) {
+    capitalizeFirstLetter(string:string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
     getPrefixes(){

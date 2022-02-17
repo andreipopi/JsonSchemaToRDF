@@ -70,8 +70,10 @@ var RDFVocabulary = /** @class */ (function () {
         this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
         // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
+        var jsonobj;
+        jsonobj = this.getMainJsonObject(this.mainObject);
         if (depth == 1) { // Then we need the path to the nested object/array
-            path = path.items.properties[this.getMainJsonObject(this.mainObject)];
+            path = path.items.properties[jsonobj];
             // the object has either properties or items/properties
             if (path.properties == undefined) {
                 properties = path.items.properties;
@@ -255,7 +257,7 @@ var RDFVocabulary = /** @class */ (function () {
     RDFVocabulary.prototype.writeTurtle = function () {
         var _this = this;
         // Write the content of the writer in the .ttl
-        this.writer.end(function (error, result) { return _this.fs.writeFile("build/".concat(_this.fileName, ".ttl"), result, function (err) {
+        this.writer.end(function (error, result) { return _this.fs.writeFile("build/" + _this.fileName + ".ttl", result, function (err) {
             // throws an error, you could also catch it here
             if (err)
                 throw err;
@@ -265,7 +267,7 @@ var RDFVocabulary = /** @class */ (function () {
     };
     RDFVocabulary.prototype.writeShacl = function () {
         // Write the Shacl shape on file
-        this.fs.writeFileSync("build/".concat(this.fileName, "shacl.ttl"), this.shaclFileText, function (err) {
+        this.fs.writeFileSync("build/" + this.fileName + "shacl.ttl", this.shaclFileText, function (err) {
             if (err) {
                 return console.log("error");
             }
@@ -274,12 +276,14 @@ var RDFVocabulary = /** @class */ (function () {
     /** returns the properties of the main object which are required. Useful in the shaclshape class in order to create the shacl shape */
     RDFVocabulary.prototype.getRequiredProperties = function () {
         var requiredMap = new Map();
-        // For each OF the values in the required
+        // For each of the values in the required
         console.log(this.mainJsonObject);
         console.log(this.jsonSchema.properties.data.properties[this.mainJsonObject].items.required);
+        var requiredPropExistingTerm;
         for (var _i = 0, _a = this.jsonSchema.properties.data.properties[this.mainJsonObject].items.required; _i < _a.length; _i++) {
             var requiredProp = _a[_i];
-            requiredMap.set(requiredProp.toString(), this.map.get(requiredProp.toString()));
+            requiredPropExistingTerm = this.map.get(requiredProp.toString());
+            requiredMap.set(requiredProp.toString(), requiredPropExistingTerm);
         }
         return requiredMap;
     };
