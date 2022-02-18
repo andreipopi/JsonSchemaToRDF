@@ -22,7 +22,6 @@ It transforms GBFS JSON schemas into corresponding RDF vocabularies and Shacl sh
 * `rdfVocabulary.ts`is responsible for creating both the vocabulary and shapes.
 * `rdfVocabulary.ts` uses `shaclShape.ts` to initialize the basics of the shape such as the target class, and to get the corresponding property shapes.
 
-![](images/pseudocode.png)
 <img src="images/pseudocode.png" width="18">
  
 
