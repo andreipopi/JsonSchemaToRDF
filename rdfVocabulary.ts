@@ -129,7 +129,6 @@ export class RDFVocabulary {
         let jsonobj: any;
         jsonobj= this.getMainJsonObject(this.mainObject);
         if(depth == 1){ // Then we need the path to the nested object/array
-            
             path = path.items.properties[jsonobj];
             // the object has either properties or items/properties
             if (path.properties == undefined){
@@ -138,15 +137,11 @@ export class RDFVocabulary {
             else{
                 properties = path.properties;
             }
+            this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
         }
 
-        console.log("schema", this.schema);
-        console.log("main object", this.mainObject);
-        console.log("jsonobject", this.mainJsonObject);
-        console.log("Description", path);
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
-        this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
        
 
         // Properties of the main object (e.g.'Station')
@@ -265,10 +260,8 @@ export class RDFVocabulary {
                         
                     }   
                 }
-
-                // If it is not an object nor an array, then it is a property
-                if(termType !='array' && termType !='object'){
-                    // it has a primitive datatype
+                else{
+                    // not an object or array -> it has a primitive datatype
                     if(termType != undefined){
                         // Then create the quad and add it to the writer
                         this.writer.addQuad(this.node_node_node('gbfsvcb:'+term, 'rdf:type', 'rdf:Property'));

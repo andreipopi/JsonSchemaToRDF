@@ -22,8 +22,7 @@
 <https://pietercolpaert.be/#me> rdf:type foaf:Person;
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
-gbfsvcb:Station rdf:type rdfs:Class;
-    rdfs:label "undefined"@en.
+gbfsvcb:Station rdf:type rdfs:Class.
 gbfsvcb:address rdf:type rdf:Property;
     rdfs:label "Address where station is located."@en.
 gbfsvcb:rental_methods rdf:type rdf:Property;
@@ -37,6 +36,8 @@ gbfsvcb:station_area rdf:type rdf:Property;
     rdfs:label "A multipolygon that describes the area of a virtual station (added in v2.1-RC)."@en;
     rdfs:range gbfsvcb:Station_area.
 gbfsvcb:coordinates rdf:type "array".
+gbfsvcb:vehicle_capacity rdf:type rdf:Property;
+    rdfs:label "An object where each key is a vehicle_type_id and the value is a number presenting the total number of vehicles of this type that can park within the station_area (added in v2.1-RC)."@en.
 gbfsvcb:is_valet_station rdf:type rdf:Property;
     rdfs:label "Are valet services provided at this station? (added in v2.1-RC)"@en;
     rdfs:range xsd:boolean.
@@ -52,14 +53,16 @@ gbfsvcb:ios rdfs:label "URI that can be used on iOS to launch the rental app for
     rdf:type "string".
 gbfsvcb:web rdfs:label "URL that can be used by a web browser to show more information about renting a vehicle at this station (added in v1.1)."@en;
     rdf:type "string".
-gbfsvcb:Rental_methods rdf:type rdfs:Class;
-    rdfs:label "Payment methods accepted at this station."@en.
-gbfsvcb:Station_area rdf:type rdfs:Class;
-    rdfs:label "A multipolygon that describes the area of a virtual station (added in v2.1-RC)."@en.
+gbfsvcb:vehicle_type_capacity rdf:type rdf:Property;
+    rdfs:label "An object where each key is a vehicle_type_id and the value is a number representing the total docking points installed at this station for each vehicle type (added in v2.1-RC)."@en.
+gbfsvcb:Rental_methods rdfs:label "Payment methods accepted at this station."@en;
+    rdf:type rdfs:Class.
+gbfsvcb:Station_area rdfs:label "A multipolygon that describes the area of a virtual station (added in v2.1-RC)."@en;
+    rdf:type rdfs:Class.
 gbfsvcb:coordinates rdf:type rdf:Property;
     rdfs:range gbfsvcb:Coordinates.
-gbfsvcb:Rental_uris rdf:type rdfs:Class;
-    rdfs:label "Contains rental uris for Android, iOS, and web in the android, ios, and web fields (added in v1.1)."@en.
+gbfsvcb:Rental_uris rdfs:label "Contains rental uris for Android, iOS, and web in the android, ios, and web fields (added in v1.1)."@en;
+    rdf:type rdfs:Class.
 gbfsvcb:android rdf:type rdf:Property;
     rdfs:label "URI that can be passed to an Android app with an intent (added in v1.1)."@en.
 gbfsvcb:ios rdf:type rdf:Property;

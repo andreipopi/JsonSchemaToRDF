@@ -22,5 +22,4 @@
 <https://pietercolpaert.be/#me> rdf:type foaf:Person;
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
-gbfsvcb:Region rdf:type rdfs:Class;
-    rdfs:label "Array of regions."@en.
+gbfsvcb:Region rdf:type rdfs:Class.

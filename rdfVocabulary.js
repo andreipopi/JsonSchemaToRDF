@@ -102,14 +102,10 @@ var RDFVocabulary = /** @class */ (function () {
             else {
                 properties = path.properties;
             }
+            this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
         }
-        console.log("schema", this.schema);
-        console.log("main object", this.mainObject);
-        console.log("jsonobject", this.mainJsonObject);
-        console.log("Description", path);
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
-        this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
         // Properties of the main object (e.g.'Station')
         var hiddenClasses = []; // usefull for the next iteration (depth = 1)
         for (var term in properties) {
@@ -214,9 +210,8 @@ var RDFVocabulary = /** @class */ (function () {
                         }
                     }
                 }
-                // If it is not an object nor an array, then it is a property
-                if (termType != 'array' && termType != 'object') {
-                    // it has a primitive datatype
+                else {
+                    // not an object or array -> it has a primitive datatype
                     if (termType != undefined) {
                         // Then create the quad and add it to the writer
                         this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdf:type', 'rdf:Property'));

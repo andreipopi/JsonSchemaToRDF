@@ -22,8 +22,7 @@
 <https://pietercolpaert.be/#me> rdf:type foaf:Person;
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
-gbfsvcb:PricingPlan rdf:type rdfs:Class;
-    rdfs:label "undefined"@en.
+gbfsvcb:PricingPlan rdf:type rdfs:Class.
 gbfsvcb:plan_id rdf:type rdf:Property;
     rdfs:label "Identifier of a pricing plan in the system."@en.
 gbfsvcb:currency rdf:type rdf:Property;
@@ -42,8 +41,8 @@ gbfsvcb:per_min_pricing rdf:type rdf:Property;
 gbfsvcb:surge_pricing rdf:type rdf:Property;
     rdfs:label "Is there currently an increase in price in response to increased demand in this pricing plan? (added in v2.1-RC2)"@en;
     rdfs:range xsd:boolean.
-gbfsvcb:Per_km_pricing rdf:type rdfs:Class;
-    rdfs:label "Array of segments when the price is a function of distance travelled, displayed in kilometers (added in v2.1-RC2)."@en.
+gbfsvcb:Per_km_pricing rdfs:label "Array of segments when the price is a function of distance travelled, displayed in kilometers (added in v2.1-RC2)."@en;
+    rdf:type rdfs:Class.
 gbfsvcb:start rdf:type rdf:Property;
     rdfs:label "Number of kilometers that have to elapse before this segment starts applying (added in v2.1-RC2)."@en;
     rdfs:range xsd:integer.
@@ -55,5 +54,5 @@ gbfsvcb:interval rdf:type rdf:Property;
 gbfsvcb:end rdf:type rdf:Property;
     rdfs:label "The kilometer at which the rate will no longer apply (added in v2.1-RC2)."@en;
     rdfs:range xsd:integer.
-gbfsvcb:Per_min_pricing rdf:type rdfs:Class;
-    rdfs:label "Array of segments when the price is a function of time travelled, displayed in minutes (added in v2.1-RC2)."@en.
+gbfsvcb:Per_min_pricing rdfs:label "Array of segments when the price is a function of time travelled, displayed in minutes (added in v2.1-RC2)."@en;
+    rdf:type rdfs:Class.
