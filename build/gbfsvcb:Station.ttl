@@ -53,13 +53,13 @@ gbfsvcb:ios rdfs:label "URI that can be used on iOS to launch the rental app for
 gbfsvcb:web rdfs:label "URL that can be used by a web browser to show more information about renting a vehicle at this station (added in v1.1)."@en;
     rdf:type "string".
 gbfsvcb:Rental_methods rdf:type rdfs:Class;
-    rdfs:label "undefined"@en.
+    rdfs:label "Payment methods accepted at this station."@en.
 gbfsvcb:Station_area rdf:type rdfs:Class;
-    rdfs:label "undefined"@en.
+    rdfs:label "A multipolygon that describes the area of a virtual station (added in v2.1-RC)."@en.
 gbfsvcb:coordinates rdf:type rdf:Property;
     rdfs:range gbfsvcb:Coordinates.
 gbfsvcb:Rental_uris rdf:type rdfs:Class;
-    rdfs:label "undefined"@en.
+    rdfs:label "Contains rental uris for Android, iOS, and web in the android, ios, and web fields (added in v1.1)."@en.
 gbfsvcb:android rdf:type rdf:Property;
     rdfs:label "URI that can be passed to an Android app with an intent (added in v1.1)."@en.
 gbfsvcb:ios rdf:type rdf:Property;

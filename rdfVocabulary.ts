@@ -119,15 +119,11 @@ export class RDFVocabulary {
     /** Creates and writes quads for the main object's properties, 
      * by checking if new terms are encountered (against a map of terms).  
     */
-    objectPropertiesToQuads (depth:number){
+    propertiesToRDF (depth:number){
         
         let path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
         let properties = path.items.properties; // Path to the properties of the main object
 
-        // Add the main object to the vocabulary as a class
-        this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
-        this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
-       
         // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
         let jsonobj: any;
@@ -143,6 +139,15 @@ export class RDFVocabulary {
                 properties = path.properties;
             }
         }
+
+        console.log("schema", this.schema);
+        console.log("main object", this.mainObject);
+        console.log("jsonobject", this.mainJsonObject);
+        console.log("Description", path);
+        // Add the main object to the vocabulary as a class
+        this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
+        this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
+       
 
         // Properties of the main object (e.g.'Station')
         let hiddenClasses:any[] =  []; // usefull for the next iteration (depth = 1)
@@ -522,8 +527,6 @@ export class RDFVocabulary {
                 break;
             }
 
-
-           
             default: { 
                //statements; 
                break; 
@@ -534,6 +537,7 @@ export class RDFVocabulary {
     setMainObject(mainObject: string){
         this.mainObject= mainObject;
     }
+    
     capitalizeFirstLetter(string:string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }

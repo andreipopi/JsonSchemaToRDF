@@ -105,6 +105,5 @@ export class ShaclShape {
         else{
             return false;
         }
-
     }
 }

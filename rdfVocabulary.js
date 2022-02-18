@@ -86,12 +86,9 @@ var RDFVocabulary = /** @class */ (function () {
     /** Creates and writes quads for the main object's properties,
      * by checking if new terms are encountered (against a map of terms).
     */
-    RDFVocabulary.prototype.objectPropertiesToQuads = function (depth) {
+    RDFVocabulary.prototype.propertiesToRDF = function (depth) {
         var path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
         var properties = path.items.properties; // Path to the properties of the main object
-        // Add the main object to the vocabulary as a class
-        this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
-        this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
         // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
         var jsonobj;
@@ -106,6 +103,13 @@ var RDFVocabulary = /** @class */ (function () {
                 properties = path.properties;
             }
         }
+        console.log("schema", this.schema);
+        console.log("main object", this.mainObject);
+        console.log("jsonobject", this.mainJsonObject);
+        console.log("Description", path);
+        // Add the main object to the vocabulary as a class
+        this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
+        this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
         // Properties of the main object (e.g.'Station')
         var hiddenClasses = []; // usefull for the next iteration (depth = 1)
         for (var term in properties) {

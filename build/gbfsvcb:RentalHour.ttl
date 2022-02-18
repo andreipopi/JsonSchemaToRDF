@@ -37,6 +37,6 @@ gbfsvcb:start_time rdf:type rdf:Property;
 gbfsvcb:end_time rdf:type rdf:Property;
     rdfs:label "End time for the hours of operation of the system."@en.
 gbfsvcb:User_types rdf:type rdfs:Class;
-    rdfs:label "undefined"@en.
+    rdfs:label "Array of member and nonmember value(s) indicating that this set of rental hours applies to either members or non-members only."@en.
 gbfsvcb:Days rdf:type rdfs:Class;
-    rdfs:label "undefined"@en.
+    rdfs:label "An array of abbreviations (first 3 letters) of English names of the days of the week for which this object applies."@en.
