@@ -1,0 +1,43 @@
+{
+  "prefixes": {
+    "dcterms" : "...",
+    ...
+  },
+  "sources": {
+    "./files/station_information.json": "gbfs:Station",
+    "./files/free_bike_status.json": "gbfs:Bike",
+    "./files/system_alerts.json": "gbfs:Alert",
+    "./files/system_regions.json": "gbfs:Region",
+    "./files/vehicle_types.json": "gbfs:VehicleType",
+    "./files/system_pricing_plan.json": "gbfs:PricingPlan",
+    "./files/gbfs_versions.json": "gbfs:Version",
+    "./files/system_calendar.json": "gbfs:Calendar",
+    "./files/system_hours.json": "gbfs:RentalHour"
+  },
+  "terms": {
+    "bike_id": "dcterms:identifier",
+    "alert_id": "dcterms:identifier",
+    "station_id","dcterms:identifier",
+    "vehicle_type_id","dcterms:identifier",
+    "region_id": "dbpedia-owl:region",
+    "description","dcterms:description",
+    "type": "rdf:type",
+    "last_updated": "dcterms:modified" ,
+    "url": "schema:url",
+    "summary": "ebucore:summary",
+    // Station properties terms
+    "name": "foaf:name",
+    "short_name": "rdfs:label",
+    "lat": "geo:lat",
+    "lon": "geo:long",
+    "cross_street": "airs:locatedAtCrossStreet",
+    "post_code": "dbpedia-owl:postalCode",
+    "capacity": "dbpedia-owl:capacity",
+    // FreeBikeStatus properties terms
+    "creditcard": "schema:CreditCard",
+    "phone": "foaf:phone",
+    // vehicle types
+    "car": "schema:car",
+    "bicycle": "vso:bicycle"
+  }
+}
