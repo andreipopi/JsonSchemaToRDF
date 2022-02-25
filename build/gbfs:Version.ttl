@@ -15,9 +15,9 @@
 @prefix vso: <http://purl.org/vso/ns#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
-<https://w3id.org/gbfs/vocabularies/versions> rdf:type foaf:Document;
+<https://w3id.org/gbfs/terms/versions> rdf:type foaf:Document;
     rdfs:comment "Lists all feed endpoints published according to version sof the GBFS documentation. (added in v1.1)"@en;
-    vann:preferredNamespaceUri "https://w3id.org/gbfs/vocabularies/versions#";
+    vann:preferredNamespaceUri "https://w3id.org/gbfs/terms/versions#";
     dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
 <https://pietercolpaert.be/#me> rdf:type foaf:Person;
     foaf:mbox "mailto:pieter.colpaert@imec.be";

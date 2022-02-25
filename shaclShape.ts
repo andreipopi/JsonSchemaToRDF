@@ -6,7 +6,7 @@ export class ShaclShape {
 
     jsonSchema: any;
     targetClass: any;
-    shaclRoot = '<https://mymockwebsite.com/shapes/gbfs-station_information>';
+    shaclRoot = '<https://w3id.org/gbfs/shapes/>';
     requiredProperties = new Map<string, string>();
     shaclFileText = '';
     fs = require('fs');
@@ -22,22 +22,22 @@ export class ShaclShape {
 
     // Methods
     getShaclTypedProperty (nome: string, type: string) {
-        const prop = 'sh:property [ \n sh:path '+nome+ '; \n sh:maxCount 1; \n sh:datatype '+ type+'; \n ];';
+        const prop = 'sh:property [ \n sh:path <'+nome+ '>; \n sh:maxCount 1; \n sh:datatype '+ type+'; \n ];';
         return prop;
     }
 
     getShaclTypedRequiredProperty(nome: string, type: string) {
         console.log(nome);
-        const prop = 'sh:property [ \n sh:path '+nome+ ';  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype '+ type+'; \n ];';
+        const prop = 'sh:property [ \n sh:path <'+nome+ '>;  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype '+ type+'; \n ];';
         return prop;
     }
     getShaclProperty (nome: string) {
-        const prop = 'sh:property [ \n sh:path '+nome+ '; \n sh:maxCount 1; \n ];';
+        const prop = 'sh:property [ \n sh:path <'+nome+ '>; \n sh:maxCount 1; \n ];';
         return prop;
     }
     getShaclRequiredProperty(nome: string) {
         console.log(nome);
-        const prop = 'sh:property [ \n sh:path '+nome+ ';  \n sh:minCount 1; \n sh:maxCount 1; \n ];';
+        const prop = 'sh:property [ \n sh:path <'+nome+ '>;  \n sh:minCount 1; \n sh:maxCount 1; \n ];';
         return prop;
     }
     getShaclTargetClass(){
@@ -45,44 +45,44 @@ export class ShaclShape {
     }
     getShaclTarget (mainObject:string) {
         switch(mainObject) { 
-            case 'gbfsvcb:Station': { 
-                return '<https://w3id.org/gbfs/station>';
+            case 'gbfs:Station': { 
+                return '<https://w3id.org/gbfs/terms/station>';
                 break; 
             } 
-            case 'gbfsvcb:Bike': { 
-               return '<https://w3id.org/gbfs/bike>';
+            case 'gbfs:Bike': { 
+               return '<https://w3id.org/gbfs/terms/bike>';
                break;
             } 
-            case 'gbfsvcb:Alert': { 
-                return '<https://w3id.org/gbfs/alert>';
+            case 'gbfs:Alert': { 
+                return '<https://w3id.org/gbfs/terms/alert>';
                 break;
             }
-            case 'gbfsvcb:Region': { 
-                return '<https://w3id.org/gbfs/region>';
+            case 'gbfs:Region': { 
+                return '<https://w3id.org/gbfs/terms/region>';
                 break;
             }
-            case 'gbfsvcb:VehicleType': { 
-                return '<https://w3id.org/gbfs/vehicleType>';
+            case 'gbfs:VehicleType': { 
+                return '<https://w3id.org/gbfs/terms/vehicleType>';
                 break;
             }
-            case 'gbfsvcb:PricingPlan': { 
-                return '<https://w3id.org/gbfs/pricingPlan>';
+            case 'gbfs:PricingPlan': { 
+                return '<https://w3id.org/gbfs/terms/pricingPlan>';
                 break;
             }
-            case 'gbfsvcb:Version': { 
-                return '<https://w3id.org/gbfs/version>';
+            case 'gbfs:Version': { 
+                return '<https://w3id.org/gbfs/terms/version>';
                 break;
             }
-            case 'gbfsvcb:Calendar': { 
-                return '<https://w3id.org/gbfs/calendar>';
+            case 'gbfs:Calendar': { 
+                return '<https://w3id.org/gbfs/terms/calendar>';
                 break;
             }
-            case 'gbfsvcb:RentalHour': { 
-                return '<https://w3id.org/gbfs/rentalHour>';
+            case 'gbfs:RentalHour': { 
+                return '<https://w3id.org/gbfs/terms/rentalHour>';
                 break;
             }
-            case 'gbfsvcb:Feed': { 
-                return '<https://w3id.org/gbfs/feed>';
+            case 'gbfs:Feed': { 
+                return '<https://w3id.org/gbfs/terms/feed>';
                 break;
             } 
 

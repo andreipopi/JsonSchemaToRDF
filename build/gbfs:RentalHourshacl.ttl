@@ -1,23 +1,23 @@
-<https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
-sh:targetClass undefined;
+<https://w3id.org/gbfs/shapes/> a sh:NodeShape; 
+sh:targetClass <https://w3id.org/gbfs/terms/rentalHour>;
 sh:property [ 
- sh:path user_types;  
+ sh:path <user_types>;  
  sh:minCount 1; 
  sh:maxCount 1; 
  ];
 sh:property [ 
- sh:path days;  
+ sh:path <days>;  
  sh:minCount 1; 
  sh:maxCount 1; 
  ];
 sh:property [ 
- sh:path start_time;  
+ sh:path <start_time>;  
  sh:minCount 1; 
  sh:maxCount 1; 
  sh:datatype xsd:string; 
  ];
 sh:property [ 
- sh:path end_time;  
+ sh:path <end_time>;  
  sh:minCount 1; 
  sh:maxCount 1; 
  sh:datatype xsd:string; 

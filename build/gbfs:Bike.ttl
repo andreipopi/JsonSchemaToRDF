@@ -15,9 +15,9 @@
 @prefix vso: <http://purl.org/vso/ns#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
-<https://w3id.org/gbfs/vocabularies/bikes> rdf:type foaf:Document;
+<https://w3id.org/gbfs/terms/bikes> rdf:type foaf:Document;
     rdfs:comment "Describes the vehicles that are available for rent (as of v2.1-RC2)."@en;
-    vann:preferredNamespaceUri "https://w3id.org/gbfs/vocabularies/bikes#";
+    vann:preferredNamespaceUri "https://w3id.org/gbfs/terms/bikes#";
     dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
 <https://pietercolpaert.be/#me> rdf:type foaf:Person;
     foaf:mbox "mailto:pieter.colpaert@imec.be";

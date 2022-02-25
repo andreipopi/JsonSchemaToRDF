@@ -31,11 +31,11 @@ var RDFVocabulary = /** @class */ (function () {
     RDFVocabulary.prototype.basicsToQuads = function () {
         this.description = this.jsonSchema.description;
         this.id = this.jsonSchema.$id;
-        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/vocabularies/' + this.mainJsonObject, 'rdf:type', 'foaf:Document'));
-        this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/vocabularies/' + this.mainJsonObject, 'rdfs:comment', this.description));
-        this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/vocabularies/' + this.mainJsonObject, 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/vocabularies/' + this.mainJsonObject + '#'));
-        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/vocabularies/' + this.mainJsonObject, 'dcterms:creator', this.creator1));
-        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/vocabularies/' + this.mainJsonObject, 'dcterms:creator', this.creator2));
+        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/terms/' + this.mainJsonObject, 'rdf:type', 'foaf:Document'));
+        this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/terms/' + this.mainJsonObject, 'rdfs:comment', this.description));
+        this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/terms/' + this.mainJsonObject, 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/terms/' + this.mainJsonObject + '#'));
+        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/terms/' + this.mainJsonObject, 'dcterms:creator', this.creator1));
+        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/terms/' + this.mainJsonObject, 'dcterms:creator', this.creator2));
         this.writer.addQuad(this.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));

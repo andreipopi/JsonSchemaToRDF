@@ -5,7 +5,7 @@ exports.ShaclShape = void 0;
 var ShaclShape = /** @class */ (function () {
     // Constructors
     function ShaclShape(required, source, mainObj) {
-        this.shaclRoot = '<https://mymockwebsite.com/shapes/gbfs-station_information>';
+        this.shaclRoot = '<https://w3id.org/gbfs/shapes/>';
         this.requiredProperties = new Map();
         this.shaclFileText = '';
         this.fs = require('fs');
@@ -17,21 +17,21 @@ var ShaclShape = /** @class */ (function () {
     }
     // Methods
     ShaclShape.prototype.getShaclTypedProperty = function (nome, type) {
-        var prop = 'sh:property [ \n sh:path ' + nome + '; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ];';
+        var prop = 'sh:property [ \n sh:path <' + nome + '>; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ];';
         return prop;
     };
     ShaclShape.prototype.getShaclTypedRequiredProperty = function (nome, type) {
         console.log(nome);
-        var prop = 'sh:property [ \n sh:path ' + nome + ';  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ];';
+        var prop = 'sh:property [ \n sh:path <' + nome + '>;  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ];';
         return prop;
     };
     ShaclShape.prototype.getShaclProperty = function (nome) {
-        var prop = 'sh:property [ \n sh:path ' + nome + '; \n sh:maxCount 1; \n ];';
+        var prop = 'sh:property [ \n sh:path <' + nome + '>; \n sh:maxCount 1; \n ];';
         return prop;
     };
     ShaclShape.prototype.getShaclRequiredProperty = function (nome) {
         console.log(nome);
-        var prop = 'sh:property [ \n sh:path ' + nome + ';  \n sh:minCount 1; \n sh:maxCount 1; \n ];';
+        var prop = 'sh:property [ \n sh:path <' + nome + '>;  \n sh:minCount 1; \n sh:maxCount 1; \n ];';
         return prop;
     };
     ShaclShape.prototype.getShaclTargetClass = function () {
@@ -39,44 +39,44 @@ var ShaclShape = /** @class */ (function () {
     };
     ShaclShape.prototype.getShaclTarget = function (mainObject) {
         switch (mainObject) {
-            case 'gbfsvcb:Station': {
-                return '<https://w3id.org/gbfs/station>';
+            case 'gbfs:Station': {
+                return '<https://w3id.org/gbfs/terms/station>';
                 break;
             }
-            case 'gbfsvcb:Bike': {
-                return '<https://w3id.org/gbfs/bike>';
+            case 'gbfs:Bike': {
+                return '<https://w3id.org/gbfs/terms/bike>';
                 break;
             }
-            case 'gbfsvcb:Alert': {
-                return '<https://w3id.org/gbfs/alert>';
+            case 'gbfs:Alert': {
+                return '<https://w3id.org/gbfs/terms/alert>';
                 break;
             }
-            case 'gbfsvcb:Region': {
-                return '<https://w3id.org/gbfs/region>';
+            case 'gbfs:Region': {
+                return '<https://w3id.org/gbfs/terms/region>';
                 break;
             }
-            case 'gbfsvcb:VehicleType': {
-                return '<https://w3id.org/gbfs/vehicleType>';
+            case 'gbfs:VehicleType': {
+                return '<https://w3id.org/gbfs/terms/vehicleType>';
                 break;
             }
-            case 'gbfsvcb:PricingPlan': {
-                return '<https://w3id.org/gbfs/pricingPlan>';
+            case 'gbfs:PricingPlan': {
+                return '<https://w3id.org/gbfs/terms/pricingPlan>';
                 break;
             }
-            case 'gbfsvcb:Version': {
-                return '<https://w3id.org/gbfs/version>';
+            case 'gbfs:Version': {
+                return '<https://w3id.org/gbfs/terms/version>';
                 break;
             }
-            case 'gbfsvcb:Calendar': {
-                return '<https://w3id.org/gbfs/calendar>';
+            case 'gbfs:Calendar': {
+                return '<https://w3id.org/gbfs/terms/calendar>';
                 break;
             }
-            case 'gbfsvcb:RentalHour': {
-                return '<https://w3id.org/gbfs/rentalHour>';
+            case 'gbfs:RentalHour': {
+                return '<https://w3id.org/gbfs/terms/rentalHour>';
                 break;
             }
-            case 'gbfsvcb:Feed': {
-                return '<https://w3id.org/gbfs/feed>';
+            case 'gbfs:Feed': {
+                return '<https://w3id.org/gbfs/terms/feed>';
                 break;
             }
             default: {
