@@ -31,6 +31,7 @@ It transforms GBFS Json schemas into corresponding RDF vocabularies and Shacl sh
 ## Author
 Andrei Popescu <andrei.popescu@ugent.be>
 
+
 ## ToDos
 
     # List of unmanaged details
@@ -41,7 +42,7 @@ Andrei Popescu <andrei.popescu@ugent.be>
 
 ## Future Work
 * gbfs.json apparently has a slightly different structure, so it needs special treatment -> ignored for now
-* in the utopian scenario, we want `rdfVocabulary` to become fully generalisable; this way, the component could be applied to other usecases; How to do that? Available json-schema parsers? 
+* Main challenge: How to be fully general with respect to the Json Schema Specification? https://json-schema.org/draft/ 2020-12/json-schema-core.html
 
 
  
