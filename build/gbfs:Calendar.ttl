@@ -1,4 +1,4 @@
-@prefix gbfs: <https://w3id.org/gbfs/vocabularies/calendars#>.
+@prefix gbfs: <https://w3id.org/gbfs/terms>.
 @prefix schema: <http://schema.org/#>.
 @prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.

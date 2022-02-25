@@ -19,7 +19,7 @@ export class RDFVocabulary {
     mainObject: any;
     exploredObject:any; //object we are currently parsing: [0]: mainObject, [1]: nested object depth 1
     mainJsonObject: any;
-    prefixes: any;
+    prefixes: any[] = [];
     writer: any;
     map = new Map<string, string>();
 
@@ -39,6 +39,8 @@ export class RDFVocabulary {
     // ShaclShape
     shape: any;
     fileName: any;
+    config = require('./config-gbfs.json');
+
 
     // Constructors
     constructor ( source:string, mainObj: string ){
@@ -47,54 +49,12 @@ export class RDFVocabulary {
         this.mainObject = mainObj; 
         this.mainJsonObject = this.getMainJsonObject(this.mainObject);
         this.fileName = mainObj;
-        
-        this.map.set('bike_id', 'dcterms:identifier');
-        this.map.set('alert_id', 'dcterms:identifier');
-        this.map.set('station_id','dcterms:identifier');
-        this.map.set('vehicle_type_id','dcterms:identifier');
-        this.map.set( 'region_id', 'dbpedia-owl:region');
-        this.map.set('description','dcterms:description');
-        this.map.set('type', 'rdf:type');
-        this.map.set('last_updated', 'dcterms:modified' );
-        this.map.set('url', 'schema:url');
-        this.map.set('summary', 'ebucore:summary');
-        // Station properties terms
-        this.map.set( 'name', 'foaf:name');
-        this.map.set( 'short_name', 'rdfs:label');
-        this.map.set( 'lat', 'geo:lat');
-        this.map.set( 'lon', 'geo:long');
-        this.map.set( 'cross_street', 'airs:locatedAtCrossStreet');
-        this.map.set( 'post_code', 'dbpedia-owl:postalCode');
-        this.map.set( 'capacity', 'dbpedia-owl:capacity');
-        // FreeBikeStatus properties terms
-        this.map.set('creditcard', 'schema:CreditCard');
-        this.map.set('phone', 'foaf:phone');
-        // vehicle types
-        this.map.set('car', 'schema:car');
-        this.map.set('bicycle', 'vso:bicycle');
-
-        this.prefixes = {
-            prefixes: {
-                gbfs: 'https://w3id.org/gbfs/vocabularies/'+ this.mainJsonObject+'#',
-                schema: 'http://schema.org/#',
-                ebucore: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#',
-                rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-                rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-                foaf: 'http://xmlns.com/foaf/0.1/',
-                xsd: 'http://www.w3.org/2001/XMLSchema#',
-                dcterms: 'http://purl.org/dc/terms/',
-                vs: 'http://www.w3.org/2003/06/sw-vocab-status/ns#',
-                geo: 'http://www.w3.org/2003/01/geo/wgs84_pos#',
-                vann: 'http://purl.org/vocab/vann/',
-                owl: 'http://www.w3.org/2002/07/owl#',
-                jsonsc: 'https://www.w3.org/2019/wot/json-schema#',
-                airs: 'https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#',
-                vso: 'http://purl.org/vso/ns#',
-                "dbpedia-owl": 'http://dbpedia.org/ontology/',
-            }};
-
-            this.writer = new N3.Writer(this.prefixes);
+        for( let object in this.config.terms){
+            this.map.set(object, this.config.terms[object]);
+        }
+        this.writer = new N3.Writer({prefixes:this.config.prefixes});
     }
+    
     // Methods
     /** Creates and writes quads for the basic properties of a jsonSchema of the bike sharing system */
     basicsToQuads (){
