@@ -33,9 +33,7 @@ Andrei Popescu <andrei.popescu@ugent.be>
 
 ## ToDos
 
- * test
     # List of unmanaged details
-    - Shacl shapes creation needs better integration in the code.
     - start_time, end_time pattern in system_hours.json 
     - minimum/maximum in system_calendar.json
     - minimum in vehicle_types.json
