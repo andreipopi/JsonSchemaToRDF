@@ -4,17 +4,11 @@ import {ShaclShape} from './shaclShape';
 // Main objects that are passed to the rdfVocabulary.ts.
 // there is one per json schema.
 let schema_object = new Map<string, string>();
-schema_object.set('./files/station_information.json', 'gbfsvcb:Station');
-schema_object.set('./files/free_bike_status.json', 'gbfsvcb:Bike');
-schema_object.set('./files/system_alerts.json', 'gbfsvcb:Alert');
-schema_object.set('./files/system_regions.json', 'gbfsvcb:Region');
-schema_object.set('./files/vehicle_types.json', 'gbfsvcb:VehicleType');
-schema_object.set('./files/system_pricing_plan.json', 'gbfsvcb:PricingPlan');
-schema_object.set('./files/gbfs_versions.json', 'gbfsvcb:Version');
-schema_object.set('./files/system_calendar.json', 'gbfsvcb:Calendar');
-schema_object.set('./files/system_hours.json', 'gbfsvcb:RentalHour');
 
-const fs = require('fs');
+const config = require('./config-gbfs.json');
+for( let object in config.sources){
+    schema_object.set(object, config.sources[object]);
+}
 
 let hiddenClasses = []
 let i = 0;

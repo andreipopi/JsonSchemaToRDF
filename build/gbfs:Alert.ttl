@@ -1,0 +1,42 @@
+@prefix gbfs: <https://w3id.org/gbfs/vocabularies/alerts#>.
+@prefix schema: <http://schema.org/#>.
+@prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>.
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix jsonsc: <https://www.w3.org/2019/wot/json-schema#>.
+@prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
+@prefix vso: <http://purl.org/vso/ns#>.
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
+
+<https://w3id.org/gbfs/vocabularies/alerts> rdf:type foaf:Document;
+    rdfs:comment "Describes ad-hoc changes to the system."@en;
+    vann:preferredNamespaceUri "https://w3id.org/gbfs/vocabularies/alerts#";
+    dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
+<https://pietercolpaert.be/#me> rdf:type foaf:Person;
+    foaf:mbox "mailto:pieter.colpaert@imec.be";
+    foaf:name "Pieter Colpaert".
+gbfs:Alert rdf:type rdfs:Class.
+gbfs:times rdf:type rdf:Property;
+    rdfs:label "Array of objects indicating when the alert is in effect."@en;
+    rdfs:range gbfs:Times.
+gbfs:station_ids rdf:type rdf:Property;
+    rdfs:label "Array of identifiers of the stations for which this alert applies."@en;
+    rdfs:range gbfs:Station_ids.
+gbfs:region_ids rdf:type rdf:Property;
+    rdfs:label "Array of identifiers of the regions for which this alert applies."@en;
+    rdfs:range gbfs:Region_ids.
+gbfs:Times rdfs:label "Array of objects indicating when the alert is in effect."@en;
+    rdf:type rdfs:Class.
+gbfs:start rdf:type rdf:Property.
+gbfs:end rdf:type rdf:Property.
+gbfs:Station_ids rdfs:label "Array of identifiers of the stations for which this alert applies."@en;
+    rdf:type rdfs:Class.
+gbfs:Region_ids rdfs:label "Array of identifiers of the regions for which this alert applies."@en;
+    rdf:type rdfs:Class.

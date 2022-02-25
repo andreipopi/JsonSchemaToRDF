@@ -4,16 +4,10 @@ var rdfVocabulary_1 = require("./rdfVocabulary");
 // Main objects that are passed to the rdfVocabulary.ts.
 // there is one per json schema.
 var schema_object = new Map();
-schema_object.set('./files/station_information.json', 'gbfsvcb:Station');
-schema_object.set('./files/free_bike_status.json', 'gbfsvcb:Bike');
-schema_object.set('./files/system_alerts.json', 'gbfsvcb:Alert');
-schema_object.set('./files/system_regions.json', 'gbfsvcb:Region');
-schema_object.set('./files/vehicle_types.json', 'gbfsvcb:VehicleType');
-schema_object.set('./files/system_pricing_plan.json', 'gbfsvcb:PricingPlan');
-schema_object.set('./files/gbfs_versions.json', 'gbfsvcb:Version');
-schema_object.set('./files/system_calendar.json', 'gbfsvcb:Calendar');
-schema_object.set('./files/system_hours.json', 'gbfsvcb:RentalHour');
-var fs = require('fs');
+var config = require('./config-gbfs.json');
+for (var object in config.sources) {
+    schema_object.set(object, config.sources[object]);
+}
 var hiddenClasses = [];
 var i = 0;
 for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {

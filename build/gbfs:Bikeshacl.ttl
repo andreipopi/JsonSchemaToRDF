@@ -1,0 +1,30 @@
+<https://mymockwebsite.com/shapes/gbfs-station_information> a sh:NodeShape; 
+sh:targetClass undefined;
+sh:property [ 
+ sh:path bike_id;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path lat;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path lon;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path is_reserved;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path is_disabled;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ ];

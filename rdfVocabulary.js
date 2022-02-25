@@ -45,7 +45,7 @@ var RDFVocabulary = /** @class */ (function () {
         this.map.set('bicycle', 'vso:bicycle');
         this.prefixes = {
             prefixes: {
-                gbfsvcb: 'https://w3id.org/gbfs/vocabularies/' + this.mainJsonObject + '#',
+                gbfs: 'https://w3id.org/gbfs/vocabularies/' + this.mainJsonObject + '#',
                 schema: 'http://schema.org/#',
                 ebucore: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#',
                 rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
@@ -148,17 +148,17 @@ var RDFVocabulary = /** @class */ (function () {
             }
             // If the property does not exist in the map, then we want it added to the vocabulary
             if (this.map.has(term) == false) {
-                this.map.set(term, 'gbfsvcb:' + term); // Update our mapping with the new term: add   < term, 'gbfsvcb:'+term >
+                this.map.set(term, 'gbfs:' + term); // Update our mapping with the new term: add   < term, 'gbfs:'+term >
                 // Sub-properties of 'Station/term'
                 // if 'term' is an object and it has sub properties, or if it is an array
                 if ((termType == 'object' && termProperties != undefined) || termType == 'array') {
-                    this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdf:type', 'rdf:Property')); // Add the property and its label
+                    this.writer.addQuad(this.node_node_node('gbfs:' + term, 'rdf:type', 'rdf:Property')); // Add the property and its label
                     if (termDescription != undefined)
-                        this.writer.addQuad(this.node_node_literal('gbfsvcb:' + term, 'rdfs:label', termDescription.toString()));
+                        this.writer.addQuad(this.node_node_literal('gbfs:' + term, 'rdfs:label', termDescription.toString()));
                     var newClassName = this.capitalizeFirstLetter(term); // Since it is an object/array, we give it a new class as a range
-                    this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdfs:range', 'gbfsvcb:' + newClassName));
+                    this.writer.addQuad(this.node_node_node('gbfs:' + term, 'rdfs:range', 'gbfs:' + newClassName));
                     // Add the new classes to a hiddenClasses array; these will be explored by this function in a second stage.
-                    hiddenClasses = hiddenClasses.concat('gbfsvcb:' + newClassName);
+                    hiddenClasses = hiddenClasses.concat('gbfs:' + newClassName);
                     //console.log('HIDDEN CLASSES: ',hiddenClasses);
                     //console.log("subItems",subItems);
                     // Either sub properties
@@ -169,14 +169,14 @@ var RDFVocabulary = /** @class */ (function () {
                                 console.log("subproperty", subProperty);
                                 console.log(subsubProperty);
                                 // Add the subproperty to the vocabulary
-                                //this.writer.addQuad(this.node_node_node('gbfsvcb:'+newClassName, 'rdf:Property','gbfsvcb:'+ subProperty));
+                                //this.writer.addQuad(this.node_node_node('gbfs:'+newClassName, 'rdf:Property','gbfs:'+ subProperty));
                                 // Check if there is an available description
                                 if (subsubProperty.description != undefined) {
-                                    this.writer.addQuad(this.node_node_literal('gbfsvcb:' + subProperty, 'rdfs:label', subsubProperty.description));
+                                    this.writer.addQuad(this.node_node_literal('gbfs:' + subProperty, 'rdfs:label', subsubProperty.description));
                                 }
                                 // and/or a type
                                 if (subsubProperty.type != undefined) {
-                                    this.writer.addQuad(this.node_node_literal('gbfsvcb:' + subProperty, 'rdf:type', subsubProperty.type));
+                                    this.writer.addQuad(this.node_node_literal('gbfs:' + subProperty, 'rdf:type', subsubProperty.type));
                                 }
                             } // else: we skip the type subproperties because of the modelling differences, e.g. see  station_area vs rental_uris vs rental_methods
                         }
@@ -205,7 +205,7 @@ var RDFVocabulary = /** @class */ (function () {
                                 }
                             }
                             console.log("this is the list of values", oneOfValues);
-                            var subPropQuad = this.node_node_list('gbfsvcb:' + newClassName, 'owl:oneOf', oneOfValues);
+                            var subPropQuad = this.node_node_list('gbfs:' + newClassName, 'owl:oneOf', oneOfValues);
                             this.writer.addQuad(subPropQuad);
                         }
                     }
@@ -214,16 +214,16 @@ var RDFVocabulary = /** @class */ (function () {
                     // not an object or array -> it has a primitive datatype
                     if (termType != undefined) {
                         // Then create the quad and add it to the writer
-                        this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdf:type', 'rdf:Property'));
+                        this.writer.addQuad(this.node_node_node('gbfs:' + term, 'rdf:type', 'rdf:Property'));
                         if (termDescription != undefined) {
-                            this.writer.addQuad(this.node_node_literal('gbfsvcb:' + term, 'rdfs:label', termDescription.toString()));
-                            this.writer.addQuad('gbfsvcb:' + term, 'rdfs:range', literal(termDescription.toString(), 'en'));
+                            this.writer.addQuad(this.node_node_literal('gbfs:' + term, 'rdfs:label', termDescription.toString()));
+                            this.writer.addQuad('gbfs:' + term, 'rdfs:range', literal(termDescription.toString(), 'en'));
                         }
                     }
                     // it has some other datatype
                     else {
-                        this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdf:type', 'rdf:Property'));
-                        this.writer.addQuad(this.node_node_literal('gbfsvcb:' + term, 'rdfs:label', termDescription.toString()));
+                        this.writer.addQuad(this.node_node_node('gbfs:' + term, 'rdf:type', 'rdf:Property'));
+                        this.writer.addQuad(this.node_node_literal('gbfs:' + term, 'rdfs:label', termDescription.toString()));
                         // Might be a more complex type, e.g. oneOf
                     }
                 }
@@ -242,14 +242,14 @@ var RDFVocabulary = /** @class */ (function () {
                         }
                     }
                     console.log("this is the list of values", oneOfValues);
-                    var subPropQuad = this.node_node_list('gbfsvcb:' + term, 'owl:oneOf', oneOfValues);
+                    var subPropQuad = this.node_node_list('gbfs:' + term, 'owl:oneOf', oneOfValues);
                     this.writer.addQuad(subPropQuad);
                 }
                 if (termType == 'integer') {
-                    this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdfs:range', 'xsd:integer'));
+                    this.writer.addQuad(this.node_node_node('gbfs:' + term, 'rdfs:range', 'xsd:integer'));
                 }
                 if (termType == 'boolean') {
-                    this.writer.addQuad(this.node_node_node('gbfsvcb:' + term, 'rdfs:range', 'xsd:boolean'));
+                    this.writer.addQuad(this.node_node_node('gbfs:' + term, 'rdfs:range', 'xsd:boolean'));
                 }
             }
             else {
@@ -362,100 +362,100 @@ var RDFVocabulary = /** @class */ (function () {
     };
     RDFVocabulary.prototype.getMainJsonObject = function (mainObject) {
         switch (mainObject) {
-            case 'gbfsvcb:Station': {
+            case 'gbfs:Station': {
                 return 'stations';
                 break;
             }
-            case 'gbfsvcb:Bike': {
+            case 'gbfs:Bike': {
                 return 'bikes';
                 break;
             }
-            case 'gbfsvcb:Alert': {
+            case 'gbfs:Alert': {
                 return 'alerts';
                 break;
             }
-            case 'gbfsvcb:Region': {
+            case 'gbfs:Region': {
                 return 'regions';
                 break;
             }
-            case 'gbfsvcb:VehicleType': {
+            case 'gbfs:VehicleType': {
                 return 'vehicle_types';
                 break;
             }
-            case 'gbfsvcb:PricingPlan': {
+            case 'gbfs:PricingPlan': {
                 return 'plans';
                 break;
             }
-            case 'gbfsvcb:Version': {
+            case 'gbfs:Version': {
                 return 'versions';
                 break;
             }
-            case 'gbfsvcb:Calendar': {
+            case 'gbfs:Calendar': {
                 return 'calendars';
                 break;
             }
-            case 'gbfsvcb:RentalHour': {
+            case 'gbfs:RentalHour': {
                 return 'rental_hours';
                 break;
             }
-            case 'gbfsvcb:Feed': {
+            case 'gbfs:Feed': {
                 return 'feeds';
                 break;
             }
             // ---- Nested classes ----
-            case 'gbfsvcb:Per_km_pricing': {
+            case 'gbfs:Per_km_pricing': {
                 return 'per_km_pricing';
                 break;
             }
-            case 'gbfsvcb:Per_min_pricing': {
+            case 'gbfs:Per_min_pricing': {
                 return 'per_min_pricing';
                 break;
             }
             // Alert.ttl
-            case 'gbfsvcb:Times': {
+            case 'gbfs:Times': {
                 return 'times';
                 break;
             }
-            case 'gbfsvcb:Station_ids': {
+            case 'gbfs:Station_ids': {
                 return 'station_ids';
                 break;
             }
-            case 'gbfsvcb:Region_ids': {
+            case 'gbfs:Region_ids': {
                 return 'region_ids';
                 break;
             }
             // Rental Hour
-            case 'gbfsvcb:User_types': {
+            case 'gbfs:User_types': {
                 return 'user_types';
                 break;
             }
-            case 'gbfsvcb:Days': {
+            case 'gbfs:Days': {
                 return 'days';
                 break;
             }
             // Station Information
-            case 'gbfsvcb:Rental_methods': {
+            case 'gbfs:Rental_methods': {
                 return 'rental_methods';
                 break;
             }
-            case 'gbfsvcb:Station_area': {
+            case 'gbfs:Station_area': {
                 return 'station_area';
                 break;
             }
-            case 'gbfsvcb:Rental_uris': {
+            case 'gbfs:Rental_uris': {
                 return 'rental_uris';
                 break;
             }
             // and so on...
-            case 'gbfsvcb:Return_type': {
+            case 'gbfs:Return_type': {
                 return 'return_type';
                 break;
             }
-            case 'gbfsvcb:Vehicle_assets': {
+            case 'gbfs:Vehicle_assets': {
                 return 'vehicle_assets';
                 break;
             }
-            case 'gbfsvcb:Pricing_plan_ids': {
+            case 'gbfs:Pricing_plan_ids': {
                 return 'pricing_plan_ids';
                 break;
             }

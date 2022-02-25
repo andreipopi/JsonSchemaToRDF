@@ -1,0 +1,43 @@
+@prefix gbfs: <https://w3id.org/gbfs/vocabularies/calendars#>.
+@prefix schema: <http://schema.org/#>.
+@prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>.
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix jsonsc: <https://www.w3.org/2019/wot/json-schema#>.
+@prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
+@prefix vso: <http://purl.org/vso/ns#>.
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
+
+<https://w3id.org/gbfs/vocabularies/calendars> rdf:type foaf:Document;
+    rdfs:comment "Describes the operating calendar for a system."@en;
+    vann:preferredNamespaceUri "https://w3id.org/gbfs/vocabularies/calendars#";
+    dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
+<https://pietercolpaert.be/#me> rdf:type foaf:Person;
+    foaf:mbox "mailto:pieter.colpaert@imec.be";
+    foaf:name "Pieter Colpaert".
+gbfs:Calendar rdf:type rdfs:Class.
+gbfs:start_month rdf:type rdf:Property;
+    rdfs:label "Starting month for the system operations."@en;
+    rdfs:range xsd:integer.
+gbfs:start_day rdf:type rdf:Property;
+    rdfs:label "Starting day for the system operations."@en;
+    rdfs:range xsd:integer.
+gbfs:start_year rdf:type rdf:Property;
+    rdfs:label "Starting year for the system operations."@en;
+    rdfs:range xsd:integer.
+gbfs:end_month rdf:type rdf:Property;
+    rdfs:label "End month for the system operations."@en;
+    rdfs:range xsd:integer.
+gbfs:end_day rdf:type rdf:Property;
+    rdfs:label "End day for the system operations."@en;
+    rdfs:range xsd:integer.
+gbfs:end_year rdf:type rdf:Property;
+    rdfs:label "End year for the system operations."@en;
+    rdfs:range xsd:integer.

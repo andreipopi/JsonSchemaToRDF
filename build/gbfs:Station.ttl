@@ -1,0 +1,71 @@
+@prefix gbfs: <https://w3id.org/gbfs/vocabularies/stations#>.
+@prefix schema: <http://schema.org/#>.
+@prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>.
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix jsonsc: <https://www.w3.org/2019/wot/json-schema#>.
+@prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
+@prefix vso: <http://purl.org/vso/ns#>.
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
+
+<https://w3id.org/gbfs/vocabularies/stations> rdf:type foaf:Document;
+    rdfs:comment "Details including system operator, system location, year implemented, URL, contact info, time zone."@en;
+    vann:preferredNamespaceUri "https://w3id.org/gbfs/vocabularies/stations#";
+    dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
+<https://pietercolpaert.be/#me> rdf:type foaf:Person;
+    foaf:mbox "mailto:pieter.colpaert@imec.be";
+    foaf:name "Pieter Colpaert".
+gbfs:Station rdf:type rdfs:Class.
+gbfs:address rdf:type rdf:Property;
+    rdfs:label "Address where station is located."@en.
+gbfs:rental_methods rdf:type rdf:Property;
+    rdfs:label "Payment methods accepted at this station."@en;
+    rdfs:range gbfs:Rental_methods.
+gbfs:Rental_methods owl:oneOf (<key> schema:CreditCard <paypass> <applepay> <androidpay> <transitcard> <accountnumber> foaf:phone).
+gbfs:is_virtual_station rdf:type rdf:Property;
+    rdfs:label "Is this station a location with or without physical infrastructure? (added in v2.1-RC)"@en;
+    rdfs:range xsd:boolean.
+gbfs:station_area rdf:type rdf:Property;
+    rdfs:label "A multipolygon that describes the area of a virtual station (added in v2.1-RC)."@en;
+    rdfs:range gbfs:Station_area.
+gbfs:coordinates rdf:type "array".
+gbfs:vehicle_capacity rdf:type rdf:Property;
+    rdfs:label "An object where each key is a vehicle_type_id and the value is a number presenting the total number of vehicles of this type that can park within the station_area (added in v2.1-RC)."@en.
+gbfs:is_valet_station rdf:type rdf:Property;
+    rdfs:label "Are valet services provided at this station? (added in v2.1-RC)"@en;
+    rdfs:range xsd:boolean.
+gbfs:is_charging_station rdf:type rdf:Property;
+    rdfs:label "Does the station support charging of electric vehicles? (added in v2.3-RC)"@en;
+    rdfs:range xsd:boolean.
+gbfs:rental_uris rdf:type rdf:Property;
+    rdfs:label "Contains rental uris for Android, iOS, and web in the android, ios, and web fields (added in v1.1)."@en;
+    rdfs:range gbfs:Rental_uris.
+gbfs:android rdfs:label "URI that can be passed to an Android app with an intent (added in v1.1)."@en;
+    rdf:type "string".
+gbfs:ios rdfs:label "URI that can be used on iOS to launch the rental app for this station (added in v1.1)."@en;
+    rdf:type "string".
+gbfs:web rdfs:label "URL that can be used by a web browser to show more information about renting a vehicle at this station (added in v1.1)."@en;
+    rdf:type "string".
+gbfs:vehicle_type_capacity rdf:type rdf:Property;
+    rdfs:label "An object where each key is a vehicle_type_id and the value is a number representing the total docking points installed at this station for each vehicle type (added in v2.1-RC)."@en.
+gbfs:Rental_methods rdfs:label "Payment methods accepted at this station."@en;
+    rdf:type rdfs:Class.
+gbfs:Station_area rdfs:label "A multipolygon that describes the area of a virtual station (added in v2.1-RC)."@en;
+    rdf:type rdfs:Class.
+gbfs:coordinates rdf:type rdf:Property;
+    rdfs:range gbfs:Coordinates.
+gbfs:Rental_uris rdfs:label "Contains rental uris for Android, iOS, and web in the android, ios, and web fields (added in v1.1)."@en;
+    rdf:type rdfs:Class.
+gbfs:android rdf:type rdf:Property;
+    rdfs:label "URI that can be passed to an Android app with an intent (added in v1.1)."@en.
+gbfs:ios rdf:type rdf:Property;
+    rdfs:label "URI that can be used on iOS to launch the rental app for this station (added in v1.1)."@en.
+gbfs:web rdf:type rdf:Property;
+    rdfs:label "URL that can be used by a web browser to show more information about renting a vehicle at this station (added in v1.1)."@en.
