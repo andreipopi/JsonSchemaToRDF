@@ -55,8 +55,8 @@ var SMDPattern = /** @class */ (function () {
         // SMD
         var path = this.jsonSchema[this.mainJsonObject]; // Path to the main object of the Json Schema
         console.log("path", path);
-        var properties = path[2]; // Path to the properties of the main object
-        console.log("properties", properties);
+        var properties = path[2].properties; // Path to the properties of the main object
+        //console.log("properties", properties);
         // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
         var jsonobj;
@@ -80,7 +80,7 @@ var SMDPattern = /** @class */ (function () {
         // Properties of the main object ('allOf')
         var hiddenClasses = []; // usefull for the next iteration (depth = 1)
         for (var term in properties) {
-            console.log("Property: ", term);
+            console.log("term: ", term);
             // Get the term type, subproperties, and description
             var termType = path;
             var termProperties = path;
@@ -110,12 +110,12 @@ var SMDPattern = /** @class */ (function () {
             }
             // Else we are at iteration 0 and we assume all having items.properties
             else {
-                termType = path.properties[term].type;
-                termProperties = path.properties[term].properties;
-                termDescription = path.properties[term].description;
-                directEnum = path.properties[term]["enum"];
-                subProperties = path.properties[term].properties;
-                subItems = path.properties[term].items;
+                termType = path[2].properties.type;
+                termProperties = path[2].properties.properties;
+                termDescription = path[2].properties.description;
+                directEnum = path[2].properties["enum"];
+                subProperties = path[2].properties.properties;
+                subItems = path[2].properties.items;
             }
             // If the property does not exist in the map, then we want it added to the vocabulary
             if (this.map.has(term) == false) {
