@@ -1,0 +1,44 @@
+{
+    "sources": {
+      "./SmartDataModels/dataModel.json": "sdm:ElectricalMeasurment"
+    },
+  
+    "prefixes": {
+      "sdm": "https://smart-data-models.github.io/dataModel.Energy/ThreePhaseAcMeasurement/terms",
+      "schema": "http://schema.org/#",
+      "ebucore": "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#",
+      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+      "foaf": "http://xmlns.com/foaf/0.1/",
+      "xsd": "http://www.w3.org/2001/XMLSchema#",
+      "dcterms": "http://purl.org/dc/terms/",
+      "vs": "http://www.w3.org/2003/06/sw-vocab-status/ns#",
+      "geo": "http://www.w3.org/2003/01/geo/wgs84_pos#",
+      "vann": "http://purl.org/vocab/vann/",
+      "owl": "http://www.w3.org/2002/07/owl#",
+      "jsonsc": "https://www.w3.org/2019/wot/json-schema#",
+      "airs": "https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#",
+      "vso": "http://purl.org/vso/ns#",
+      "dbpedia-owl": "http://dbpedia.org/ontology/"
+    },
+  
+    "terms": {
+      "description":"dcterms:description",
+      "type": "rdf:type",
+      "last_updated": "dcterms:modified" ,
+      "url": "schema:url",
+      "summary": "ebucore:summary",
+      "name": "foaf:name",
+      "short_name": "rdfs:label",
+      "lat": "geo:lat",
+      "lon": "geo:long",
+      "cross_street": "airs:locatedAtCrossStreet",
+      "post_code": "dbpedia-owl:postalCode",
+      "capacity": "dbpedia-owl:capacity",
+      "creditcard": "schema:CreditCard",
+      "phone": "foaf:phone",
+      "car": "schema:car"
+    }
+  
+  }
+  

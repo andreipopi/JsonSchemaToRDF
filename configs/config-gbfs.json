@@ -1,14 +1,14 @@
 {
   "sources": {
-    "./files/station_information.json": "gbfs:Station",
-    "./files/free_bike_status.json": "gbfs:Bike",
-    "./files/system_alerts.json": "gbfs:Alert",
-    "./files/system_regions.json": "gbfs:Region",
-    "./files/vehicle_types.json": "gbfs:VehicleType",
-    "./files/system_pricing_plan.json": "gbfs:PricingPlan",
-    "./files/gbfs_versions.json": "gbfs:Version",
-    "./files/system_calendar.json": "gbfs:Calendar",
-    "./files/system_hours.json": "gbfs:RentalHour"
+    "./GBFS/station_information.json": "gbfs:Station",
+    "./GBFS/free_bike_status.json": "gbfs:Bike",
+    "./GBFS/system_alerts.json": "gbfs:Alert",
+    "./GBFS/system_regions.json": "gbfs:Region",
+    "./GBFS/vehicle_types.json": "gbfs:VehicleType",
+    "./GBFS/system_pricing_plan.json": "gbfs:PricingPlan",
+    "./GBFS/gbfs_versions.json": "gbfs:Version",
+    "./GBFS/system_calendar.json": "gbfs:Calendar",
+    "./GBFS/system_hours.json": "gbfs:RentalHour"
   },
 
   "prefixes": {

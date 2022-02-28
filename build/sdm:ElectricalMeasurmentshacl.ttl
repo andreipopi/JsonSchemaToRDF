@@ -1,0 +1,2 @@
+<https://w3id.org/gbfs/shapes/> a sh:NodeShape; 
+sh:targetClass undefined;

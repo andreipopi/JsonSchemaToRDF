@@ -1,4 +1,4 @@
-@prefix gbfs: <https://w3id.org/gbfs/terms>.
+@prefix sdm: <https://smart-data-models.github.io/dataModel.Energy/ThreePhaseAcMeasurement/terms>.
 @prefix schema: <http://schema.org/#>.
 @prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
@@ -15,29 +15,11 @@
 @prefix vso: <http://purl.org/vso/ns#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
-<https://w3id.org/gbfs/terms/calendars> rdf:type foaf:Document;
-    rdfs:comment "Describes the operating calendar for a system."@en;
-    vann:preferredNamespaceUri "https://w3id.org/gbfs/terms/calendars#";
+<https://w3id.org/sdm/terms/allOf> rdf:type foaf:Document;
+    rdfs:comment "An electrical  measurement from a system that uses three phase alternating current."@en;
+    vann:preferredNamespaceUri "https://w3id.org/sdm/terms/allOf#";
     dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
 <https://pietercolpaert.be/#me> rdf:type foaf:Person;
     foaf:mbox "mailto:pieter.colpaert@imec.be";
     foaf:name "Pieter Colpaert".
-gbfs:Calendar rdf:type rdfs:Class.
-gbfs:start_month rdf:type rdf:Property;
-    rdfs:label "Starting month for the system operations."@en;
-    rdfs:range xsd:integer.
-gbfs:start_day rdf:type rdf:Property;
-    rdfs:label "Starting day for the system operations."@en;
-    rdfs:range xsd:integer.
-gbfs:start_year rdf:type rdf:Property;
-    rdfs:label "Starting year for the system operations."@en;
-    rdfs:range xsd:integer.
-gbfs:end_month rdf:type rdf:Property;
-    rdfs:label "End month for the system operations."@en;
-    rdfs:range xsd:integer.
-gbfs:end_day rdf:type rdf:Property;
-    rdfs:label "End day for the system operations."@en;
-    rdfs:range xsd:integer.
-gbfs:end_year rdf:type rdf:Property;
-    rdfs:label "End year for the system operations."@en;
-    rdfs:range xsd:integer.
+sdm:ElectricalMeasurment rdf:type rdfs:Class.
