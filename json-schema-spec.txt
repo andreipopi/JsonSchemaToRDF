@@ -1,0 +1,47 @@
+JSON Schema asserts what a JSON document must look like, ways to extract information from it, and how to interact with it.
+JSON Schema is a JSON media type for defining the structure of JSON data. 
+JSON Schema is intended to define validation, documentation, hyperlink navigation, and interaction control of JSON data.
+
+JSON Schema uses keywords to assert constraints on JSON instances or annotate those instances with additional information.
+
+
+
+Core Vocabulary that must be supported by any implementation:
+
+$ (means it is required)
+
+json schema keywords categories:
+
+- assertions (instance satisfies constraints)
+- annotations (attach information)
+- applicators (apply subschemas to parts of the instance)
+
+- extension
+
+
+*Lexical / Dynamic Scope
+
+The lexical scope of a keyword is determined by the nested JSON data structure of objects and arrays. 
+
+
+
+JSON Schema Core: a schema defined by the following keywords:
+
+- $schema (decalres a meta-schema)
+    useful for: - declaring vocabularies in use with $Vocabulary
+                - describing valid schema syntax
+                Each vocabulary typically identifies a meta-schema consisting 
+                only of the vocabulary's keywords.
+
+$schema: json schema dialect identifier/ identifier of a resource
+         (must be an URI containing a scheme)
+
+$vocabulary: 
+
+$id: canonical URI
+    The presence of "$id" in a subschema indicates that the subschema 
+    constitutes a distinct schema resource within a single schema document.
+
+
+
+

@@ -67,7 +67,6 @@ export class RDFVocabulary {
         this.writer.addQuad(this.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
-
         // Create a ShaclShape object and insert the first entries
         this.shape = new ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
         this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();

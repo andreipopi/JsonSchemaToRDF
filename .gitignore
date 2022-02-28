@@ -4,6 +4,5 @@ node_modules
 steps.txt
 shacl.ttl
 turtleTranslation.ttl
-.mappingProblems.txt
 .rdfVocabularyOriginal.ts
-.deprecated.txt
+.json-schema-spec.txt
