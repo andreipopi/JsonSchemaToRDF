@@ -80,17 +80,12 @@ export class SMDPattern {
     */
     propertiesToRDF (depth:number){
         
-        // GBFS
-        // let path = this.jsonSchema.properties.data.properties[this.mainJsonObject]; // Path to the main object of the Json Schema
-        // let properties = path.items.properties; // Path to the properties of the main object
-
+        console.log("main object begininf function", this.mainObject);
         // SMD
         let path = this.jsonSchema[this.mainJsonObject]; // Path to the main object of the Json Schema
-        console.log("path", path);
 
         let properties = path[2].properties; // Path to the properties of the main object
 
-        console.log("properties", properties);
         //console.log("properties", properties);
 
         // GET the properties of the main object
@@ -98,10 +93,14 @@ export class SMDPattern {
         let jsonobj: any;
         jsonobj= this.getMainJsonObject(this.mainObject);
         
-        /*
+   
         // GBFS
         if(depth == 1){ // Then we need the path to the nested object/array
-            path = path.items.properties[jsonobj];
+            
+            console.log(this.mainObject);
+            console.log(jsonobj);
+            path = path[2].properties[jsonobj];
+            console.log("path depth1", path);
             // the object has either properties or items/properties
             if (path.properties == undefined){
                 properties = path.items.properties;
@@ -111,7 +110,7 @@ export class SMDPattern {
             }
             this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
         }
-        */
+       
 
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
@@ -131,20 +130,20 @@ export class SMDPattern {
             // If we are at the second iteration, we have variable structure: some objects have items.properties, some only .properties
             if (depth > 0){
                 if(path.items == undefined ){
-                    termType = path[2].properties[term].type;
-                    termProperties = path[2].properties[term].properties; 
-                    termDescription = path[2].properties[term].description;
-                    directEnum = path[2].properties[term].enum;
-                    subProperties = path[2].properties[term].properties;
-                    subItems = path[2].properties[term].items;
+                    termType = path.properties[term].type; // dont confuse with initial path set for depth = 0, path has already been updated in the previous (if depth=1)
+                    termProperties = path.properties[term].properties; 
+                    termDescription = path.properties[term].description;
+                    directEnum = path.properties[term].enum;
+                    subProperties = path.properties[term].properties;
+                    subItems = path.properties[term].items;
                 }
                 else{
-                    termType = path[2].properties[term].type;
-                    termProperties = path[2].properties[term].properties;
-                    termDescription = path[2].properties[term].description;
-                    directEnum = path[2].properties[term].enum;
-                    subProperties = path[2].properties[term].properties;
-                    subItems = path[2].properties[term].items;
+                    termType = path.properties[term].type;
+                    termProperties = path.properties[term].properties;
+                    termDescription = path.properties[term].description;
+                    directEnum = path.properties[term].enum;
+                    subProperties = path.properties[term].properties;
+                    subItems = path.properties[term].items;
                 }
             }
             // Else we are at iteration 0 and we assume all having items.properties
@@ -401,15 +400,97 @@ export class SMDPattern {
     }
     getMainJsonObject (mainObject:string) {
         switch(mainObject) { 
+            
             case 'sdm:ElectricalMeasurment': { 
                 return 'allOf';
                 break; 
             } 
-
-
             // ---- Nested classes ----
-           
-           
+            case 'sdm:RefDevice': { 
+                return 'refDevice';
+                break; 
+            }  
+            case 'sdm:RefTargetDevice': { 
+                return 'refTargetDevice';
+                break; 
+            }
+            case 'sdm:ActiveEnergyImport': { 
+                return 'activeEnergyImport';
+                break; 
+            }
+            case 'sdm:ReactiveEnergyImport': { 
+                return 'reactiveEnergyImport';
+                break; 
+            }
+            case 'sdm:ApparentEnergyImport': { 
+                return 'apparentEnergyImport';
+                break; 
+            }
+            case 'sdm:ApparentEnergyImport': { 
+                return 'apparentEnergyImport';
+                break; 
+            }
+            case 'sdm:ApparentEnergyImport': { 
+                return 'apparentEnergyImport';
+                break; 
+            }
+            case 'sdm:ApparentEnergyImport': { 
+                return 'apparentEnergyImport';
+                break; 
+            }
+            case 'sdm:ActiveEnergyExport': { 
+                return 'activeEnergyExport';
+                break; 
+            }
+            case 'sdm:ReactiveEnergyExport': { 
+                return 'reactiveEnergyExport';
+                break; 
+            }
+            case 'sdm:ApparentEnergyExport': { 
+                return 'apparentEnergyExport';
+                break; 
+            }
+            case 'sdm:ActivePower': { 
+                return 'activePower';
+                break; 
+            }
+            case 'sdm:ReactivePower': { 
+                return 'reactivePower';
+                break; 
+            }
+            case 'sdm:ApparentPower': { 
+                return 'apparentPower';
+                break; 
+            }
+            case 'sdm:PowerFactor': { 
+                return 'powerFactor';
+                break; 
+            }
+            case 'sdm:DisplacementPowerFactor': { 
+                return 'displacementPowerFactor';
+                break; 
+            }
+            case 'sdm:Current': { 
+                return 'current';
+                break; 
+            }
+            case 'sdm:PhaseVoltage': { 
+                return 'phaseVoltage';
+                break; 
+            }
+            case 'sdm:PhaseToPhaseVoltage': { 
+                return 'phaseToPhaseVoltage';
+                break; 
+            }
+            case 'sdm:ThdVoltage': { 
+                return 'thdVoltage';
+                break; 
+            }
+            case 'sdm:ThdCurrent': { 
+                return 'thdCurrent';
+                break; 
+            }
+
          } 
     }
 

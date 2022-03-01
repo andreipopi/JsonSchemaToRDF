@@ -38,6 +38,7 @@ for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
     for (var _c = 0, hiddenClasses_1 = hiddenClasses; _c < hiddenClasses_1.length; _c++) {
         var cls = hiddenClasses_1[_c];
         rdfVocab.setMainObject(cls);
+        console.log("main object", cls);
         rdfVocab.propertiesToRDF(1);
     }
     rdfVocab.writeTurtle();

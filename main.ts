@@ -45,6 +45,7 @@ for (let [schema,object] of Array.from(schema_object)){
     
     for (const cls of hiddenClasses){
         rdfVocab.setMainObject(cls);
+        console.log("main object", cls);
         rdfVocab.propertiesToRDF(1);
     }
     

@@ -152,21 +152,46 @@ sdm:thdCurrent rdf:type rdf:Property;
 sdm:L1 rdf:type "number".
 sdm:L2 rdf:type "number".
 sdm:L3 rdf:type "number".
-sdm:RefDevice rdf:type rdfs:Class.
-sdm:RefTargetDevice rdf:type rdfs:Class.
-sdm:ActiveEnergyImport rdf:type rdfs:Class.
-sdm:ReactiveEnergyImport rdf:type rdfs:Class.
-sdm:ApparentEnergyImport rdf:type rdfs:Class.
-sdm:ActiveEnergyExport rdf:type rdfs:Class.
-sdm:ReactiveEnergyExport rdf:type rdfs:Class.
-sdm:ApparentEnergyExport rdf:type rdfs:Class.
-sdm:ActivePower rdf:type rdfs:Class.
-sdm:ReactivePower rdf:type rdfs:Class.
-sdm:ApparentPower rdf:type rdfs:Class.
-sdm:PowerFactor rdf:type rdfs:Class.
-sdm:DisplacementPowerFactor rdf:type rdfs:Class.
-sdm:Current rdf:type rdfs:Class.
-sdm:PhaseVoltage rdf:type rdfs:Class.
-sdm:PhaseToPhaseVoltage rdf:type rdfs:Class.
-sdm:ThdVoltage rdf:type rdfs:Class.
-sdm:ThdCurrent rdf:type rdfs:Class.
+sdm:RefDevice rdfs:label "Relationship. Device(s) used to obtain the measurement."@en;
+    rdf:type rdfs:Class.
+sdm:RefTargetDevice rdfs:label "Relationship. Device(s) for which the measurement was taken."@en;
+    rdf:type rdfs:Class.
+sdm:ActiveEnergyImport rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'kilowatt hour (kWh)'. Active energy imported i.e. consumed per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en;
+    rdf:type rdfs:Class.
+sdm:L1 rdf:type rdf:Property.
+sdm:L2 rdf:type rdf:Property.
+sdm:L3 rdf:type rdf:Property.
+sdm:ReactiveEnergyImport rdfs:label "Property. Model:'kilovolt-ampere-reactive-hour (kVArh)'. Units:'http://schema.org/StructuredValue'. Fundamental frequency reactive energy imported i.e. consumed per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en;
+    rdf:type rdfs:Class.
+sdm:ApparentEnergyImport rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'kilovolt-ampere-hour (kVAh)'. Apparent energy imported i.e. consumed per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en;
+    rdf:type rdfs:Class.
+sdm:ActiveEnergyExport rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'kilowatt hour (kWh)'. Active energy exported per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en;
+    rdf:type rdfs:Class.
+sdm:ReactiveEnergyExport rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'kilovolt-ampere-reactive-hour (kVArh)'. Fundamental frequency reactive energy exported per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en;
+    rdf:type rdfs:Class.
+sdm:ApparentEnergyExport rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'kilovolt-ampere-hour (kVAh)'. Apparent energy exported per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en;
+    rdf:type rdfs:Class.
+sdm:ActivePower rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'watt (W)'.Active power consumed per phase. The actual values will beconveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3. "@en;
+    rdf:type rdfs:Class.
+sdm:ReactivePower rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'volts-ampere-reactive (VAr)'. Fundamental frequency reactive power. The actual values will be conveyed by subproperties whose names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en;
+    rdf:type rdfs:Class.
+sdm:ApparentPower rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'volt-ampere (VA)'. Apparent power consumed per phase. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3"@en;
+    rdf:type rdfs:Class.
+sdm:PowerFactor rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'-1 to +1'. Power factor for each phase. The actual values will be conveyed by one subproperty per alternating current phase: L1, L2 and L3"@en;
+    rdf:type rdfs:Class.
+sdm:DisplacementPowerFactor rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'-1 to +1'. Displacement power factor for each phase. The quantity is based on the fundamental frequency of the system. The actual values will be conveyed by one subproperty per alternating current phase: L1, L2 and L3"@en;
+    rdf:type rdfs:Class.
+sdm:Current rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'Ampers (A)'. Electrical current. The actual values will be conveyed by one subproperty per alternating current phase and the neutral wire: L1, L2, L3 and N."@en;
+    rdf:type rdfs:Class.
+sdm:N rdf:type rdf:Property.
+sdm:PhaseVoltage rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'Volts (V)'. The voltage between each phase and neutral conductor. The actual values will be conveyed by one subproperty per alternating current phase: L1, L2 and L3"@en;
+    rdf:type rdfs:Class.
+sdm:PhaseToPhaseVoltage rdfs:label "Property. Model:'(http://schema.org/StructuredValue'. Units:'Volts (V)'. Voltage between phases. A value for each phase pair: phases 1 and 2 (L12), phases 2 and 3 (L32), phases 3 and 1 (L31)."@en;
+    rdf:type rdfs:Class.
+sdm:L12 rdf:type rdf:Property.
+sdm:L23 rdf:type rdf:Property.
+sdm:L31 rdf:type rdf:Property.
+sdm:ThdVoltage rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'0 to 1'. Total harmonic distortion of voltage for each phase. The actual values will be conveyed by one subproperty per alternating current phase: L1, L2 and L3"@en;
+    rdf:type rdfs:Class.
+sdm:ThdCurrent rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'0 to 1'. Total harmonic distortion of electrical current. The actual values will be conveyed by one subproperty per alternating current phase: L1, L2 and L3"@en;
+    rdf:type rdfs:Class.
