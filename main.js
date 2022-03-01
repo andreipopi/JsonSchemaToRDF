@@ -35,12 +35,11 @@ for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
     hiddenClasses = rdfVocab.propertiesToRDF(0);
     // New classes might be have been added as range value for some properties. It is now time to explore those classes, 
     // e.g. "per_km_pricing" in system_pricing.json
-    /*
-    for (const cls of hiddenClasses){
+    for (var _c = 0, hiddenClasses_1 = hiddenClasses; _c < hiddenClasses_1.length; _c++) {
+        var cls = hiddenClasses_1[_c];
         rdfVocab.setMainObject(cls);
         rdfVocab.propertiesToRDF(1);
     }
-    */
     rdfVocab.writeTurtle();
     rdfVocab.writeShacl();
 }

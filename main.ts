@@ -42,12 +42,12 @@ for (let [schema,object] of Array.from(schema_object)){
     // New classes might be have been added as range value for some properties. It is now time to explore those classes, 
     // e.g. "per_km_pricing" in system_pricing.json
     
-    /*
+    
     for (const cls of hiddenClasses){
         rdfVocab.setMainObject(cls);
         rdfVocab.propertiesToRDF(1);
     }
-    */
+    
     rdfVocab.writeTurtle();
     rdfVocab.writeShacl();
 }

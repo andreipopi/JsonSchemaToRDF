@@ -4,6 +4,7 @@ sh:property [
  sh:path <type>;  
  sh:minCount 1; 
  sh:maxCount 1; 
+ sh:datatype xsd:string; 
  ];
 sh:property [ 
  sh:path <refDevice>; 
@@ -16,46 +17,57 @@ sh:property [
 sh:property [ 
  sh:path <dateEnergyMeteringStarted>; 
  sh:maxCount 1; 
+ sh:datatype xsd:string; 
  ];
 sh:property [ 
  sh:path <totalActiveEnergyImport>; 
  sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <totalReactiveEnergyImport>; 
  sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <totalApparentEnergyImport>; 
  sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <totalActiveEnergyExport>; 
  sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <totalReactiveEnergyExport>; 
  sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <totalApparentEnergyExport>; 
  sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <frequency>; 
  sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <totalActivePower>; 
  sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <totalReactivePower>; 
  sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <totalApparentPower>; 
  sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <activeEnergyImport>; 
@@ -96,6 +108,7 @@ sh:property [
 sh:property [ 
  sh:path <totalPowerFactor>; 
  sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <powerFactor>; 
@@ -104,6 +117,2581 @@ sh:property [
 sh:property [ 
  sh:path <totalDisplacementPowerFactor>; 
  sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <displacementPowerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <current>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <phaseToPhaseVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdVoltage>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <thdCurrent>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <refDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <refTargetDevice>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyImport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactiveEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentEnergyExport>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <frequency>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalActivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalReactivePower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <totalApparentPower>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyImport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activeEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactiveEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentEnergyExport>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <activePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <reactivePower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <apparentPower>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <powerFactor>; 
+ sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <totalDisplacementPowerFactor>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <displacementPowerFactor>; 

@@ -56,6 +56,7 @@ var SMDPattern = /** @class */ (function () {
         var path = this.jsonSchema[this.mainJsonObject]; // Path to the main object of the Json Schema
         console.log("path", path);
         var properties = path[2].properties; // Path to the properties of the main object
+        console.log("properties", properties);
         //console.log("properties", properties);
         // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
@@ -92,30 +93,30 @@ var SMDPattern = /** @class */ (function () {
             // If we are at the second iteration, we have variable structure: some objects have items.properties, some only .properties
             if (depth > 0) {
                 if (path.items == undefined) {
-                    termType = path.properties[term].type;
-                    termProperties = path.properties[term].properties;
-                    termDescription = path.properties[term].description;
-                    directEnum = path.properties[term]["enum"];
-                    subProperties = path.properties[term].properties;
-                    subItems = path.properties[term].items;
+                    termType = path[2].properties[term].type;
+                    termProperties = path[2].properties[term].properties;
+                    termDescription = path[2].properties[term].description;
+                    directEnum = path[2].properties[term]["enum"];
+                    subProperties = path[2].properties[term].properties;
+                    subItems = path[2].properties[term].items;
                 }
                 else {
-                    termType = path.properties[term].type;
-                    termProperties = path.properties[term].properties;
-                    termDescription = path.properties[term].description;
-                    directEnum = path.properties[term]["enum"];
-                    subProperties = path.properties[term].properties;
-                    subItems = path.properties[term].items;
+                    termType = path[2].properties[term].type;
+                    termProperties = path[2].properties[term].properties;
+                    termDescription = path[2].properties[term].description;
+                    directEnum = path[2].properties[term]["enum"];
+                    subProperties = path[2].properties[term].properties;
+                    subItems = path[2].properties[term].items;
                 }
             }
             // Else we are at iteration 0 and we assume all having items.properties
             else {
-                termType = path[2].properties.type;
-                termProperties = path[2].properties.properties;
-                termDescription = path[2].properties.description;
-                directEnum = path[2].properties["enum"];
-                subProperties = path[2].properties.properties;
-                subItems = path[2].properties.items;
+                termType = path[2].properties[term].type;
+                termProperties = path[2].properties[term].properties; //
+                termDescription = path[2].properties[term].description;
+                directEnum = path[2].properties[term]["enum"];
+                subProperties = path[2].properties[term].properties;
+                subItems = path[2].properties[term].items;
             }
             // If the property does not exist in the map, then we want it added to the vocabulary
             if (this.map.has(term) == false) {
@@ -135,7 +136,7 @@ var SMDPattern = /** @class */ (function () {
                     // Either sub properties
                     if (subProperties != undefined) {
                         for (var subProperty in subProperties) {
-                            var subsubProperty = path.items.properties[term].properties[subProperty];
+                            var subsubProperty = path[2].properties[term].properties[subProperty];
                             if (subProperty != 'type') {
                                 console.log("subproperty", subProperty);
                                 console.log(subsubProperty);
