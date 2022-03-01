@@ -1,6 +1,7 @@
 import { write } from "fs";
 import { arrayBuffer } from "stream/consumers";
 import {ShaclShape} from './shaclShape';
+import {RDFTools} from './rdfTools';
 import {DataFactory, Literal, Quad, Store} from "n3";
 import literal = DataFactory.literal;
 import { NamedNode } from "n3/lib/N3DataFactory";
@@ -492,7 +493,5 @@ export class RDFVocabulary {
     capitalizeFirstLetter(string:string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
-    getPrefixes(){
-        return this.prefixes;
-    }
+   
 }

@@ -2,6 +2,7 @@
 exports.__esModule = true;
 exports.SMDPattern = void 0;
 var shaclShape_1 = require("./shaclShape");
+var rdfTools_1 = require("./rdfTools");
 var N3 = require('n3');
 var DataFactory = N3.DataFactory;
 var namedNode = DataFactory.namedNode, literal = DataFactory.literal, defaultGraph = DataFactory.defaultGraph, quad = DataFactory.quad;
@@ -32,14 +33,14 @@ var SMDPattern = /** @class */ (function () {
     SMDPattern.prototype.basicsToQuads = function () {
         this.description = this.jsonSchema.description;
         this.id = this.jsonSchema.$id;
-        this.writer.addQuad(this.node_node_node('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'rdf:type', 'foaf:Document'));
-        this.writer.addQuad(this.node_node_literal('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'rdfs:comment', this.description));
-        this.writer.addQuad(this.node_node_literal('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'vann:preferredNamespaceUri', 'https://w3id.org/sdm/terms/' + this.mainJsonObject + '#'));
-        this.writer.addQuad(this.node_node_node('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'dcterms:creator', this.creator1));
-        this.writer.addQuad(this.node_node_node('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'dcterms:creator', this.creator2));
-        this.writer.addQuad(this.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
-        this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
-        this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
+        this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'rdf:type', 'foaf:Document'));
+        this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'rdfs:comment', this.description));
+        this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'vann:preferredNamespaceUri', 'https://w3id.org/sdm/terms/' + this.mainJsonObject + '#'));
+        this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'dcterms:creator', this.creator1));
+        this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'dcterms:creator', this.creator2));
+        this.writer.addQuad(rdfTools_1.RDFTools.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
+        this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
+        this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
         this.shape = new shaclShape_1.ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
         this.shaclFileText = this.shaclFileText + this.shape.getShaclRoot();
@@ -71,10 +72,10 @@ var SMDPattern = /** @class */ (function () {
             else {
                 properties = path.properties;
             }
-            this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
+            this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.mainObject, 'rdfs:label', path.description));
         }
         // Add the main object to the vocabulary as a class
-        this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
+        this.writer.addQuad(rdfTools_1.RDFTools.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
         // Properties of the main object ('allOf')
         var hiddenClasses = []; // usefull for the next iteration (depth = 1)
         for (var term in properties) {
@@ -121,11 +122,11 @@ var SMDPattern = /** @class */ (function () {
                 // Sub-properties of 'Station/term'
                 // if 'term' is an object and it has sub properties, or if it is an array
                 if ((termType == 'object' && termProperties != undefined) || termType == 'array') {
-                    this.writer.addQuad(this.node_node_node('sdm:' + term, 'rdf:type', 'rdf:Property')); // Add the property and its label
+                    this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + term, 'rdf:type', 'rdf:Property')); // Add the property and its label
                     if (termDescription != undefined)
-                        this.writer.addQuad(this.node_node_literal('sdm:' + term, 'rdfs:label', termDescription.toString()));
-                    var newClassName = this.capitalizeFirstLetter(term); // Since it is an object/array, we give it a new class as a range
-                    this.writer.addQuad(this.node_node_node('sdm:' + term, 'rdfs:range', 'sdm:' + newClassName));
+                        this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal('sdm:' + term, 'rdfs:label', termDescription.toString()));
+                    var newClassName = rdfTools_1.RDFTools.capitalizeFirstLetter(term); // Since it is an object/array, we give it a new class as a range
+                    this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + term, 'rdfs:range', 'sdm:' + newClassName));
                     // Add the new classes to a hiddenClasses array; these will be explored by this function in a second stage.
                     hiddenClasses = hiddenClasses.concat('sdm:' + newClassName);
                     //console.log('HIDDEN CLASSES: ',hiddenClasses);
@@ -141,11 +142,11 @@ var SMDPattern = /** @class */ (function () {
                                 //this.writer.addQuad(this.node_node_node('sdm:'+newClassName, 'rdf:Property','sdm:'+ subProperty));
                                 // Check if there is an available description
                                 if (subsubProperty.description != undefined) {
-                                    this.writer.addQuad(this.node_node_literal('sdm:' + subProperty, 'rdfs:label', subsubProperty.description));
+                                    this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal('sdm:' + subProperty, 'rdfs:label', subsubProperty.description));
                                 }
                                 // and/or a type
                                 if (subsubProperty.type != undefined) {
-                                    this.writer.addQuad(this.node_node_literal('sdm:' + subProperty, 'rdf:type', subsubProperty.type));
+                                    this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal('sdm:' + subProperty, 'rdf:type', subsubProperty.type));
                                 }
                             } // else: we skip the type subproperties because of the modelling differences, e.g. see  station_area vs rental_uris vs rental_methods
                         }
@@ -174,7 +175,7 @@ var SMDPattern = /** @class */ (function () {
                                 }
                             }
                             console.log("this is the list of values", oneOfValues);
-                            var subPropQuad = this.node_node_list('sdm:' + newClassName, 'owl:oneOf', oneOfValues);
+                            var subPropQuad = rdfTools_1.RDFTools.node_node_list('sdm:' + newClassName, 'owl:oneOf', this.writer.list(oneOfValues));
                             this.writer.addQuad(subPropQuad);
                         }
                     }
@@ -183,16 +184,16 @@ var SMDPattern = /** @class */ (function () {
                     // not an object or array -> it has a primitive datatype
                     if (termType != undefined) {
                         // Then create the quad and add it to the writer
-                        this.writer.addQuad(this.node_node_node('sdm:' + term, 'rdf:type', 'rdf:Property'));
+                        this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + term, 'rdf:type', 'rdf:Property'));
                         if (termDescription != undefined) {
-                            this.writer.addQuad(this.node_node_literal('sdm:' + term, 'rdfs:label', termDescription.toString()));
+                            this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal('sdm:' + term, 'rdfs:label', termDescription.toString()));
                             this.writer.addQuad('sdm:' + term, 'rdfs:range', literal(termDescription.toString(), 'en'));
                         }
                     }
                     // it has some other datatype
                     else {
-                        this.writer.addQuad(this.node_node_node('sdm:' + term, 'rdf:type', 'rdf:Property'));
-                        this.writer.addQuad(this.node_node_literal('sdm:' + term, 'rdfs:label', termDescription.toString()));
+                        this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + term, 'rdf:type', 'rdf:Property'));
+                        this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal('sdm:' + term, 'rdfs:label', termDescription.toString()));
                         // Might be a more complex type, e.g. oneOf
                     }
                 }
@@ -211,14 +212,14 @@ var SMDPattern = /** @class */ (function () {
                         }
                     }
                     console.log("this is the list of values", oneOfValues);
-                    var subPropQuad = this.node_node_list('sdm:' + term, 'owl:oneOf', oneOfValues);
+                    var subPropQuad = rdfTools_1.RDFTools.node_node_list('sdm:' + term, 'owl:oneOf', oneOfValues);
                     this.writer.addQuad(subPropQuad);
                 }
                 if (termType == 'integer') {
-                    this.writer.addQuad(this.node_node_node('sdm:' + term, 'rdfs:range', 'xsd:integer'));
+                    this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + term, 'rdfs:range', 'xsd:integer'));
                 }
                 if (termType == 'boolean') {
-                    this.writer.addQuad(this.node_node_node('sdm:' + term, 'rdfs:range', 'xsd:boolean'));
+                    this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + term, 'rdfs:range', 'xsd:boolean'));
                 }
             }
             else {
@@ -228,7 +229,7 @@ var SMDPattern = /** @class */ (function () {
             if (this.shape.isRequired(term)) {
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
-                    this.shaclFileText = this.shaclFileText + this.shape.getShaclTypedRequiredProperty(term, this.getXsdType(termType)) + '\n';
+                    this.shaclFileText = this.shaclFileText + this.shape.getShaclTypedRequiredProperty(term, rdfTools_1.RDFTools.getXsdType(termType)) + '\n';
                 }
                 else {
                     this.shaclFileText = this.shaclFileText + this.shape.getShaclRequiredProperty(term) + '\n';
@@ -237,7 +238,7 @@ var SMDPattern = /** @class */ (function () {
             else { // Else the property is not required
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
-                    this.shaclFileText = this.shaclFileText + this.shape.getShaclTypedProperty(term, this.getXsdType(termType)) + '\n';
+                    this.shaclFileText = this.shaclFileText + this.shape.getShaclTypedProperty(term, rdfTools_1.RDFTools.getXsdType(termType)) + '\n';
                 }
                 else {
                     this.shaclFileText = this.shaclFileText + this.shape.getShaclProperty(term) + '\n';
@@ -290,56 +291,6 @@ var SMDPattern = /** @class */ (function () {
             requiredMap.set(requiredProp.toString(), requiredPropExistingTerm);
         }
         return requiredMap;
-    };
-    SMDPattern.prototype.getWriter = function () {
-        return this.writer;
-    };
-    // Create quads of different shape
-    SMDPattern.prototype.node_node_literal = function (subj, pred, obj) {
-        if (pred == 'rdfs:label' || pred == 'rdfs:comment') {
-            var myQuad = quad(namedNode(subj), namedNode(pred), literal(obj, 'en'), defaultGraph());
-            return myQuad;
-        }
-        else {
-            var myQuad = quad(namedNode(subj), namedNode(pred), literal(obj), defaultGraph());
-            return myQuad;
-        }
-    };
-    SMDPattern.prototype.node_node_node = function (subj, pred, obj) {
-        var myQuad = quad(namedNode(subj), namedNode(pred), namedNode(obj), defaultGraph());
-        return myQuad;
-    };
-    SMDPattern.prototype.node_node_list = function (subj, pred, list) {
-        var myQuad = quad(namedNode(subj), namedNode(pred), this.writer.list(list), defaultGraph());
-        return myQuad;
-    };
-    SMDPattern.prototype.node_literal_literal = function (subj, pred, obj) {
-        var myQuad = quad(namedNode(subj), literal(pred), literal(obj), defaultGraph());
-        return myQuad;
-    };
-    SMDPattern.prototype.getXsdType = function (t) {
-        switch (t) {
-            case 'string': {
-                return 'xsd:string';
-                break;
-            }
-            case 'number': {
-                return 'xsd:float';
-                break;
-            }
-            case 'boolean': {
-                return 'xsd:boolean';
-                break;
-            }
-            case 'integer': {
-                return 'xsd:integer';
-                break;
-            }
-            default: {
-                //statements; 
-                break;
-            }
-        }
     };
     SMDPattern.prototype.getMainJsonObject = function (mainObject) {
         switch (mainObject) {
@@ -436,12 +387,6 @@ var SMDPattern = /** @class */ (function () {
     };
     SMDPattern.prototype.setMainObject = function (mainObject) {
         this.mainObject = mainObject;
-    };
-    SMDPattern.prototype.capitalizeFirstLetter = function (string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    };
-    SMDPattern.prototype.getPrefixes = function () {
-        return this.prefixes;
     };
     return SMDPattern;
 }());

@@ -433,9 +433,6 @@ var RDFVocabulary = /** @class */ (function () {
     RDFVocabulary.prototype.capitalizeFirstLetter = function (string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
-    RDFVocabulary.prototype.getPrefixes = function () {
-        return this.prefixes;
-    };
     return RDFVocabulary;
 }());
 exports.RDFVocabulary = RDFVocabulary;
