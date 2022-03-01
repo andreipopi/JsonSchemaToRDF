@@ -11,7 +11,7 @@ const N3 = require('n3');
 const { DataFactory } = N3;
 const { namedNode, literal, defaultGraph, quad } = DataFactory;
 
-export class RDFVocabulary {
+export class GbfsPattern {
     // Attributes
     fs = require('fs');
     shaclFileText = '';
@@ -62,14 +62,14 @@ export class RDFVocabulary {
     basicsToQuads (){
         this.description = this.jsonSchema.description;
         this.id = this.jsonSchema.$id;
-        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/terms/'+ this.mainJsonObject, 'rdf:type', 'foaf:Document'));
-        this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/terms/'+ this.mainJsonObject, 'rdfs:comment', this.description));
-        this.writer.addQuad(this.node_node_literal('https://w3id.org/gbfs/terms/'+ this.mainJsonObject, 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/terms/'+this.mainJsonObject+'#'));
-        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/terms/'+ this.mainJsonObject, 'dcterms:creator', this.creator1));
-        this.writer.addQuad(this.node_node_node('https://w3id.org/gbfs/terms/'+ this.mainJsonObject, 'dcterms:creator', this.creator2));
-        this.writer.addQuad(this.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
-        this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
-        this.writer.addQuad(this.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
+        this.writer.addQuad(RDFTools.node_node_node('https://w3id.org/gbfs/terms/'+ this.mainJsonObject, 'rdf:type', 'foaf:Document'));
+        this.writer.addQuad(RDFTools.node_node_literal('https://w3id.org/gbfs/terms/'+ this.mainJsonObject, 'rdfs:comment', this.description));
+        this.writer.addQuad(RDFTools.node_node_literal('https://w3id.org/gbfs/terms/'+ this.mainJsonObject, 'vann:preferredNamespaceUri', 'https://w3id.org/gbfs/terms/'+this.mainJsonObject+'#'));
+        this.writer.addQuad(RDFTools.node_node_node('https://w3id.org/gbfs/terms/'+ this.mainJsonObject, 'dcterms:creator', this.creator1));
+        this.writer.addQuad(RDFTools.node_node_node('https://w3id.org/gbfs/terms/'+ this.mainJsonObject, 'dcterms:creator', this.creator2));
+        this.writer.addQuad(RDFTools.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
+        this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
+        this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
         this.shape = new ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
         this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
@@ -97,11 +97,11 @@ export class RDFVocabulary {
             else{
                 properties = path.properties;
             }
-            this.writer.addQuad(this.node_node_literal(this.mainObject, 'rdfs:label', path.description));
+            this.writer.addQuad(RDFTools.node_node_literal(this.mainObject, 'rdfs:label', path.description));
         }
 
         // Add the main object to the vocabulary as a class
-        this.writer.addQuad(this.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
+        this.writer.addQuad(RDFTools.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
 
         // Properties of the main object (e.g.'Station')
         let hiddenClasses:any[] =  []; // usefull for the next iteration (depth = 1)
@@ -153,13 +153,13 @@ export class RDFVocabulary {
                 // if 'term' is an object and it has sub properties, or if it is an array
                 if((termType == 'object' && termProperties != undefined) || termType == 'array') {
 
-                    this.writer.addQuad(this.node_node_node('gbfs:'+term, 'rdf:type', 'rdf:Property')); // Add the property and its label
+                    this.writer.addQuad(RDFTools.node_node_node('gbfs:'+term, 'rdf:type', 'rdf:Property')); // Add the property and its label
 
                     if( termDescription != undefined )
-                        this.writer.addQuad(this.node_node_literal('gbfs:'+term, 'rdfs:label', termDescription.toString()));
+                        this.writer.addQuad(RDFTools.node_node_literal('gbfs:'+term, 'rdfs:label', termDescription.toString()));
         
                     const newClassName = this.capitalizeFirstLetter(term); // Since it is an object/array, we give it a new class as a range
-                    this.writer.addQuad(this.node_node_node('gbfs:'+term, 'rdfs:range', 'gbfs:'+newClassName));
+                    this.writer.addQuad(RDFTools.node_node_node('gbfs:'+term, 'rdfs:range', 'gbfs:'+newClassName));
                   
                     // Add the new classes to a hiddenClasses array; these will be explored by this function in a second stage.
                     hiddenClasses = hiddenClasses.concat('gbfs:'+newClassName);
@@ -179,11 +179,11 @@ export class RDFVocabulary {
                                 
                                 // Check if there is an available description
                                 if(subsubProperty.description != undefined){
-                                    this.writer.addQuad(this.node_node_literal('gbfs:'+subProperty, 'rdfs:label', subsubProperty.description));
+                                    this.writer.addQuad(RDFTools.node_node_literal('gbfs:'+subProperty, 'rdfs:label', subsubProperty.description));
                                 }
                                 // and/or a type
                                 if(subsubProperty.type != undefined){
-                                    this.writer.addQuad(this.node_node_literal('gbfs:'+subProperty, 'rdf:type', subsubProperty.type));
+                                    this.writer.addQuad(RDFTools.node_node_literal('gbfs:'+subProperty, 'rdf:type', subsubProperty.type));
                                 }
                             }// else: we skip the type subproperties because of the modelling differences, e.g. see  station_area vs rental_uris vs rental_methods
                         }
@@ -213,7 +213,7 @@ export class RDFVocabulary {
                                 }
                             }
                             console.log("this is the list of values", oneOfValues);
-                            let subPropQuad = this.node_node_list('gbfs:'+newClassName, 'owl:oneOf', oneOfValues);
+                            let subPropQuad = RDFTools.node_node_list('gbfs:'+newClassName, 'owl:oneOf', oneOfValues);
                             this.writer.addQuad(subPropQuad);
                         }
                         
@@ -223,16 +223,16 @@ export class RDFVocabulary {
                     // not an object or array -> it has a primitive datatype
                     if(termType != undefined){
                         // Then create the quad and add it to the writer
-                        this.writer.addQuad(this.node_node_node('gbfs:'+term, 'rdf:type', 'rdf:Property'));
+                        this.writer.addQuad(RDFTools.node_node_node('gbfs:'+term, 'rdf:type', 'rdf:Property'));
                         if( termDescription != undefined){
-                            this.writer.addQuad(this.node_node_literal('gbfs:'+term, 'rdfs:label', termDescription.toString()) );
+                            this.writer.addQuad(RDFTools.node_node_literal('gbfs:'+term, 'rdfs:label', termDescription.toString()) );
                         this.writer.addQuad('gbfs:'+term, 'rdfs:range', literal(termDescription.toString(), 'en') );
                         }
                     }
                     // it has some other datatype
                     else{
-                        this.writer.addQuad(this.node_node_node('gbfs:'+term, 'rdf:type', 'rdf:Property'));
-                        this.writer.addQuad(this.node_node_literal('gbfs:'+term, 'rdfs:label', termDescription.toString() ));
+                        this.writer.addQuad(RDFTools.node_node_node('gbfs:'+term, 'rdf:type', 'rdf:Property'));
+                        this.writer.addQuad(RDFTools.node_node_literal('gbfs:'+term, 'rdfs:label', termDescription.toString() ));
                         // Might be a more complex type, e.g. oneOf
                     }
                 }
@@ -251,15 +251,15 @@ export class RDFVocabulary {
                         }
                     }
                     console.log("this is the list of values", oneOfValues);
-                    let subPropQuad = this.node_node_list('gbfs:'+term, 'owl:oneOf', oneOfValues);
+                    let subPropQuad = RDFTools.node_node_list('gbfs:'+term, 'owl:oneOf', oneOfValues);
                     this.writer.addQuad(subPropQuad);
                 }
 
                 if (termType == 'integer'){
-                    this.writer.addQuad(this.node_node_node('gbfs:'+term, 'rdfs:range', 'xsd:integer'));
+                    this.writer.addQuad(RDFTools.node_node_node('gbfs:'+term, 'rdfs:range', 'xsd:integer'));
                 }
                 if (termType == 'boolean'){
-                    this.writer.addQuad(this.node_node_node('gbfs:'+term, 'rdfs:range', 'xsd:boolean'));
+                    this.writer.addQuad(RDFTools.node_node_node('gbfs:'+term, 'rdfs:range', 'xsd:boolean'));
                 }
             }
             else{
@@ -270,7 +270,7 @@ export class RDFVocabulary {
             if (this.shape.isRequired(term)){
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
-                    this.shaclFileText = this.shaclFileText+this.shape.getShaclTypedRequiredProperty(term, this.getXsdType(termType))+'\n';
+                    this.shaclFileText = this.shaclFileText+this.shape.getShaclTypedRequiredProperty(term, RDFTools.getXsdType(termType))+'\n';
                 }
                 else{
                     this.shaclFileText = this.shaclFileText+this.shape.getShaclRequiredProperty(term)+'\n';
@@ -279,7 +279,7 @@ export class RDFVocabulary {
             else{ // Else the property is not required
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
-                    this.shaclFileText = this.shaclFileText+this.shape.getShaclTypedProperty(term, this.getXsdType(termType))+'\n';                }
+                    this.shaclFileText = this.shaclFileText+this.shape.getShaclTypedProperty(term, RDFTools.getXsdType(termType))+'\n';                }
                 else{
                     this.shaclFileText = this.shaclFileText+this.shape.getShaclProperty(term)+'\n';
                 }
@@ -321,10 +321,7 @@ export class RDFVocabulary {
         return requiredMap;
     }
 
-    getWriter (){
-        return this.writer;
-    }
-
+    /*
     // Create quads of different shape
     node_node_literal (subj: string, pred:string, obj:string) {
         if(pred == 'rdfs:label' || pred == 'rdfs:comment'){
@@ -373,6 +370,7 @@ export class RDFVocabulary {
             } 
          } 
     }
+    */
     getMainJsonObject (mainObject:string) {
         switch(mainObject) { 
             case 'gbfs:Station': { 

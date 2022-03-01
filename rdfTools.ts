@@ -18,7 +18,6 @@ export class RDFTools {
     
 
 
-
 // Create quads of different shape
 static node_node_literal (subj: string, pred:string, obj:string) {
     if(pred == 'rdfs:label' || pred == 'rdfs:comment'){
