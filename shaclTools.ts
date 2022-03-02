@@ -5,45 +5,52 @@ import { stringify } from "querystring";
 export class ShaclTools {
 
     jsonSchema: any;
-    targetClass: any;
-    shaclRoot = '<https://w3id.org/gbfs/shapes/>';
-    requiredProperties = new Map<string, string>();
-    shaclFileText = '';
-    fs = require('fs');
+    static targetClass: any;
+    static shaclRoot = '<https://w3id.org/gbfs/shapes/>';
+    static shaclFileText = '';
+    static fs = require('fs');
+    static fileName: any;
+    static requiredProperties: Map<string, string>;
 
-    // Constructors
-    constructor (required: Map<string, string>, source: string, mainObj: string) {
-        this.jsonSchema = require(source);
+    static initialise(filename, required: Map<string, string>, source: string, mainObj: string){
+        this.fileName = filename;
+        this.targetClass = ShaclTools.getShaclTarget(mainObj);
         this.requiredProperties = required;
-        console.log("passed object",mainObj);
-        console.log("main target",this.getShaclTarget(mainObj));
-        this.targetClass = this.getShaclTarget(mainObj);
+    }
+
+    static writeShacl (filename, shaclFileText){
+        // Write the Shacl shape on file
+        this.fs.writeFileSync(`build/${this.fileName}shacl.ttl`, shaclFileText , function(err:any){
+            if(err){
+                return console.log("error");
+            }
+        });
     }
 
     // Methods
-    getShaclTypedProperty (nome: string, type: string) {
+    static getShaclTypedProperty (nome: string, type: string) {
         const prop = 'sh:property [ \n sh:path <'+nome+ '>; \n sh:maxCount 1; \n sh:datatype '+ type+'; \n ];';
         return prop;
     }
 
-    getShaclTypedRequiredProperty(nome: string, type: string) {
+    static getShaclTypedRequiredProperty(nome: string, type: string) {
         console.log(nome);
         const prop = 'sh:property [ \n sh:path <'+nome+ '>;  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype '+ type+'; \n ];';
         return prop;
     }
-    getShaclProperty (nome: string) {
+    static getShaclProperty (nome: string) {
         const prop = 'sh:property [ \n sh:path <'+nome+ '>; \n sh:maxCount 1; \n ];';
         return prop;
     }
-    getShaclRequiredProperty(nome: string) {
+    static getShaclRequiredProperty(nome: string) {
         console.log(nome);
         const prop = 'sh:property [ \n sh:path <'+nome+ '>;  \n sh:minCount 1; \n sh:maxCount 1; \n ];';
         return prop;
     }
-    getShaclTargetClass(){
+    static getShaclTargetClass(){
         return 'sh:targetClass ' + this.targetClass+ ';';
     }
-    getShaclTarget (mainObject:string) {
+    static getShaclTarget (mainObject:string) {
         switch(mainObject) { 
             case 'gbfs:Station': { 
                 return '<https://w3id.org/gbfs/terms/station>';
@@ -94,11 +101,11 @@ export class ShaclTools {
          } 
     }
 
-    getShaclRoot(){
+    static getShaclRoot(){
         return this.shaclFileText = this.shaclRoot+ ' a sh:NodeShape; \n';
     }
 
-    isRequired (prop:string){
+    static isRequired (prop:string){
         if (this.requiredProperties.has(prop)){
             return true;
         }

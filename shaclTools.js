@@ -3,41 +3,55 @@
 exports.__esModule = true;
 exports.ShaclTools = void 0;
 var ShaclTools = /** @class */ (function () {
+    function ShaclTools() {
+    }
+    /*
     // Constructors
-    function ShaclTools(required, source, mainObj) {
-        this.shaclRoot = '<https://w3id.org/gbfs/shapes/>';
-        this.requiredProperties = new Map();
-        this.shaclFileText = '';
-        this.fs = require('fs');
+    constructor (required: Map<string, string>, source: string, mainObj: string) {
+        
         this.jsonSchema = require(source);
         this.requiredProperties = required;
-        console.log("passed object", mainObj);
-        console.log("main target", this.getShaclTarget(mainObj));
-        this.targetClass = this.getShaclTarget(mainObj);
-    }
+
+        console.log("passed object",mainObj);
+        console.log("main target",this.getShaclTarget(mainObj));
+        
+    }*/
+    ShaclTools.initialise = function (filename, required, source, mainObj) {
+        this.fileName = filename;
+        this.targetClass = ShaclTools.getShaclTarget(mainObj);
+        this.requiredProperties = required;
+    };
+    ShaclTools.writeShacl = function (filename, shaclFileText) {
+        // Write the Shacl shape on file
+        this.fs.writeFileSync("build/" + this.fileName + "shacl.ttl", shaclFileText, function (err) {
+            if (err) {
+                return console.log("error");
+            }
+        });
+    };
     // Methods
-    ShaclTools.prototype.getShaclTypedProperty = function (nome, type) {
+    ShaclTools.getShaclTypedProperty = function (nome, type) {
         var prop = 'sh:property [ \n sh:path <' + nome + '>; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ];';
         return prop;
     };
-    ShaclTools.prototype.getShaclTypedRequiredProperty = function (nome, type) {
+    ShaclTools.getShaclTypedRequiredProperty = function (nome, type) {
         console.log(nome);
         var prop = 'sh:property [ \n sh:path <' + nome + '>;  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ];';
         return prop;
     };
-    ShaclTools.prototype.getShaclProperty = function (nome) {
+    ShaclTools.getShaclProperty = function (nome) {
         var prop = 'sh:property [ \n sh:path <' + nome + '>; \n sh:maxCount 1; \n ];';
         return prop;
     };
-    ShaclTools.prototype.getShaclRequiredProperty = function (nome) {
+    ShaclTools.getShaclRequiredProperty = function (nome) {
         console.log(nome);
         var prop = 'sh:property [ \n sh:path <' + nome + '>;  \n sh:minCount 1; \n sh:maxCount 1; \n ];';
         return prop;
     };
-    ShaclTools.prototype.getShaclTargetClass = function () {
+    ShaclTools.getShaclTargetClass = function () {
         return 'sh:targetClass ' + this.targetClass + ';';
     };
-    ShaclTools.prototype.getShaclTarget = function (mainObject) {
+    ShaclTools.getShaclTarget = function (mainObject) {
         switch (mainObject) {
             case 'gbfs:Station': {
                 return '<https://w3id.org/gbfs/terms/station>';
@@ -85,10 +99,10 @@ var ShaclTools = /** @class */ (function () {
             }
         }
     };
-    ShaclTools.prototype.getShaclRoot = function () {
+    ShaclTools.getShaclRoot = function () {
         return this.shaclFileText = this.shaclRoot + ' a sh:NodeShape; \n';
     };
-    ShaclTools.prototype.isRequired = function (prop) {
+    ShaclTools.isRequired = function (prop) {
         if (this.requiredProperties.has(prop)) {
             return true;
         }
@@ -96,6 +110,9 @@ var ShaclTools = /** @class */ (function () {
             return false;
         }
     };
+    ShaclTools.shaclRoot = '<https://w3id.org/gbfs/shapes/>';
+    ShaclTools.shaclFileText = '';
+    ShaclTools.fs = require('fs');
     return ShaclTools;
 }());
 exports.ShaclTools = ShaclTools;

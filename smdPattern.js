@@ -42,9 +42,8 @@ var SMDPattern = /** @class */ (function () {
         this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
-        this.shape = new shaclTools_1.ShaclTools(this.getRequiredProperties(), this.jsonSource, this.mainObject);
-        this.shaclFileText = this.shaclFileText + this.shape.getShaclRoot();
-        this.shaclFileText = this.shaclFileText + this.shape.getShaclTargetClass() + '\n';
+        this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclRoot();
+        this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTargetClass() + '\n';
     };
     /** Creates and writes quads for the main object's properties,
      * by checking if new terms are encountered (against a map of terms).
@@ -226,34 +225,26 @@ var SMDPattern = /** @class */ (function () {
                 // The property is available in map, so we do not add it to the vocabulary
             }
             // Write the property to the Shacl shape
-            if (this.shape.isRequired(term)) {
+            if (shaclTools_1.ShaclTools.isRequired(term)) {
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
-                    this.shaclFileText = this.shaclFileText + this.shape.getShaclTypedRequiredProperty(term, rdfTools_1.RDFTools.getXsdType(termType)) + '\n';
+                    this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedRequiredProperty(term, rdfTools_1.RDFTools.getXsdType(termType)) + '\n';
                 }
                 else {
-                    this.shaclFileText = this.shaclFileText + this.shape.getShaclRequiredProperty(term) + '\n';
+                    this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclRequiredProperty(term) + '\n';
                 }
             }
             else { // Else the property is not required
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
-                    this.shaclFileText = this.shaclFileText + this.shape.getShaclTypedProperty(term, rdfTools_1.RDFTools.getXsdType(termType)) + '\n';
+                    this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedProperty(term, rdfTools_1.RDFTools.getXsdType(termType)) + '\n';
                 }
                 else {
-                    this.shaclFileText = this.shaclFileText + this.shape.getShaclProperty(term) + '\n';
+                    this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclProperty(term) + '\n';
                 }
             }
         }
         return hiddenClasses;
-    };
-    SMDPattern.prototype.writeShacl = function () {
-        // Write the Shacl shape on file
-        this.fs.writeFileSync("build/" + this.fileName + "shacl.ttl", this.shaclFileText, function (err) {
-            if (err) {
-                return console.log("error");
-            }
-        });
     };
     /** returns the properties of the main object which are required. Useful in the shaclshape class in order to create the shacl shape */
     SMDPattern.prototype.getRequiredProperties = function () {
@@ -379,6 +370,9 @@ var SMDPattern = /** @class */ (function () {
     };
     SMDPattern.prototype.getWriter = function () {
         return this.writer;
+    };
+    SMDPattern.prototype.getShaclFileText = function () {
+        return this.shaclFileText;
     };
     SMDPattern.prototype.setMainObject = function (mainObject) {
         this.mainObject = mainObject;

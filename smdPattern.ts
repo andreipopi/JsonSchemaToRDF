@@ -19,7 +19,6 @@ export class SMDPattern {
     jsonSource:any;
     jsonSchema: any;
     mainObject: any;
-    exploredObject:any; //object we are currently parsing: [0]: mainObject, [1]: nested object depth 1
     mainJsonObject: any;
     prefixes: any[] = [];
     writer: any;
@@ -74,9 +73,8 @@ export class SMDPattern {
         this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
-        this.shape = new ShaclTools(this.getRequiredProperties(), this.jsonSource, this.mainObject);
-        this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
-        this.shaclFileText = this.shaclFileText+this.shape.getShaclTargetClass()+'\n';
+        this.shaclFileText = this.shaclFileText+ShaclTools.getShaclRoot();
+        this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTargetClass()+'\n';
     }
     
     /** Creates and writes quads for the main object's properties, 
@@ -283,21 +281,21 @@ export class SMDPattern {
             }
 
             // Write the property to the Shacl shape
-            if (this.shape.isRequired(term)){
+            if (ShaclTools.isRequired(term)){
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
-                    this.shaclFileText = this.shaclFileText+this.shape.getShaclTypedRequiredProperty(term, RDFTools.getXsdType(termType))+'\n';
+                    this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedRequiredProperty(term, RDFTools.getXsdType(termType))+'\n';
                 }
                 else{
-                    this.shaclFileText = this.shaclFileText+this.shape.getShaclRequiredProperty(term)+'\n';
+                    this.shaclFileText = this.shaclFileText+ShaclTools.getShaclRequiredProperty(term)+'\n';
                 }
             }
             else{ // Else the property is not required
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
-                    this.shaclFileText = this.shaclFileText+this.shape.getShaclTypedProperty(term, RDFTools.getXsdType(termType))+'\n';                }
+                    this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedProperty(term, RDFTools.getXsdType(termType))+'\n';                }
                 else{
-                    this.shaclFileText = this.shaclFileText+this.shape.getShaclProperty(term)+'\n';
+                    this.shaclFileText = this.shaclFileText+ShaclTools.getShaclProperty(term)+'\n';
                 }
             }
         }
@@ -306,17 +304,7 @@ export class SMDPattern {
 
     }
 
-    
-    
-    
-    writeShacl (){
-        // Write the Shacl shape on file
-        this.fs.writeFileSync(`build/${this.fileName}shacl.ttl`, this.shaclFileText , function(err:any){
-            if(err){
-                return console.log("error");
-            }
-        });
-    }
+
     /** returns the properties of the main object which are required. Useful in the shaclshape class in order to create the shacl shape */
     getRequiredProperties () {
         let requiredMap = new Map<string, string>();
@@ -451,6 +439,9 @@ export class SMDPattern {
         return this.writer;
     }
 
+    getShaclFileText(){
+        return this.shaclFileText;
+    }
     setMainObject(mainObject: string){
         this.mainObject= mainObject;
     }

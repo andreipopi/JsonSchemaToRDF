@@ -71,7 +71,6 @@ export class GbfsPattern {
         this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
-        this.shape = new ShaclTools(this.getRequiredProperties(), this.jsonSource, this.mainObject);
         this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText+this.shape.getShaclTargetClass()+'\n';
     }
@@ -267,7 +266,7 @@ export class GbfsPattern {
             }
 
             // Write the property to the Shacl shape
-            if (this.shape.isRequired(term)){
+            if (ShaclTools.isRequired(term)){
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
                     this.shaclFileText = this.shaclFileText+this.shape.getShaclTypedRequiredProperty(term, RDFTools.getXsdType(termType))+'\n';

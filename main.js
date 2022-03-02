@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var rdfTools_1 = require("./rdfTools");
+var shaclTools_1 = require("./shaclTools");
 var smdPattern_1 = require("./smdPattern");
 // Main objects that are passed to the rdfVocabulary.ts.
 // there is one per json schema.
@@ -17,6 +18,7 @@ for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
     i += 1;
     var smdPattern = new smdPattern_1.SMDPattern(schema, object);
     rdfTools_1.RDFTools.initialise(smdPattern.getFileName());
+    shaclTools_1.ShaclTools.initialise(smdPattern.getFileName(), smdPattern.getRequiredProperties(), smdPattern.jsonSource, smdPattern.mainObject);
     smdPattern.basicsToQuads();
     hiddenClasses = smdPattern.propertiesToRDF(0);
     // New classes might be have been added as range value for some properties. It is now time to explore those classes, 
@@ -28,5 +30,5 @@ for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
         smdPattern.propertiesToRDF(1);
     }
     rdfTools_1.RDFTools.writeTurtle(smdPattern.getWriter());
-    smdPattern.writeShacl();
+    shaclTools_1.ShaclTools.writeShacl(smdPattern.getFileName(), smdPattern.getShaclFileText());
 }

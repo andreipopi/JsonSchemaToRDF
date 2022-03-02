@@ -21,6 +21,10 @@ for (let [schema,object] of Array.from(schema_object)){
     const smdPattern = new SMDPattern(schema, object);
     RDFTools.initialise(smdPattern.getFileName());
     
+
+    ShaclTools.initialise(smdPattern.getFileName(), smdPattern.getRequiredProperties(), smdPattern.jsonSource, smdPattern.mainObject );
+    
+    
     smdPattern.basicsToQuads();
     hiddenClasses = smdPattern.propertiesToRDF(0);
     // New classes might be have been added as range value for some properties. It is now time to explore those classes, 
@@ -32,8 +36,7 @@ for (let [schema,object] of Array.from(schema_object)){
         smdPattern.propertiesToRDF(1);
     }
 
-
     RDFTools.writeTurtle(smdPattern.getWriter());
+    ShaclTools.writeShacl(smdPattern.getFileName(), smdPattern.getShaclFileText(),);
 
-    smdPattern.writeShacl();
 }
