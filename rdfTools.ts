@@ -10,13 +10,36 @@ const { DataFactory } = N3;
 const { namedNode, literal, defaultGraph, quad } = DataFactory;
 
 
+
+
 /**
  * This class is contains auxiliary methods and tools for Pattern clas (e.g. smdPattern, gbfsPattern,...)
  * to write Turtle
  */
 export class RDFTools {
-    
 
+
+static fileName: string;
+static fs:any;
+
+/**
+ * First method of this class to be called; RDFTools has to be initialised right after a *Pattern class has been created.
+ * @param filename 
+ */
+static initialise (filename: string){
+    this.fs = require('fs');
+    this.fileName = filename;
+}
+
+// Write with the writer that is passed; fileName and fs have been set previously
+static writeTurtle (writer){
+    // Write the content of the writer in the .ttl
+    writer.end((error:any, result:any) => this.fs.writeFile(`build/${this.fileName}.ttl`, result, (err:any) => {
+        // throws an error, you could also catch it here
+        if (err) throw err;
+        // success case, the file was saved
+        console.log('Turtle saved!');}));
+}
 
 // Create quads of different shape
 static node_node_literal (subj: string, pred:string, obj:string) {

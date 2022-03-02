@@ -2,7 +2,7 @@
 
 import { stringify } from "querystring";
 
-export class ShaclShape {
+export class ShaclTools {
 
     jsonSchema: any;
     targetClass: any;

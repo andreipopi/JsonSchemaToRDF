@@ -1,6 +1,6 @@
 import { write } from "fs";
 import { arrayBuffer } from "stream/consumers";
-import {ShaclShape} from './shaclShape';
+import {ShaclTools} from './shaclTools';
 import {RDFTools} from './rdfTools';
 import {DataFactory, Literal, Quad, Store} from "n3";
 import literal = DataFactory.literal;
@@ -71,7 +71,7 @@ export class GbfsPattern {
         this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
-        this.shape = new ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
+        this.shape = new ShaclTools(this.getRequiredProperties(), this.jsonSource, this.mainObject);
         this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText+this.shape.getShaclTargetClass()+'\n';
     }

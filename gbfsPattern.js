@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 exports.GbfsPattern = void 0;
-var shaclShape_1 = require("./shaclShape");
+var shaclTools_1 = require("./shaclTools");
 var rdfTools_1 = require("./rdfTools");
 var N3 = require('n3');
 var DataFactory = N3.DataFactory;
@@ -42,7 +42,7 @@ var GbfsPattern = /** @class */ (function () {
         this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
-        this.shape = new shaclShape_1.ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
+        this.shape = new shaclTools_1.ShaclTools(this.getRequiredProperties(), this.jsonSource, this.mainObject);
         this.shaclFileText = this.shaclFileText + this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText + this.shape.getShaclTargetClass() + '\n';
     };

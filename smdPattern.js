@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 exports.SMDPattern = void 0;
-var shaclShape_1 = require("./shaclShape");
+var shaclTools_1 = require("./shaclTools");
 var rdfTools_1 = require("./rdfTools");
 var N3 = require('n3');
 var DataFactory = N3.DataFactory;
@@ -42,7 +42,7 @@ var SMDPattern = /** @class */ (function () {
         this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
-        this.shape = new shaclShape_1.ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
+        this.shape = new shaclTools_1.ShaclTools(this.getRequiredProperties(), this.jsonSource, this.mainObject);
         this.shaclFileText = this.shaclFileText + this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText + this.shape.getShaclTargetClass() + '\n';
     };
@@ -247,17 +247,6 @@ var SMDPattern = /** @class */ (function () {
         }
         return hiddenClasses;
     };
-    SMDPattern.prototype.writeTurtle = function () {
-        var _this = this;
-        // Write the content of the writer in the .ttl
-        this.writer.end(function (error, result) { return _this.fs.writeFile("build/" + _this.fileName + ".ttl", result, function (err) {
-            // throws an error, you could also catch it here
-            if (err)
-                throw err;
-            // success case, the file was saved
-            console.log('Turtle saved!');
-        }); });
-    };
     SMDPattern.prototype.writeShacl = function () {
         // Write the Shacl shape on file
         this.fs.writeFileSync("build/" + this.fileName + "shacl.ttl", this.shaclFileText, function (err) {
@@ -384,6 +373,12 @@ var SMDPattern = /** @class */ (function () {
                 break;
             }
         }
+    };
+    SMDPattern.prototype.getFileName = function () {
+        return this.fileName;
+    };
+    SMDPattern.prototype.getWriter = function () {
+        return this.writer;
     };
     SMDPattern.prototype.setMainObject = function (mainObject) {
         this.mainObject = mainObject;

@@ -1,6 +1,6 @@
 import { write } from "fs";
 import { arrayBuffer } from "stream/consumers";
-import {ShaclShape} from './shaclShape';
+import {ShaclTools} from './shaclTools';
 import {RDFTools} from './rdfTools';
 
 import {DataFactory, Literal, Quad, Store} from "n3";
@@ -74,7 +74,7 @@ export class SMDPattern {
         this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
-        this.shape = new ShaclShape(this.getRequiredProperties(), this.jsonSource, this.mainObject);
+        this.shape = new ShaclTools(this.getRequiredProperties(), this.jsonSource, this.mainObject);
         this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
         this.shaclFileText = this.shaclFileText+this.shape.getShaclTargetClass()+'\n';
     }
@@ -130,6 +130,7 @@ export class SMDPattern {
             let directEnum = path;
             let subItems = path;
             let subProperties = path;
+
             // Some nested classes have no items, but directly properties. station_area in station_information requires this exception for example.
             // If we are at the second iteration, we have variable structure: some objects have items.properties, some only .properties
             if (depth > 0){
@@ -302,16 +303,12 @@ export class SMDPattern {
         }
 
         return hiddenClasses;
+
     }
 
-    writeTurtle (){
-        // Write the content of the writer in the .ttl
-        this.writer.end((error:any, result:any) => this.fs.writeFile(`build/${this.fileName}.ttl`, result, (err:any) => {
-            // throws an error, you could also catch it here
-            if (err) throw err;
-            // success case, the file was saved
-            console.log('Turtle saved!');}));
-    }
+    
+    
+    
     writeShacl (){
         // Write the Shacl shape on file
         this.fs.writeFileSync(`build/${this.fileName}shacl.ttl`, this.shaclFileText , function(err:any){
@@ -447,9 +444,17 @@ export class SMDPattern {
          } 
     }
 
+    getFileName(){
+        return this.fileName;
+    }
+    getWriter(){
+        return this.writer;
+    }
+
     setMainObject(mainObject: string){
         this.mainObject= mainObject;
     }
+
     
     
     

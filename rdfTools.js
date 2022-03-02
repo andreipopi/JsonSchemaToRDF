@@ -11,6 +11,26 @@ var namedNode = DataFactory.namedNode, literal = DataFactory.literal, defaultGra
 var RDFTools = /** @class */ (function () {
     function RDFTools() {
     }
+    /**
+     * First method of this class to be called; RDFTools has to be initialised right after a *Pattern class has been created.
+     * @param filename
+     */
+    RDFTools.initialise = function (filename) {
+        this.fs = require('fs');
+        this.fileName = filename;
+    };
+    // Write with the writer that is passed; fileName and fs have been set previously
+    RDFTools.writeTurtle = function (writer) {
+        var _this = this;
+        // Write the content of the writer in the .ttl
+        writer.end(function (error, result) { return _this.fs.writeFile("build/" + _this.fileName + ".ttl", result, function (err) {
+            // throws an error, you could also catch it here
+            if (err)
+                throw err;
+            // success case, the file was saved
+            console.log('Turtle saved!');
+        }); });
+    };
     // Create quads of different shape
     RDFTools.node_node_literal = function (subj, pred, obj) {
         if (pred == 'rdfs:label' || pred == 'rdfs:comment') {
