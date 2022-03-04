@@ -21,7 +21,7 @@ for (let [schema,object] of Array.from(schema_object)){
     i +=1;
     //const smdPattern = new SMDPattern(schema, object);
     const smdPattern = new SMDPattern(schema, object);
-    
+
     RDFTools.initialise(smdPattern.getFileName());
     ShaclTools.initialise(smdPattern.getFileName(), smdPattern.getRequiredProperties(), smdPattern.jsonSource, smdPattern.mainObject );
     smdPattern.basicsToQuads();
@@ -42,17 +42,14 @@ for (let [schema,object] of Array.from(schema_object)){
 
 for schema, object in schema_object{
 
+    JsonProcessor.initialise(schema, object);
+    RDFTools.initialise(JsonProcessor.getMainObject().str()); //initialising the filename written by RDF tools with the name of the main object
 
-    smdPatter = new smdPattern(schema, object);
-    RDFTools.initialise(smdPattern.getFileName());
-    smdPattern.basicsToQuads();
+    //TODO: where to write these ? smdPattern.basicsToQuads();
 
+    JsonProcessor.callParseJsonRecursive(); //this method will need to recursively call the parse method.
 
-
-    hiddenClasses = JsonProcessor.callParseJsonRecursive(); //this method will need to recursively call the parse method.
-
-
-
+    
 }
 
 

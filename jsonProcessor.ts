@@ -13,11 +13,11 @@ export class JsonProcessor {
     static jsonSchema: any;
     static mainObject: any;
     static mainJsonObject: any;
-    static fileName: any;
     static rdf_json_objects = new Map<string, string>();
     static termMap = new Map<string, string>();
     static writer: any;
     static path: any;
+    static properties: any;
 
     static initialise ( source:string, mainObj: string ){
         // Getting configuration elements
@@ -33,51 +33,84 @@ export class JsonProcessor {
         this.jsonSchema = require(source);
         this.mainObject = mainObj; 
         this.mainJsonObject = this.getJsonObject(this.mainObject);
-        this.fileName = mainObj;
 
         // Set path (TODO: set from confi.json)
         this.path = this.jsonSchema[this.mainJsonObject];
+        this.properties = this.path[2].properties; // Path to the properties of the main object
+
     }
 
     static callParseJsonRecursive(path){
+        let hiddenClasses:any[] = [];
         let depth = 0;
-        let hiddenClasses = this.parseJsonRecursive(this.writer, depth, path);
+        this.parseJsonRecursive(this.writer, depth, path, this.mainJsonObject, this.properties);
         //path ?
-        return hiddenClasses; // these will be modified 
+        return // these will be modified 
     }
 
-    static parseJsonRecursive (writer, depth, path){
+    static parseJsonRecursive (writer, depth, path, mainJsonObject, properties){
 
-        if (depth > 2){ // base case
-            return
+        if (depth > 1){ // base case
+            return;
         }
         else{
             for (const prop in properties){
-                if (this.termMap.has(prop)){
-                    return // base case
+                let propType;
+                let subProperties;
+                let propDescription;
+
+                if (depth == 0){
+                    propType = path[2].properties[prop].type;
+                    subProperties = path[2].properties[prop].properties; //
+                    propDescription = path[2].properties[prop].description;
+                    
+                    let directEnum = path[2].properties[prop].enum;
+                    let subSubProperties = path[2].properties[prop].properties;
+                    let subSubItems = path[2].properties[prop].items;
+                }
+                if (depth == 1){
+                    path = path[2].properties[mainJsonObject]; // adapt the path at depth 1 for the currently mainObject
+                    
+                    propType = path.properties[prop].type;
+                    subProperties = path.properties[prop].properties;
+                    propDescription = path.properties[prop].description;
+                    
+                    let directEnum = path.properties[prop].enum;
+                    let subSubProperties = path.properties[prop].properties;
+                    let subItems = path.properties[prop].items;
                 }
 
+                if (this.termMap.has(prop)){
+                    return;// base case
+                }
                 else{
                     // Base cases
-                    if(pattern4):
-                        this.writer.addQuad(RDFTools.node_node_node('sdm:'+term, 'rdf:type', 'rdf:Property')); // Add the property and its label
-                        return
-                    if(pattern5):
-                        writer.write
-                        return
-                    if(pattern6):
-                        writer.write
-                        return
+                    // if(pattern4):
+                    //    this.writer.addQuad(RDFTools.node_node_node('sdm:'+term, 'rdf:type', 'rdf:Property')); // Add the property and its label
+                    //   return;
+                  
                     // Recursive calls
-                    if(pattern1 or patter 2):
-                        hiddenClasses = hiddenClasses.concat('sdm:'+newClassName);
-                        writer.write
-                        return
-                }
+                    if(propType == 'object' || propType =='array'){
+                        depth += 1;
+                        this.writer.addQuad(RDFTools.node_node_node('sdm:'+prop, 'rdf:type', 'rdf:Property')); // Add the property and its label
+                        const newClassName = RDFTools.capitalizeFirstLetter(prop); // Since it is an object/array, we give it a new class as a range
+                        this.writer.addQuad(RDFTools.node_node_node('sdm:'+prop, 'rdfs:range', 'sdm:'+newClassName));
+
+                        // set properties
+                        // set path 
+                        // set mainJsonObject
+                    
+                        // Recursive call if we are dealing with an object or an array, which have nested properties
+                        this.parseJsonRecursive(writer, depth, path, mainJsonObject, properties);
+
+                        return;
+            
+                    }
+                }        
             }
         }
     }
-    
+
     static getJsonObject (mainObject: string){
         for(let entry of Array.from(this.rdf_json_objects.entries())){
             const key = entry[0];
@@ -86,5 +119,9 @@ export class JsonProcessor {
                 return this.rdf_json_objects.get(key);
             }
         }
+    }
+
+    static getMainObject (){
+        return this.mainObject;
     }
 }
