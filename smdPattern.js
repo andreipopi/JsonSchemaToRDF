@@ -18,10 +18,16 @@ var SMDPattern = /** @class */ (function () {
         this.creator2 = 'https://www.linkedin.com/in/andrei-popescu/';
         //config = require('./configs/config-sdm.json');
         this.config = require('./configs/config-smartdatamodel.json');
+        this.rdf_json_objects = new Map();
+        // Set the 
+        for (var key in this.config.jsonObjects) {
+            this.rdf_json_objects.set(key, this.config.jsonObjects[key]);
+        }
+        console.log("map of objects", this.rdf_json_objects);
         this.jsonSource = source; // Needed when creating a ShaclShape object
         this.jsonSchema = require(source);
         this.mainObject = mainObj;
-        this.mainJsonObject = this.getMainJsonObject(this.mainObject);
+        this.mainJsonObject = this.getJsonObject(this.mainObject);
         this.fileName = mainObj;
         for (var object in this.config.terms) {
             this.map.set(object, this.config.terms[object]);
@@ -38,9 +44,6 @@ var SMDPattern = /** @class */ (function () {
         this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'vann:preferredNamespaceUri', 'https://w3id.org/sdm/terms/' + this.mainJsonObject + '#'));
         this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'dcterms:creator', this.creator1));
         this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'dcterms:creator', this.creator2));
-        this.writer.addQuad(rdfTools_1.RDFTools.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
-        this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
-        this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
         this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclRoot();
         this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTargetClass() + '\n';
@@ -57,7 +60,7 @@ var SMDPattern = /** @class */ (function () {
         // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
         var jsonobj;
-        jsonobj = this.getMainJsonObject(this.mainObject);
+        jsonobj = this.getJsonObject(this.mainObject);
         // GBFS
         if (depth == 1) { // Then we need the path to the nested object/array
             console.log(this.mainObject);
@@ -272,99 +275,121 @@ var SMDPattern = /** @class */ (function () {
         }
         return requiredMap;
     };
-    SMDPattern.prototype.getMainJsonObject = function (mainObject) {
-        switch (mainObject) {
-            case 'sdm:ElectricalMeasurment': {
-                return 'allOf';
-                break;
-            }
-            // ---- Nested classes ----
-            case 'sdm:RefDevice': {
-                return 'refDevice';
-                break;
-            }
-            case 'sdm:RefTargetDevice': {
-                return 'refTargetDevice';
-                break;
-            }
-            case 'sdm:ActiveEnergyImport': {
-                return 'activeEnergyImport';
-                break;
-            }
-            case 'sdm:ReactiveEnergyImport': {
-                return 'reactiveEnergyImport';
-                break;
-            }
-            case 'sdm:ApparentEnergyImport': {
-                return 'apparentEnergyImport';
-                break;
-            }
-            case 'sdm:ApparentEnergyImport': {
-                return 'apparentEnergyImport';
-                break;
-            }
-            case 'sdm:ApparentEnergyImport': {
-                return 'apparentEnergyImport';
-                break;
-            }
-            case 'sdm:ApparentEnergyImport': {
-                return 'apparentEnergyImport';
-                break;
-            }
-            case 'sdm:ActiveEnergyExport': {
-                return 'activeEnergyExport';
-                break;
-            }
-            case 'sdm:ReactiveEnergyExport': {
-                return 'reactiveEnergyExport';
-                break;
-            }
-            case 'sdm:ApparentEnergyExport': {
-                return 'apparentEnergyExport';
-                break;
-            }
-            case 'sdm:ActivePower': {
-                return 'activePower';
-                break;
-            }
-            case 'sdm:ReactivePower': {
-                return 'reactivePower';
-                break;
-            }
-            case 'sdm:ApparentPower': {
-                return 'apparentPower';
-                break;
-            }
-            case 'sdm:PowerFactor': {
-                return 'powerFactor';
-                break;
-            }
-            case 'sdm:DisplacementPowerFactor': {
-                return 'displacementPowerFactor';
-                break;
-            }
-            case 'sdm:Current': {
-                return 'current';
-                break;
-            }
-            case 'sdm:PhaseVoltage': {
-                return 'phaseVoltage';
-                break;
-            }
-            case 'sdm:PhaseToPhaseVoltage': {
-                return 'phaseToPhaseVoltage';
-                break;
-            }
-            case 'sdm:ThdVoltage': {
-                return 'thdVoltage';
-                break;
-            }
-            case 'sdm:ThdCurrent': {
-                return 'thdCurrent';
-                break;
+    SMDPattern.prototype.getJsonObject = function (mainObject) {
+        console.log("ciao", mainObject);
+        // Set the 
+        for (var _i = 0, _a = Array.from(this.rdf_json_objects.entries()); _i < _a.length; _i++) {
+            var entry = _a[_i];
+            var key = entry[0];
+            var value = entry[1];
+            console.log(key, value);
+            if (key == mainObject) {
+                console.log("inside", key);
+                return this.rdf_json_objects.get(key);
             }
         }
     };
+    /*
+        getJsonObject (mainObject:string) {
+    
+            
+    
+    
+            switch(mainObject) {
+                
+                case 'sdm:ElectricalMeasurment': {
+                    return 'allOf';
+                    break;
+                }
+                // ---- Nested classes ----
+                case 'sdm:RefDevice': {
+                    return 'refDevice';
+                    break;
+                }
+                case 'sdm:RefTargetDevice': {
+                    return 'refTargetDevice';
+                    break;
+                }
+                case 'sdm:ActiveEnergyImport': {
+                    return 'activeEnergyImport';
+                    break;
+                }
+                case 'sdm:ReactiveEnergyImport': {
+                    return 'reactiveEnergyImport';
+                    break;
+                }
+                case 'sdm:ApparentEnergyImport': {
+                    return 'apparentEnergyImport';
+                    break;
+                }
+                case 'sdm:ApparentEnergyImport': {
+                    return 'apparentEnergyImport';
+                    break;
+                }
+                case 'sdm:ApparentEnergyImport': {
+                    return 'apparentEnergyImport';
+                    break;
+                }
+                case 'sdm:ApparentEnergyImport': {
+                    return 'apparentEnergyImport';
+                    break;
+                }
+                case 'sdm:ActiveEnergyExport': {
+                    return 'activeEnergyExport';
+                    break;
+                }
+                case 'sdm:ReactiveEnergyExport': {
+                    return 'reactiveEnergyExport';
+                    break;
+                }
+                case 'sdm:ApparentEnergyExport': {
+                    return 'apparentEnergyExport';
+                    break;
+                }
+                case 'sdm:ActivePower': {
+                    return 'activePower';
+                    break;
+                }
+                case 'sdm:ReactivePower': {
+                    return 'reactivePower';
+                    break;
+                }
+                case 'sdm:ApparentPower': {
+                    return 'apparentPower';
+                    break;
+                }
+                case 'sdm:PowerFactor': {
+                    return 'powerFactor';
+                    break;
+                }
+                case 'sdm:DisplacementPowerFactor': {
+                    return 'displacementPowerFactor';
+                    break;
+                }
+                case 'sdm:Current': {
+                    return 'current';
+                    break;
+                }
+                case 'sdm:PhaseVoltage': {
+                    return 'phaseVoltage';
+                    break;
+                }
+                case 'sdm:PhaseToPhaseVoltage': {
+                    return 'phaseToPhaseVoltage';
+                    break;
+                }
+                case 'sdm:ThdVoltage': {
+                    return 'thdVoltage';
+                    break;
+                }
+                case 'sdm:ThdCurrent': {
+                    return 'thdCurrent';
+                    break;
+                }
+    
+             }
+        }
+        */
     SMDPattern.prototype.getFileName = function () {
         return this.fileName;
     };

@@ -5,17 +5,6 @@ exports.ShaclTools = void 0;
 var ShaclTools = /** @class */ (function () {
     function ShaclTools() {
     }
-    /*
-    // Constructors
-    constructor (required: Map<string, string>, source: string, mainObj: string) {
-        
-        this.jsonSchema = require(source);
-        this.requiredProperties = required;
-
-        console.log("passed object",mainObj);
-        console.log("main target",this.getShaclTarget(mainObj));
-        
-    }*/
     ShaclTools.initialise = function (filename, required, source, mainObj) {
         this.fileName = filename;
         this.targetClass = ShaclTools.getShaclTarget(mainObj);

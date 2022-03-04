@@ -16,6 +16,7 @@ var i = 0;
 for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
     var _b = _a[_i], schema = _b[0], object = _b[1];
     i += 1;
+    //const smdPattern = new SMDPattern(schema, object);
     var smdPattern = new smdPattern_1.SMDPattern(schema, object);
     rdfTools_1.RDFTools.initialise(smdPattern.getFileName());
     shaclTools_1.ShaclTools.initialise(smdPattern.getFileName(), smdPattern.getRequiredProperties(), smdPattern.jsonSource, smdPattern.mainObject);
@@ -32,3 +33,22 @@ for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
     rdfTools_1.RDFTools.writeTurtle(smdPattern.getWriter());
     shaclTools_1.ShaclTools.writeShacl(smdPattern.getFileName(), smdPattern.getShaclFileText());
 }
+/* main Function for recursive jsonProcessor
+
+for schema, object in schema_object{
+
+
+    smdPatter = new smdPattern(schema, object);
+    RDFTools.initialise(smdPattern.getFileName());
+    smdPattern.basicsToQuads();
+
+
+
+    hiddenClasses = JsonProcessor.callParseJsonRecursive(); //this method will need to recursively call the parse method.
+
+
+
+}
+
+
+*/ 

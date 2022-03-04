@@ -33,24 +33,30 @@ export class SMDPattern {
     aDocument: any;
     descriptionQuad: any;
     uriQuad: any; 
+
+
     creator1 = 'https://pietercolpaert.be/#me';
     creator2 = 'https://www.linkedin.com/in/andrei-popescu/';
-    creator1Quad: any;
-    creator2Quad: any;
     // ShaclShape
-    shape: any;
     fileName: any;
     //config = require('./configs/config-sdm.json');
     config = require('./configs/config-smartdatamodel.json');
     
-
+    rdf_json_objects = new Map<string, string>();
 
     // Constructors
     constructor ( source:string, mainObj: string ){
+        // Set the 
+        for(let key in this.config.jsonObjects){
+            this.rdf_json_objects.set(key, this.config.jsonObjects[key]);
+        }
+
+        console.log("map of objects", this.rdf_json_objects);
+
         this.jsonSource = source; // Needed when creating a ShaclShape object
         this.jsonSchema = require(source);
         this.mainObject = mainObj; 
-        this.mainJsonObject = this.getMainJsonObject(this.mainObject);
+        this.mainJsonObject = this.getJsonObject(this.mainObject);
         this.fileName = mainObj;
         for( let object in this.config.terms){
             this.map.set(object, this.config.terms[object]);
@@ -69,9 +75,6 @@ export class SMDPattern {
         this.writer.addQuad(RDFTools.node_node_literal('https://w3id.org/sdm/terms/'+ this.mainJsonObject, 'vann:preferredNamespaceUri', 'https://w3id.org/sdm/terms/'+this.mainJsonObject+'#'));
         this.writer.addQuad(RDFTools.node_node_node('https://w3id.org/sdm/terms/'+ this.mainJsonObject, 'dcterms:creator', this.creator1));
         this.writer.addQuad(RDFTools.node_node_node('https://w3id.org/sdm/terms/'+ this.mainJsonObject, 'dcterms:creator', this.creator2));
-        this.writer.addQuad(RDFTools.node_node_node(this.creator1, 'rdf:type', 'foaf:Person'));
-        this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
-        this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
         this.shaclFileText = this.shaclFileText+ShaclTools.getShaclRoot();
         this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTargetClass()+'\n';
@@ -93,12 +96,11 @@ export class SMDPattern {
         // GET the properties of the main object
         // If we are looking at depth 1 (second iteration), then we have to slightly change the paths
         let jsonobj: any;
-        jsonobj= this.getMainJsonObject(this.mainObject);
+        jsonobj= this.getJsonObject(this.mainObject);
         
    
         // GBFS
         if(depth == 1){ // Then we need the path to the nested object/array
-            
             console.log(this.mainObject);
             console.log(jsonobj);
             path = path[2].properties[jsonobj];
@@ -113,7 +115,6 @@ export class SMDPattern {
             this.writer.addQuad(RDFTools.node_node_literal(this.mainObject, 'rdfs:label', path.description));
         }
        
-
         // Add the main object to the vocabulary as a class
         this.writer.addQuad(RDFTools.node_node_node(this.mainObject, 'rdf:type', 'rdfs:Class'));
 
@@ -299,9 +300,7 @@ export class SMDPattern {
                 }
             }
         }
-
         return hiddenClasses;
-
     }
 
 
@@ -336,7 +335,28 @@ export class SMDPattern {
     }
 
 
-    getMainJsonObject (mainObject:string) {
+    getJsonObject (mainObject: string){
+
+        console.log("ciao", mainObject);
+        // Set the 
+        for(let entry of Array.from(this.rdf_json_objects.entries())){
+            const key = entry[0];
+            const value = entry[1];
+            console.log(key, value);
+
+            if( key == mainObject){
+                console.log("inside", key);
+                return this.rdf_json_objects.get(key);
+            }
+        }
+    }
+
+/*
+    getJsonObject (mainObject:string) {
+
+        
+
+
         switch(mainObject) { 
             
             case 'sdm:ElectricalMeasurment': { 
@@ -431,6 +451,7 @@ export class SMDPattern {
 
          } 
     }
+    */
 
     getFileName(){
         return this.fileName;
@@ -438,7 +459,6 @@ export class SMDPattern {
     getWriter(){
         return this.writer;
     }
-
     getShaclFileText(){
         return this.shaclFileText;
     }

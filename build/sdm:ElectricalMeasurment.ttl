@@ -19,9 +19,6 @@
     rdfs:comment "An electrical  measurement from a system that uses three phase alternating current."@en;
     vann:preferredNamespaceUri "https://w3id.org/sdm/terms/allOf#";
     dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
-<https://pietercolpaert.be/#me> rdf:type foaf:Person;
-    foaf:mbox "mailto:pieter.colpaert@imec.be";
-    foaf:name "Pieter Colpaert".
 sdm:ElectricalMeasurment rdf:type rdfs:Class.
 sdm:refDevice rdf:type rdf:Property;
     rdfs:label "Relationship. Device(s) used to obtain the measurement."@en;

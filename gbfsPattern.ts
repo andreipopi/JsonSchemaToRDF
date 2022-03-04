@@ -40,8 +40,8 @@ export class GbfsPattern {
     // ShaclShape
     shape: any;
     fileName: any;
-    //config = require('./configs/config-gbfs.json');
-    config = require('./configs/config-smartdatamodels.json');
+    config = require('./configs/config-gbfs.json');
+    //config = require('./configs/config-smartdatamodels.json');
 
 
     // Constructors
@@ -71,8 +71,8 @@ export class GbfsPattern {
         this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
-        this.shaclFileText = this.shaclFileText+this.shape.getShaclRoot();
-        this.shaclFileText = this.shaclFileText+this.shape.getShaclTargetClass()+'\n';
+        this.shaclFileText = this.shaclFileText+ ShaclTools.getShaclRoot();
+        this.shaclFileText = this.shaclFileText+ ShaclTools.getShaclTargetClass()+'\n';
     }
     
     /** Creates and writes quads for the main object's properties, 
@@ -157,7 +157,7 @@ export class GbfsPattern {
                     if( termDescription != undefined )
                         this.writer.addQuad(RDFTools.node_node_literal('gbfs:'+term, 'rdfs:label', termDescription.toString()));
         
-                    const newClassName = this.capitalizeFirstLetter(term); // Since it is an object/array, we give it a new class as a range
+                    const newClassName = RDFTools.capitalizeFirstLetter(term); // Since it is an object/array, we give it a new class as a range
                     this.writer.addQuad(RDFTools.node_node_node('gbfs:'+term, 'rdfs:range', 'gbfs:'+newClassName));
                   
                     // Add the new classes to a hiddenClasses array; these will be explored by this function in a second stage.
@@ -269,18 +269,18 @@ export class GbfsPattern {
             if (ShaclTools.isRequired(term)){
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
-                    this.shaclFileText = this.shaclFileText+this.shape.getShaclTypedRequiredProperty(term, RDFTools.getXsdType(termType))+'\n';
+                    this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedRequiredProperty(term, RDFTools.getXsdType(termType))+'\n';
                 }
                 else{
-                    this.shaclFileText = this.shaclFileText+this.shape.getShaclRequiredProperty(term)+'\n';
+                    this.shaclFileText = this.shaclFileText+ShaclTools.getShaclRequiredProperty(term)+'\n';
                 }
             }
             else{ // Else the property is not required
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
-                    this.shaclFileText = this.shaclFileText+this.shape.getShaclTypedProperty(term, RDFTools.getXsdType(termType))+'\n';                }
+                    this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedProperty(term, RDFTools.getXsdType(termType))+'\n';                }
                 else{
-                    this.shaclFileText = this.shaclFileText+this.shape.getShaclProperty(term)+'\n';
+                    this.shaclFileText = this.shaclFileText+ShaclTools.getShaclProperty(term)+'\n';
                 }
             }
         }
@@ -288,6 +288,7 @@ export class GbfsPattern {
         return hiddenClasses;
     }
 
+    /*
     writeTurtle (){
         // Write the content of the writer in the .ttl
         this.writer.end((error:any, result:any) => this.fs.writeFile(`build/${this.fileName}.ttl`, result, (err:any) => {
@@ -304,6 +305,8 @@ export class GbfsPattern {
             }
         });
     }
+    */
+
     /** returns the properties of the main object which are required. Useful in the shaclshape class in order to create the shacl shape */
     getRequiredProperties () {
         let requiredMap = new Map<string, string>();
@@ -483,12 +486,20 @@ export class GbfsPattern {
          } 
     }
 
+    getFileName(){
+        return this.fileName;
+    }
+    getWriter(){
+        return this.writer;
+    }
+
+    getShaclFileText(){
+        return this.shaclFileText;
+    }
+
     setMainObject(mainObject: string){
         this.mainObject= mainObject;
     }
     
-    capitalizeFirstLetter(string:string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
    
 }

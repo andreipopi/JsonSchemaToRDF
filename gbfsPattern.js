@@ -7,6 +7,7 @@ var N3 = require('n3');
 var DataFactory = N3.DataFactory;
 var namedNode = DataFactory.namedNode, literal = DataFactory.literal, defaultGraph = DataFactory.defaultGraph, quad = DataFactory.quad;
 var GbfsPattern = /** @class */ (function () {
+    //config = require('./configs/config-smartdatamodels.json');
     // Constructors
     function GbfsPattern(source, mainObj) {
         // Attributes
@@ -16,8 +17,7 @@ var GbfsPattern = /** @class */ (function () {
         this.map = new Map();
         this.creator1 = 'https://pietercolpaert.be/#me';
         this.creator2 = 'https://www.linkedin.com/in/andrei-popescu/';
-        //config = require('./configs/config-gbfs.json');
-        this.config = require('./configs/config-smartdatamodels.json');
+        this.config = require('./configs/config-gbfs.json');
         this.jsonSource = source; // Needed when creating a ShaclShape object
         this.jsonSchema = require(source);
         this.mainObject = mainObj;
@@ -42,8 +42,8 @@ var GbfsPattern = /** @class */ (function () {
         this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
-        this.shaclFileText = this.shaclFileText + this.shape.getShaclRoot();
-        this.shaclFileText = this.shaclFileText + this.shape.getShaclTargetClass() + '\n';
+        this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclRoot();
+        this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTargetClass() + '\n';
     };
     /** Creates and writes quads for the main object's properties,
      * by checking if new terms are encountered (against a map of terms).
@@ -117,7 +117,7 @@ var GbfsPattern = /** @class */ (function () {
                     this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('gbfs:' + term, 'rdf:type', 'rdf:Property')); // Add the property and its label
                     if (termDescription != undefined)
                         this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal('gbfs:' + term, 'rdfs:label', termDescription.toString()));
-                    var newClassName = this.capitalizeFirstLetter(term); // Since it is an object/array, we give it a new class as a range
+                    var newClassName = rdfTools_1.RDFTools.capitalizeFirstLetter(term); // Since it is an object/array, we give it a new class as a range
                     this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('gbfs:' + term, 'rdfs:range', 'gbfs:' + newClassName));
                     // Add the new classes to a hiddenClasses array; these will be explored by this function in a second stage.
                     hiddenClasses = hiddenClasses.concat('gbfs:' + newClassName);
@@ -221,43 +221,42 @@ var GbfsPattern = /** @class */ (function () {
             if (shaclTools_1.ShaclTools.isRequired(term)) {
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
-                    this.shaclFileText = this.shaclFileText + this.shape.getShaclTypedRequiredProperty(term, rdfTools_1.RDFTools.getXsdType(termType)) + '\n';
+                    this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedRequiredProperty(term, rdfTools_1.RDFTools.getXsdType(termType)) + '\n';
                 }
                 else {
-                    this.shaclFileText = this.shaclFileText + this.shape.getShaclRequiredProperty(term) + '\n';
+                    this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclRequiredProperty(term) + '\n';
                 }
             }
             else { // Else the property is not required
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
-                    this.shaclFileText = this.shaclFileText + this.shape.getShaclTypedProperty(term, rdfTools_1.RDFTools.getXsdType(termType)) + '\n';
+                    this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedProperty(term, rdfTools_1.RDFTools.getXsdType(termType)) + '\n';
                 }
                 else {
-                    this.shaclFileText = this.shaclFileText + this.shape.getShaclProperty(term) + '\n';
+                    this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclProperty(term) + '\n';
                 }
             }
         }
         return hiddenClasses;
     };
-    GbfsPattern.prototype.writeTurtle = function () {
-        var _this = this;
+    /*
+    writeTurtle (){
         // Write the content of the writer in the .ttl
-        this.writer.end(function (error, result) { return _this.fs.writeFile("build/" + _this.fileName + ".ttl", result, function (err) {
+        this.writer.end((error:any, result:any) => this.fs.writeFile(`build/${this.fileName}.ttl`, result, (err:any) => {
             // throws an error, you could also catch it here
-            if (err)
-                throw err;
+            if (err) throw err;
             // success case, the file was saved
-            console.log('Turtle saved!');
-        }); });
-    };
-    GbfsPattern.prototype.writeShacl = function () {
+            console.log('Turtle saved!');}));
+    }
+    writeShacl (){
         // Write the Shacl shape on file
-        this.fs.writeFileSync("build/" + this.fileName + "shacl.ttl", this.shaclFileText, function (err) {
-            if (err) {
+        this.fs.writeFileSync(`build/${this.fileName}shacl.ttl`, this.shaclFileText , function(err:any){
+            if(err){
                 return console.log("error");
             }
         });
-    };
+    }
+    */
     /** returns the properties of the main object which are required. Useful in the shaclshape class in order to create the shacl shape */
     GbfsPattern.prototype.getRequiredProperties = function () {
         var requiredMap = new Map();
@@ -427,11 +426,17 @@ var GbfsPattern = /** @class */ (function () {
             }
         }
     };
+    GbfsPattern.prototype.getFileName = function () {
+        return this.fileName;
+    };
+    GbfsPattern.prototype.getWriter = function () {
+        return this.writer;
+    };
+    GbfsPattern.prototype.getShaclFileText = function () {
+        return this.shaclFileText;
+    };
     GbfsPattern.prototype.setMainObject = function (mainObject) {
         this.mainObject = mainObject;
-    };
-    GbfsPattern.prototype.capitalizeFirstLetter = function (string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
     };
     return GbfsPattern;
 }());

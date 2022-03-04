@@ -1,4 +1,27 @@
 {
+    
+  "jsonObjects": {
+      "sdm:ElectricalMeasurment":  "allOf",
+      "sdm:RefDevice": "refDevice",
+      "sdm:RefTargetDevice": "refTargetDevice",
+      "sdm:ActiveEnergyImport": "activeEnergyImport",
+      "sdm:ReactiveEnergyImport": "reactiveEnergyImport",
+      "sdm:ApparentEnergyImport": "apparentEnergyImport",
+      "sdm:ActiveEnergyExport": "activeEnergyExport",
+      "sdm:ReactiveEnergyExport": "reactiveEnergyExport",
+      "sdm:ApparentEnergyExport": "apparentEnergyExport",
+      "sdm:ActivePower":  "activePower",
+      "sdm:ReactivePower": "reactivePower",
+      "sdm:ApparentPower": "apparentPower",
+      "sdm:PowerFactor": "powerFactor",
+      "sdm:DisplacementPowerFactor": "displacementPowerFactor",
+      "sdm:Current": "current",
+      "sdm:PhaseVoltage": "phaseVoltage",
+      "sdm:PhaseToPhaseVoltage": "phaseToPhaseVoltage",
+      "sdm:ThdVoltage":  "thdVoltage",
+      "sdm:ThdCurrent": "thdCurrent"
+    },
+  
     "sources": {
       "./SmartDataModels/dataModel.json": "sdm:ElectricalMeasurment"
     },
@@ -40,9 +63,10 @@
       "car": "schema:car"
     },
 
-    "nestedClasses": {
-
+    "creators": {
+      "creator1": "https://pietercolpaert.be/#me",
+      "creator2": "https://www.linkedin.com/in/andrei-popescu/"
     }
-  
+
   }
   
