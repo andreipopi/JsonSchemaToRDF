@@ -63,10 +63,8 @@ var SMDPattern = /** @class */ (function () {
         jsonobj = this.getJsonObject(this.mainObject);
         // GBFS
         if (depth == 1) { // Then we need the path to the nested object/array
-            console.log(this.mainObject);
-            console.log(jsonobj);
             path = path[2].properties[jsonobj];
-            console.log("path depth1", path);
+            //console.log("path depth1", path);
             // the object has either properties or items/properties
             if (path.properties == undefined) {
                 properties = path.items.properties;
@@ -92,22 +90,12 @@ var SMDPattern = /** @class */ (function () {
             // Some nested classes have no items, but directly properties. station_area in station_information requires this exception for example.
             // If we are at the second iteration, we have variable structure: some objects have items.properties, some only .properties
             if (depth > 0) {
-                if (path.items == undefined) {
-                    termType = path.properties[term].type; // dont confuse with initial path set for depth = 0, path has already been updated in the previous (if depth=1)
-                    termProperties = path.properties[term].properties;
-                    termDescription = path.properties[term].description;
-                    directEnum = path.properties[term]["enum"];
-                    subProperties = path.properties[term].properties;
-                    subItems = path.properties[term].items;
-                }
-                else {
-                    termType = path.properties[term].type;
-                    termProperties = path.properties[term].properties;
-                    termDescription = path.properties[term].description;
-                    directEnum = path.properties[term]["enum"];
-                    subProperties = path.properties[term].properties;
-                    subItems = path.properties[term].items;
-                }
+                termType = path.properties[term].type;
+                termProperties = path.properties[term].properties;
+                termDescription = path.properties[term].description;
+                directEnum = path.properties[term]["enum"];
+                subProperties = path.properties[term].properties;
+                subItems = path.properties[term].items;
             }
             // Else we are at iteration 0 and we assume all having items.properties
             else {
@@ -276,120 +264,15 @@ var SMDPattern = /** @class */ (function () {
         return requiredMap;
     };
     SMDPattern.prototype.getJsonObject = function (mainObject) {
-        console.log("ciao", mainObject);
-        // Set the 
         for (var _i = 0, _a = Array.from(this.rdf_json_objects.entries()); _i < _a.length; _i++) {
             var entry = _a[_i];
             var key = entry[0];
             var value = entry[1];
-            console.log(key, value);
             if (key == mainObject) {
-                console.log("inside", key);
                 return this.rdf_json_objects.get(key);
             }
         }
     };
-    /*
-        getJsonObject (mainObject:string) {
-    
-            
-    
-    
-            switch(mainObject) {
-                
-                case 'sdm:ElectricalMeasurment': {
-                    return 'allOf';
-                    break;
-                }
-                // ---- Nested classes ----
-                case 'sdm:RefDevice': {
-                    return 'refDevice';
-                    break;
-                }
-                case 'sdm:RefTargetDevice': {
-                    return 'refTargetDevice';
-                    break;
-                }
-                case 'sdm:ActiveEnergyImport': {
-                    return 'activeEnergyImport';
-                    break;
-                }
-                case 'sdm:ReactiveEnergyImport': {
-                    return 'reactiveEnergyImport';
-                    break;
-                }
-                case 'sdm:ApparentEnergyImport': {
-                    return 'apparentEnergyImport';
-                    break;
-                }
-                case 'sdm:ApparentEnergyImport': {
-                    return 'apparentEnergyImport';
-                    break;
-                }
-                case 'sdm:ApparentEnergyImport': {
-                    return 'apparentEnergyImport';
-                    break;
-                }
-                case 'sdm:ApparentEnergyImport': {
-                    return 'apparentEnergyImport';
-                    break;
-                }
-                case 'sdm:ActiveEnergyExport': {
-                    return 'activeEnergyExport';
-                    break;
-                }
-                case 'sdm:ReactiveEnergyExport': {
-                    return 'reactiveEnergyExport';
-                    break;
-                }
-                case 'sdm:ApparentEnergyExport': {
-                    return 'apparentEnergyExport';
-                    break;
-                }
-                case 'sdm:ActivePower': {
-                    return 'activePower';
-                    break;
-                }
-                case 'sdm:ReactivePower': {
-                    return 'reactivePower';
-                    break;
-                }
-                case 'sdm:ApparentPower': {
-                    return 'apparentPower';
-                    break;
-                }
-                case 'sdm:PowerFactor': {
-                    return 'powerFactor';
-                    break;
-                }
-                case 'sdm:DisplacementPowerFactor': {
-                    return 'displacementPowerFactor';
-                    break;
-                }
-                case 'sdm:Current': {
-                    return 'current';
-                    break;
-                }
-                case 'sdm:PhaseVoltage': {
-                    return 'phaseVoltage';
-                    break;
-                }
-                case 'sdm:PhaseToPhaseVoltage': {
-                    return 'phaseToPhaseVoltage';
-                    break;
-                }
-                case 'sdm:ThdVoltage': {
-                    return 'thdVoltage';
-                    break;
-                }
-                case 'sdm:ThdCurrent': {
-                    return 'thdCurrent';
-                    break;
-                }
-    
-             }
-        }
-        */
     SMDPattern.prototype.getFileName = function () {
         return this.fileName;
     };

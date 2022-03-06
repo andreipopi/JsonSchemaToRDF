@@ -1,8 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var rdfTools_1 = require("./rdfTools");
-var shaclTools_1 = require("./shaclTools");
-var smdPattern_1 = require("./smdPattern");
+var jsonProcessor_1 = require("./jsonProcessor");
 // Main objects that are passed to the rdfVocabulary.ts.
 // there is one per json schema.
 var schema_object = new Map();
@@ -13,42 +12,34 @@ for (var object in config.sources) {
 }
 var hiddenClasses = [];
 var i = 0;
-for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
-    var _b = _a[_i], schema = _b[0], object = _b[1];
-    i += 1;
+/*
+for (let [schema,object] of Array.from(schema_object)){
+    i +=1;
     //const smdPattern = new SMDPattern(schema, object);
-    var smdPattern = new smdPattern_1.SMDPattern(schema, object);
-    rdfTools_1.RDFTools.initialise(smdPattern.getFileName());
-    shaclTools_1.ShaclTools.initialise(smdPattern.getFileName(), smdPattern.getRequiredProperties(), smdPattern.jsonSource, smdPattern.mainObject);
+    const smdPattern = new SMDPattern(schema, object);
+
+    RDFTools.initialise(smdPattern.getFileName());
+    ShaclTools.initialise(smdPattern.getFileName(), smdPattern.getRequiredProperties(), smdPattern.jsonSource, smdPattern.mainObject );
     smdPattern.basicsToQuads();
     hiddenClasses = smdPattern.propertiesToRDF(0);
-    // New classes might be have been added as range value for some properties. It is now time to explore those classes, 
+    // New classes might be have been added as range value for some properties. It is now time to explore those classes,
     // e.g. "per_km_pricing" in system_pricing.json
-    for (var _c = 0, hiddenClasses_1 = hiddenClasses; _c < hiddenClasses_1.length; _c++) {
-        var cls = hiddenClasses_1[_c];
+    for (const cls of hiddenClasses){
         smdPattern.setMainObject(cls);
         console.log("main object", cls);
         smdPattern.propertiesToRDF(1);
     }
-    rdfTools_1.RDFTools.writeTurtle(smdPattern.getWriter());
-    shaclTools_1.ShaclTools.writeShacl(smdPattern.getFileName(), smdPattern.getShaclFileText());
+    RDFTools.writeTurtle(smdPattern.getWriter());
+    ShaclTools.writeShacl(smdPattern.getFileName(), smdPattern.getShaclFileText(),);
 }
-/* main Function for recursive jsonProcessor
-
-for schema, object in schema_object{
-
-
-    smdPatter = new smdPattern(schema, object);
-    RDFTools.initialise(smdPattern.getFileName());
-    smdPattern.basicsToQuads();
-
-
-
-    hiddenClasses = JsonProcessor.callParseJsonRecursive(); //this method will need to recursively call the parse method.
-
-
-
+*/
+// main Function for recursive jsonProcessor
+for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
+    var _b = _a[_i], schema = _b[0], object = _b[1];
+    jsonProcessor_1.JsonProcessor.initialise(schema, object);
+    rdfTools_1.RDFTools.initialise(jsonProcessor_1.JsonProcessor.getMainObject()); //initialising the filename written by RDF tools with the name of the main object
+    //TODO: where to write these ? smdPattern.basicsToQuads();
+    //JsonProcessor.callParseJsonRecursive(); //this method will need to recursively call the parse method.
+    jsonProcessor_1.JsonProcessor.callJsonTraverseRecursive();
+    rdfTools_1.RDFTools.writeTurtle(jsonProcessor_1.JsonProcessor.getWriter());
 }
-
-
-*/ 

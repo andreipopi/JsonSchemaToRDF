@@ -2,6 +2,7 @@ import {GbfsPattern} from './gbfsPattern';
 import { RDFTools } from './rdfTools';
 import {ShaclTools} from './shaclTools';
 import {SMDPattern} from './smdPattern';
+import {JsonProcessor} from './jsonProcessor';
 
 // Main objects that are passed to the rdfVocabulary.ts.
 // there is one per json schema.
@@ -17,6 +18,7 @@ for( let object in config.sources){
 let hiddenClasses = []
 let i = 0;
 
+/*
 for (let [schema,object] of Array.from(schema_object)){
     i +=1;
     //const smdPattern = new SMDPattern(schema, object);
@@ -36,21 +38,23 @@ for (let [schema,object] of Array.from(schema_object)){
     RDFTools.writeTurtle(smdPattern.getWriter());
     ShaclTools.writeShacl(smdPattern.getFileName(), smdPattern.getShaclFileText(),);
 }
+*/
 
 
-/* main Function for recursive jsonProcessor
+// main Function for recursive jsonProcessor
 
-for schema, object in schema_object{
+for (let [schema,object] of Array.from(schema_object)){
 
     JsonProcessor.initialise(schema, object);
-    RDFTools.initialise(JsonProcessor.getMainObject().str()); //initialising the filename written by RDF tools with the name of the main object
+    RDFTools.initialise(JsonProcessor.getMainObject()); //initialising the filename written by RDF tools with the name of the main object
 
     //TODO: where to write these ? smdPattern.basicsToQuads();
 
-    JsonProcessor.callParseJsonRecursive(); //this method will need to recursively call the parse method.
-
+    //JsonProcessor.callParseJsonRecursive(); //this method will need to recursively call the parse method.
     
+    JsonProcessor.callJsonTraverseRecursive();
+
+    RDFTools.writeTurtle(JsonProcessor.getWriter());
 }
 
 
-*/
