@@ -1,4 +1,6 @@
 import { RDFTools } from "./rdfTools";
+import { NamedNode } from "n3/lib/N3DataFactory";
+
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -39,91 +41,8 @@ export class JsonProcessor {
         this.properties = this.path[2].properties; // Path to the properties of the main object
 
     }
-
-    static callParseJsonRecursive(){
-
-        let hiddenClasses:any[] = [];
-        let depth = 0;
-        this.parseJsonRecursive(this.writer, depth, this.path, this.mainJsonObject, this.properties);
-        //path ?
-        return // these will be modified 
-    }
-
-    static parseJsonRecursive (writer, depth, path, mainJsonObject, properties){
-        console.log("in method");
-        if (depth > 2){ // base case
-            console.log("depth > 1");
-            return;
-        }
-        else{
-            for (const prop in properties){
-                let tmpPath;
-                let propType;
-                let subProperties;
-                let propDescription;
-
-                console.log("depth", depth, "prop", prop);
-
-                if (depth == 0){
-                    propType = path[2].properties[prop].type;
-                    subProperties = path[2].properties[prop].properties; //
-                    propDescription = path[2].properties[prop].description;
-                    
-                    let directEnum = path[2].properties[prop].enum;
-                    let subSubProperties = path[2].properties[prop].properties;
-                    let subSubItems = path[2].properties[prop].items;
-                }
-                if (depth == 1){
-                    console.log("depth",depth);
-                    console.log(mainJsonObject);
-                    console.log("path2", path[2]);
-                    tmpPath = path[2].properties[mainJsonObject]; // adapt the path at depth 1 for the currently mainObject
-                    console.log("tmppath",tmpPath);
-                    propType = tmpPath.type;
-                    subProperties = tmpPath.properties;
-                    propDescription = tmpPath.description;
-                    //let directEnum = path.properties[prop].enum;
-                    //let subSubProperties = path.properties[prop].properties;
-                    //let subItems = path.properties[prop].items;
-                }
-
-                if (this.termMap.has(prop)){
-                    console.log("prop in map", prop);
-                    // DO nothin;
-                }
-                else{
-                    console.log("not in map prop:", prop);
-                    // Base cases
-                    // if(pattern4):
-                    //    this.writer.addQuad(RDFTools.node_node_node('sdm:'+term, 'rdf:type', 'rdf:Property')); // Add the property and its label
-                    //   return;
-                    // Recursive calls
-                    console.log(propType);
-                    if(propType == 'object' || propType =='array'){
-                        this.writer.addQuad(RDFTools.node_node_node('sdm:'+prop, 'rdf:type', 'rdf:Property')); // Add the property and its label
-                        const newClassName = RDFTools.capitalizeFirstLetter(prop); // Since it is an object/array, we give it a new class as a range
-                        this.writer.addQuad(RDFTools.node_node_node('sdm:'+prop, 'rdfs:range', 'sdm:'+newClassName));
-
-                        depth += 1; 
-
-                        console.log("depth increase",depth);
-                        // properties = ?;
-                        //path = ?;
-                        mainJsonObject = JsonProcessor.getJsonObject('sdm:'+ RDFTools.capitalizeFirstLetter(prop));
-                        // Recursive call if we are dealing with an object or an array, which have nested properties
-                        return;
-                        // return here?
-                    }
-                }
-                console.log("exit if");        
-            }
-        }
-        return;
-    }
-
-
+    
     static callJsonTraverseRecursive(){
-
         let depth = 0;
         for (let prop in this.properties){
             this.mainJsonObject = JsonProcessor.getJsonObject('sdm:'+ RDFTools.capitalizeFirstLetter(prop));
@@ -132,7 +51,6 @@ export class JsonProcessor {
         return;
     }
 
-
     static jsonTraverseRecursive (writer, depth, path, mainJsonObject, prop){
         
         // We only deal to depths <= 1; the following setups take care of that.
@@ -140,11 +58,12 @@ export class JsonProcessor {
         let propType;
         let subProperties;
         let propDescription;
+        let directEnum;
         if (depth == 0){
             propType = path[2].properties[prop].type;
             subProperties = path[2].properties[prop].properties; //
             propDescription = path[2].properties[prop].description;
-                    //let directEnum = path[2].properties[prop].enum;
+            directEnum = path[2].properties[prop].enum;
                     //let subSubProperties = path[2].properties[prop].properties;
                     //let subSubItems = path[2].properties[prop].items;
         }
@@ -158,7 +77,7 @@ export class JsonProcessor {
             console.log("proptype", propType);
             subProperties = tmpPath.properties;
             propDescription = tmpPath.description;
-                    //let directEnum = path.properties[prop].enum;
+            directEnum = tmpPath.properties[prop].enum;
                     //let subSubProperties = path.properties[prop].properties;
                     //let subItems = path.properties[prop].items;
         }
@@ -171,13 +90,21 @@ export class JsonProcessor {
 
         if (propType == 'number'){
             if (this.termMap.has(prop) == false) {
+                this.termMap.set(prop, 'sdm:'+prop);
                 this.writer.addQuad(RDFTools.node_node_node('sdm:'+prop, 'rdfs:range', 'xsd:integer'));
+                if(propDescription != undefined ){
+                    this.writer.addQuad(RDFTools.node_node_literal('sdm:'+prop, 'rdfs:label', propDescription.toString()));
+                }
             }
             return;
         }
         if (propType == 'boolean'){
             if (this.termMap.has(prop) == false) {
+                this.termMap.set(prop, 'sdm:'+prop);
                 this.writer.addQuad(RDFTools.node_node_node('sdm:'+prop, 'rdfs:range', 'xsd:boolean'));
+                if(propDescription != undefined ){
+                    this.writer.addQuad(RDFTools.node_node_literal('sdm:'+prop, 'rdfs:label', propDescription.toString()));
+                }
             }
             return;
         }
@@ -185,9 +112,30 @@ export class JsonProcessor {
         // Recursive step
         if(propType == 'object' || propType =='array'){
             if (this.termMap.has(prop) == false) {
+                this.termMap.set(prop, 'sdm:'+prop);
                 this.writer.addQuad(RDFTools.node_node_node('sdm:'+prop, 'rdf:type', 'rdf:Property')); // Add the property and its label
                 const newClassName = RDFTools.capitalizeFirstLetter(prop); // Since it is an object/array, we give it a new class as a range
                 this.writer.addQuad(RDFTools.node_node_node('sdm:'+prop, 'rdfs:range', 'sdm:'+newClassName));
+                if(propDescription != undefined ){
+                        this.writer.addQuad(RDFTools.node_node_literal('sdm:'+prop, 'rdfs:label', propDescription.toString()));
+                }
+
+                if (directEnum != undefined){
+                    let oneOfValues:NamedNode[] = [];
+                    for (const value of directEnum){
+                        //We get the values from the mapping, else we create new terms
+                        if (this.termMap.get(value)!= undefined) {
+                            oneOfValues.push(namedNode(this.termMap.get(value)));
+                        }
+                        else{
+                            oneOfValues.push(namedNode(value));
+                        }
+                    }
+                    console.log("this is the list of values", oneOfValues);
+                    let subPropQuad = RDFTools.node_node_list('sdm:'+newClassName, 'owl:oneOf', this.writer.list(oneOfValues));
+                    this.writer.addQuad(subPropQuad);
+                }
+            
             }
             depth += 1;            
             mainJsonObject = JsonProcessor.getJsonObject('sdm:'+ RDFTools.capitalizeFirstLetter(prop));

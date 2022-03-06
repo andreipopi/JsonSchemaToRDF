@@ -113,11 +113,12 @@ var JsonProcessor = /** @class */ (function () {
         var propType;
         var subProperties;
         var propDescription;
+        var directEnum;
         if (depth == 0) {
             propType = path[2].properties[prop].type;
             subProperties = path[2].properties[prop].properties; //
             propDescription = path[2].properties[prop].description;
-            //let directEnum = path[2].properties[prop].enum;
+            directEnum = path[2].properties[prop]["enum"];
             //let subSubProperties = path[2].properties[prop].properties;
             //let subSubItems = path[2].properties[prop].items;
         }
@@ -130,7 +131,7 @@ var JsonProcessor = /** @class */ (function () {
             console.log("proptype", propType);
             subProperties = tmpPath.properties;
             propDescription = tmpPath.description;
-            //let directEnum = path.properties[prop].enum;
+            directEnum = tmpPath.properties[prop]["enum"];
             //let subSubProperties = path.properties[prop].properties;
             //let subItems = path.properties[prop].items;
         }
@@ -140,22 +141,50 @@ var JsonProcessor = /** @class */ (function () {
         }
         if (propType == 'number') {
             if (this.termMap.has(prop) == false) {
+                this.termMap.set(prop, 'sdm:' + prop);
                 this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + prop, 'rdfs:range', 'xsd:integer'));
+                if (propDescription != undefined) {
+                    this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal('sdm:' + prop, 'rdfs:label', propDescription.toString()));
+                }
             }
             return;
         }
         if (propType == 'boolean') {
             if (this.termMap.has(prop) == false) {
+                this.termMap.set(prop, 'sdm:' + prop);
                 this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + prop, 'rdfs:range', 'xsd:boolean'));
+                if (propDescription != undefined) {
+                    this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal('sdm:' + prop, 'rdfs:label', propDescription.toString()));
+                }
             }
             return;
         }
         // Recursive step
         if (propType == 'object' || propType == 'array') {
             if (this.termMap.has(prop) == false) {
+                this.termMap.set(prop, 'sdm:' + prop);
                 this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + prop, 'rdf:type', 'rdf:Property')); // Add the property and its label
                 var newClassName = rdfTools_1.RDFTools.capitalizeFirstLetter(prop); // Since it is an object/array, we give it a new class as a range
                 this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + prop, 'rdfs:range', 'sdm:' + newClassName));
+                if (propDescription != undefined) {
+                    this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal('sdm:' + prop, 'rdfs:label', propDescription.toString()));
+                }
+                if (directEnum != undefined) {
+                    var oneOfValues = [];
+                    for (var _i = 0, directEnum_1 = directEnum; _i < directEnum_1.length; _i++) {
+                        var value = directEnum_1[_i];
+                        //We get the values from the mapping, else we create new terms
+                        if (this.termMap.get(value) != undefined) {
+                            oneOfValues.push(namedNode(this.termMap.get(value)));
+                        }
+                        else {
+                            oneOfValues.push(namedNode(value));
+                        }
+                    }
+                    console.log("this is the list of values", oneOfValues);
+                    var subPropQuad = rdfTools_1.RDFTools.node_node_list('sdm:' + newClassName, 'owl:oneOf', this.writer.list(oneOfValues));
+                    this.writer.addQuad(subPropQuad);
+                }
             }
             depth += 1;
             mainJsonObject = JsonProcessor.getJsonObject('sdm:' + rdfTools_1.RDFTools.capitalizeFirstLetter(prop));

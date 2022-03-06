@@ -16,99 +16,94 @@
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
 sdm:refDevice rdf:type rdf:Property;
-    rdfs:range sdm:RefDevice.
+    rdfs:range sdm:RefDevice;
+    rdfs:label "Relationship. Device(s) used to obtain the measurement."@en.
 sdm:refTargetDevice rdf:type rdf:Property;
-    rdfs:range sdm:RefTargetDevice.
-sdm:totalActiveEnergyImport rdfs:range xsd:integer.
-sdm:totalReactiveEnergyImport rdfs:range xsd:integer.
-sdm:totalApparentEnergyImport rdfs:range xsd:integer.
-sdm:totalActiveEnergyExport rdfs:range xsd:integer.
-sdm:totalReactiveEnergyExport rdfs:range xsd:integer.
-sdm:totalApparentEnergyExport rdfs:range xsd:integer.
-sdm:frequency rdfs:range xsd:integer.
-sdm:totalActivePower rdfs:range xsd:integer.
-sdm:totalReactivePower rdfs:range xsd:integer.
-sdm:totalApparentPower rdfs:range xsd:integer.
+    rdfs:range sdm:RefTargetDevice;
+    rdfs:label "Relationship. Device(s) for which the measurement was taken."@en.
+sdm:totalActiveEnergyImport rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'https://schema.org/Number'. Units:'kilowatt hour (kWh)'. Total energy imported i.e. consumed since metering started (since `dateEnergyMeteringStarted`)."@en.
+sdm:totalReactiveEnergyImport rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'https://schema.org/Number'. Units:'kilovolt-ampere-reactive-hour (kVArh)'. Total energy imported i.e. consumed (with regards to fundamental frequency reactive power) since the metering start date (`dateEnergyMeteringStarted`)"@en.
+sdm:totalApparentEnergyImport rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'https://schema.org/Number'. Units:'kilovolt-ampere-hour (kVAh)'. Total energy imported i.e. consumed (with regards to apparent power) since the metering start date (`dateEnergyMeteringStarted`)"@en.
+sdm:totalActiveEnergyExport rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'https://schema.org/Number'. Units:'kilowatt hour (kWh)'. Total energy exported since metering started (since `dateEnergyMeteringStarted`)."@en.
+sdm:totalReactiveEnergyExport rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'https://schema.org/Number'. Units:'kilovolt-ampere-reactive-hour (kVArh)'. Total fundamental frequency reactive energy exported since metering started (since `dateEnergyMeteringStarted`)."@en.
+sdm:totalApparentEnergyExport rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'https://schema.org/Number'. Units:'kilovolt-ampere-reactive-hour (kVArh)'. Total energy exported (with regards to apparent power) since the metering start date (`dateEnergyMeteringStarted`)"@en.
+sdm:frequency rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/Number'. Units:'Hertz (Hz)'. The frequency of the circuit."@en.
+sdm:totalActivePower rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/Number'. Units:'watt (W)'. Active power consumed (counting all phases)"@en.
+sdm:totalReactivePower rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/Number'. Units:'volt-ampere-reactive (VAr)'. Reactive power consumed (counting all phases)"@en.
+sdm:totalApparentPower rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/Number'. Units:'volt-ampere (VA)'. Apparent power consumed (counting all phases)."@en.
 sdm:activeEnergyImport rdf:type rdf:Property;
-    rdfs:range sdm:ActiveEnergyImport.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
+    rdfs:range sdm:ActiveEnergyImport;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'kilowatt hour (kWh)'. Active energy imported i.e. consumed per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en.
+sdm:L1 rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'kilowatt hour (kWh)'. Active energy imported i.e. consumed per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en.
+sdm:L2 rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'kilowatt hour (kWh)'. Active energy imported i.e. consumed per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en.
+sdm:L3 rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'kilowatt hour (kWh)'. Active energy imported i.e. consumed per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en.
 sdm:reactiveEnergyImport rdf:type rdf:Property;
-    rdfs:range sdm:ReactiveEnergyImport.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
+    rdfs:range sdm:ReactiveEnergyImport;
+    rdfs:label "Property. Model:'kilovolt-ampere-reactive-hour (kVArh)'. Units:'http://schema.org/StructuredValue'. Fundamental frequency reactive energy imported i.e. consumed per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en.
 sdm:apparentEnergyImport rdf:type rdf:Property;
-    rdfs:range sdm:ApparentEnergyImport.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
+    rdfs:range sdm:ApparentEnergyImport;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'kilovolt-ampere-hour (kVAh)'. Apparent energy imported i.e. consumed per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en.
 sdm:activeEnergyExport rdf:type rdf:Property;
-    rdfs:range sdm:ActiveEnergyExport.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
+    rdfs:range sdm:ActiveEnergyExport;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'kilowatt hour (kWh)'. Active energy exported per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en.
 sdm:reactiveEnergyExport rdf:type rdf:Property;
-    rdfs:range sdm:ReactiveEnergyExport.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
+    rdfs:range sdm:ReactiveEnergyExport;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'kilovolt-ampere-reactive-hour (kVArh)'. Fundamental frequency reactive energy exported per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en.
 sdm:apparentEnergyExport rdf:type rdf:Property;
-    rdfs:range sdm:ApparentEnergyExport.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
+    rdfs:range sdm:ApparentEnergyExport;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'kilovolt-ampere-hour (kVAh)'. Apparent energy exported per phase since the metering start date. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en.
 sdm:activePower rdf:type rdf:Property;
-    rdfs:range sdm:ActivePower.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
+    rdfs:range sdm:ActivePower;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'watt (W)'.Active power consumed per phase. The actual values will beconveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3. "@en.
 sdm:reactivePower rdf:type rdf:Property;
-    rdfs:range sdm:ReactivePower.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
+    rdfs:range sdm:ReactivePower;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'volts-ampere-reactive (VAr)'. Fundamental frequency reactive power. The actual values will be conveyed by subproperties whose names will be equal to the name of each of the alternating current phases: L1, L2, L3."@en.
 sdm:apparentPower rdf:type rdf:Property;
-    rdfs:range sdm:ApparentPower.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
-sdm:totalPowerFactor rdfs:range xsd:integer.
+    rdfs:range sdm:ApparentPower;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'volt-ampere (VA)'. Apparent power consumed per phase. The actual values will be conveyed by subproperties which names will be equal to the name of each of the alternating current phases: L1, L2, L3"@en.
+sdm:totalPowerFactor rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/Number'. Units:'-1 to +1'. Power factor including all phases"@en.
 sdm:powerFactor rdf:type rdf:Property;
-    rdfs:range sdm:PowerFactor.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
-sdm:totalDisplacementPowerFactor rdfs:range xsd:integer.
+    rdfs:range sdm:PowerFactor;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'-1 to +1'. Power factor for each phase. The actual values will be conveyed by one subproperty per alternating current phase: L1, L2 and L3"@en.
+sdm:totalDisplacementPowerFactor rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/Number'. Units:'-1 to +1'. Displacement power factor including all phases. The quantity is based on the fundamental frequency of the system"@en.
 sdm:displacementPowerFactor rdf:type rdf:Property;
-    rdfs:range sdm:DisplacementPowerFactor.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
+    rdfs:range sdm:DisplacementPowerFactor;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'-1 to +1'. Displacement power factor for each phase. The quantity is based on the fundamental frequency of the system. The actual values will be conveyed by one subproperty per alternating current phase: L1, L2 and L3"@en.
 sdm:current rdf:type rdf:Property;
-    rdfs:range sdm:Current.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
-sdm:N rdfs:range xsd:integer.
+    rdfs:range sdm:Current;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'Ampers (A)'. Electrical current. The actual values will be conveyed by one subproperty per alternating current phase and the neutral wire: L1, L2, L3 and N."@en.
+sdm:N rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'Ampers (A)'. Electrical current. The actual values will be conveyed by one subproperty per alternating current phase and the neutral wire: L1, L2, L3 and N."@en.
 sdm:phaseVoltage rdf:type rdf:Property;
-    rdfs:range sdm:PhaseVoltage.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
+    rdfs:range sdm:PhaseVoltage;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'Volts (V)'. The voltage between each phase and neutral conductor. The actual values will be conveyed by one subproperty per alternating current phase: L1, L2 and L3"@en.
 sdm:phaseToPhaseVoltage rdf:type rdf:Property;
-    rdfs:range sdm:PhaseToPhaseVoltage.
-sdm:L12 rdfs:range xsd:integer.
-sdm:L23 rdfs:range xsd:integer.
-sdm:L31 rdfs:range xsd:integer.
+    rdfs:range sdm:PhaseToPhaseVoltage;
+    rdfs:label "Property. Model:'(http://schema.org/StructuredValue'. Units:'Volts (V)'. Voltage between phases. A value for each phase pair: phases 1 and 2 (L12), phases 2 and 3 (L32), phases 3 and 1 (L31)."@en.
+sdm:L12 rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'(http://schema.org/StructuredValue'. Units:'Volts (V)'. Voltage between phases. A value for each phase pair: phases 1 and 2 (L12), phases 2 and 3 (L32), phases 3 and 1 (L31)."@en.
+sdm:L23 rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'(http://schema.org/StructuredValue'. Units:'Volts (V)'. Voltage between phases. A value for each phase pair: phases 1 and 2 (L12), phases 2 and 3 (L32), phases 3 and 1 (L31)."@en.
+sdm:L31 rdfs:range xsd:integer;
+    rdfs:label "Property. Model:'(http://schema.org/StructuredValue'. Units:'Volts (V)'. Voltage between phases. A value for each phase pair: phases 1 and 2 (L12), phases 2 and 3 (L32), phases 3 and 1 (L31)."@en.
 sdm:thdVoltage rdf:type rdf:Property;
-    rdfs:range sdm:ThdVoltage.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
+    rdfs:range sdm:ThdVoltage;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'0 to 1'. Total harmonic distortion of voltage for each phase. The actual values will be conveyed by one subproperty per alternating current phase: L1, L2 and L3"@en.
 sdm:thdCurrent rdf:type rdf:Property;
-    rdfs:range sdm:ThdCurrent.
-sdm:L1 rdfs:range xsd:integer.
-sdm:L2 rdfs:range xsd:integer.
-sdm:L3 rdfs:range xsd:integer.
+    rdfs:range sdm:ThdCurrent;
+    rdfs:label "Property. Model:'http://schema.org/StructuredValue'. Units:'0 to 1'. Total harmonic distortion of electrical current. The actual values will be conveyed by one subproperty per alternating current phase: L1, L2 and L3"@en.
