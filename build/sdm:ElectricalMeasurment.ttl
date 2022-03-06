@@ -19,133 +19,96 @@ sdm:refDevice rdf:type rdf:Property;
     rdfs:range sdm:RefDevice.
 sdm:refTargetDevice rdf:type rdf:Property;
     rdfs:range sdm:RefTargetDevice.
+sdm:totalActiveEnergyImport rdfs:range xsd:integer.
+sdm:totalReactiveEnergyImport rdfs:range xsd:integer.
+sdm:totalApparentEnergyImport rdfs:range xsd:integer.
+sdm:totalActiveEnergyExport rdfs:range xsd:integer.
+sdm:totalReactiveEnergyExport rdfs:range xsd:integer.
+sdm:totalApparentEnergyExport rdfs:range xsd:integer.
+sdm:frequency rdfs:range xsd:integer.
+sdm:totalActivePower rdfs:range xsd:integer.
+sdm:totalReactivePower rdfs:range xsd:integer.
+sdm:totalApparentPower rdfs:range xsd:integer.
 sdm:activeEnergyImport rdf:type rdf:Property;
     rdfs:range sdm:ActiveEnergyImport.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
 sdm:reactiveEnergyImport rdf:type rdf:Property;
     rdfs:range sdm:ReactiveEnergyImport.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
 sdm:apparentEnergyImport rdf:type rdf:Property;
     rdfs:range sdm:ApparentEnergyImport.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
 sdm:activeEnergyExport rdf:type rdf:Property;
     rdfs:range sdm:ActiveEnergyExport.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
 sdm:reactiveEnergyExport rdf:type rdf:Property;
     rdfs:range sdm:ReactiveEnergyExport.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
 sdm:apparentEnergyExport rdf:type rdf:Property;
     rdfs:range sdm:ApparentEnergyExport.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
 sdm:activePower rdf:type rdf:Property;
     rdfs:range sdm:ActivePower.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
 sdm:reactivePower rdf:type rdf:Property;
     rdfs:range sdm:ReactivePower.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
 sdm:apparentPower rdf:type rdf:Property;
     rdfs:range sdm:ApparentPower.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
+sdm:totalPowerFactor rdfs:range xsd:integer.
 sdm:powerFactor rdf:type rdf:Property;
     rdfs:range sdm:PowerFactor.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
+sdm:totalDisplacementPowerFactor rdfs:range xsd:integer.
 sdm:displacementPowerFactor rdf:type rdf:Property;
     rdfs:range sdm:DisplacementPowerFactor.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
 sdm:current rdf:type rdf:Property;
     rdfs:range sdm:Current.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
-sdm:N rdf:type rdf:Property;
-    rdfs:range sdm:N.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
+sdm:N rdfs:range xsd:integer.
 sdm:phaseVoltage rdf:type rdf:Property;
     rdfs:range sdm:PhaseVoltage.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
 sdm:phaseToPhaseVoltage rdf:type rdf:Property;
     rdfs:range sdm:PhaseToPhaseVoltage.
-sdm:L12 rdf:type rdf:Property;
-    rdfs:range sdm:L12.
-sdm:L23 rdf:type rdf:Property;
-    rdfs:range sdm:L23.
-sdm:L31 rdf:type rdf:Property;
-    rdfs:range sdm:L31.
+sdm:L12 rdfs:range xsd:integer.
+sdm:L23 rdfs:range xsd:integer.
+sdm:L31 rdfs:range xsd:integer.
 sdm:thdVoltage rdf:type rdf:Property;
     rdfs:range sdm:ThdVoltage.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.
 sdm:thdCurrent rdf:type rdf:Property;
     rdfs:range sdm:ThdCurrent.
-sdm:L1 rdf:type rdf:Property;
-    rdfs:range sdm:L1.
-sdm:L2 rdf:type rdf:Property;
-    rdfs:range sdm:L2.
-sdm:L3 rdf:type rdf:Property;
-    rdfs:range sdm:L3.
+sdm:L1 rdfs:range xsd:integer.
+sdm:L2 rdfs:range xsd:integer.
+sdm:L3 rdfs:range xsd:integer.

@@ -19,7 +19,10 @@
       "sdm:PhaseVoltage": "phaseVoltage",
       "sdm:PhaseToPhaseVoltage": "phaseToPhaseVoltage",
       "sdm:ThdVoltage":  "thdVoltage",
-      "sdm:ThdCurrent": "thdCurrent"
+      "sdm:ThdCurrent": "thdCurrent",
+      "sdm:L1": "L1",
+      "sdm:L2": "L2",
+      "sdm:L3": "L3"
     },
   
     "sources": {

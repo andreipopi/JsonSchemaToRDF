@@ -108,11 +108,11 @@ var JsonProcessor = /** @class */ (function () {
         return;
     };
     JsonProcessor.jsonTraverseRecursive = function (writer, depth, path, mainJsonObject, prop) {
+        // We only deal to depths <= 1; the following setups take care of that.
         var tmpPath;
         var propType;
         var subProperties;
         var propDescription;
-        console.log("depth", depth, "prop", prop);
         if (depth == 0) {
             propType = path[2].properties[prop].type;
             subProperties = path[2].properties[prop].properties; //
@@ -122,33 +122,45 @@ var JsonProcessor = /** @class */ (function () {
             //let subSubItems = path[2].properties[prop].items;
         }
         if (depth == 1) {
-            console.log("depth", depth);
+            tmpPath = path[2].properties[mainJsonObject]; // adapt the path at depth 1 for the currently mainObject            
             console.log(mainJsonObject);
-            console.log("path2", path[2]);
-            tmpPath = path[2].properties[mainJsonObject]; // adapt the path at depth 1 for the currently mainObject
-            console.log("tmppath", tmpPath);
-            propType = tmpPath.type;
+            console.log("property", prop);
+            console.log("prop", tmpPath);
+            propType = tmpPath.properties[prop].type;
+            console.log("proptype", propType);
             subProperties = tmpPath.properties;
             propDescription = tmpPath.description;
             //let directEnum = path.properties[prop].enum;
             //let subSubProperties = path.properties[prop].properties;
             //let subItems = path.properties[prop].items;
         }
-        if (depth > 1) {
+        // Base cases 
+        if (depth > 2) {
             return;
         }
-        // We assume it is an object or an array
+        if (propType == 'number') {
+            if (this.termMap.has(prop) == false) {
+                this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + prop, 'rdfs:range', 'xsd:integer'));
+            }
+            return;
+        }
+        if (propType == 'boolean') {
+            if (this.termMap.has(prop) == false) {
+                this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + prop, 'rdfs:range', 'xsd:boolean'));
+            }
+            return;
+        }
+        // Recursive step
         if (propType == 'object' || propType == 'array') {
-            this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + prop, 'rdf:type', 'rdf:Property')); // Add the property and its label
-            var newClassName = rdfTools_1.RDFTools.capitalizeFirstLetter(prop); // Since it is an object/array, we give it a new class as a range
-            this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + prop, 'rdfs:range', 'sdm:' + newClassName));
+            if (this.termMap.has(prop) == false) {
+                this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + prop, 'rdf:type', 'rdf:Property')); // Add the property and its label
+                var newClassName = rdfTools_1.RDFTools.capitalizeFirstLetter(prop); // Since it is an object/array, we give it a new class as a range
+                this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('sdm:' + prop, 'rdfs:range', 'sdm:' + newClassName));
+            }
             depth += 1;
-            console.log("depth increase", depth);
-            // properties = ?;
-            //path = ?;
             mainJsonObject = JsonProcessor.getJsonObject('sdm:' + rdfTools_1.RDFTools.capitalizeFirstLetter(prop));
             for (var prop_1 in subProperties) {
-                this.jsonTraverseRecursive(this.writer, depth, this.path, this.mainJsonObject, prop_1);
+                this.jsonTraverseRecursive(this.writer, depth, path, mainJsonObject, prop_1);
             }
         }
         return;
