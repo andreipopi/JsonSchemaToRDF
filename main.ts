@@ -5,8 +5,8 @@ import {JsonProcessor} from './jsonProcessor';
 // Main objects that are passed to the rdfVocabulary.ts.
 // there is one per json schema.
 let schema_object = new Map<string, string>();
-//const config = require('./configs/config-gbfs.json');
-const config = require('./configs/config-smartdatamodel.json');
+const config = require('./configs/config-gbfs.json');
+//const config = require('./configs/config-smartdatamodel.json');
 for( let object in config.sources){
     schema_object.set(object, config.sources[object]);
 }

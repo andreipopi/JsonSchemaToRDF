@@ -8,7 +8,7 @@ const { namedNode, literal, defaultGraph, quad } = DataFactory;
 export class JsonProcessor {
     // From config.json, we get:
     // prefixes, terms, , schema_objects(in the main)
-    static config = require('./configs/config-smartdatamodel.json');
+    static config = require('./configs/config-gbfs.json');
     static jsonSource: any;
     static jsonSchema: any;
     static mainObject: any;
@@ -33,6 +33,7 @@ export class JsonProcessor {
         for (let object in this.config.jsonObjects){
             this.rdf_json_objects.set(object, this.config.jsonObjects[object]);
         }
+
         for (let object in this.config.terms){
             this.termMap.set(object, this.config.terms[object]);
         }
@@ -42,15 +43,23 @@ export class JsonProcessor {
         this.jsonSchema = require(source);
         this.mainObject = mainObj; 
         this.mainJsonObject = this.getJsonObject(this.mainObject);
+        console.log("MainJsonObject: ", this.mainJsonObject);
         this.prefix = this.config.prefix;
         // Set path (TODO: set from confi.json)
+
+        /* SMD
         this.path = this.jsonSchema[this.mainJsonObject];
         this.properties = this.path[2].properties; // Path to the properties of the main object
+        */
+
+        // GBFS
+        this.path = this.jsonSchema.properties.data.properties[this.mainJsonObject];
+        this.properties = this.path.items.properties; // Path to the properties of the main object
+
         this.writer.addQuad(RDFTools.node_node_node('https://w3id.org/sdm/terms/'+ this.mainJsonObject, 'rdf:type', 'foaf:Document'));
         this.writer.addQuad(RDFTools.node_node_literal('https://w3id.org/sdm/terms/'+ this.mainJsonObject, 'rdfs:comment', this.jsonSchema.description));
         this.writer.addQuad(RDFTools.node_node_literal('https://w3id.org/sdm/terms/'+ this.mainJsonObject, 'vann:preferredNamespaceUri', 'https://w3id.org/sdm/terms/'+this.mainJsonObject+'#'));
         for (let creator in this.config.creators){
-            console.log("creator",creator)
             this.creators.push(creator);
             this.writer.addQuad(RDFTools.node_node_node('https://w3id.org/sdm/terms/', 'dcterms:creator', this.config.creators[creator]));
         }
@@ -81,7 +90,13 @@ export class JsonProcessor {
     static callJsonTraverseRecursive(){
         let depth = 0;
         for (let prop in this.properties){
-            this.mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
+            console.log("prop",prop);
+            console.log("mainobj", this.mainObject);
+            //this.mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
+            this.mainJsonObject = JsonProcessor.getJsonObject(this.mainObject);
+
+            console.log("mainjson",this.mainJsonObject);
+
             this.jsonTraverseRecursive(this.writer, depth, this.path, this.mainJsonObject, prop);
         };
         return;
@@ -104,15 +119,31 @@ export class JsonProcessor {
         let subItems;
         let propDescription;
         let directEnum;
+        let oneOf;
+
 
         if (depth == 0){
+            // SMD
+            /*
             propType = path[2].properties[prop].type;
             subProperties = path[2].properties[prop].properties;
             subItems = path[2].properties[prop].items;
             propDescription = path[2].properties[prop].description;
             directEnum = path[2].properties[prop].enum;
+            */
+
+            // GBFS
+            propType = path.items.properties[prop].type;
+            subProperties = path.items.properties[prop].properties;
+            subItems = path.items.properties[prop].items;
+            propDescription = path.items.properties[prop].description;
+            directEnum = path.items.properties[prop].enum;
+            oneOf = path.items.properties[prop].oneOf;
         }
         if (depth == 1){
+
+            // SMD
+            /*
             tmpPath = path[2].properties[mainJsonObject]; // adapt the path at depth 1 for the currently mainObject            
             if(tmpPath.properties != undefined){
                 propType = tmpPath.properties[prop].type;
@@ -124,6 +155,25 @@ export class JsonProcessor {
                 directEnum = tmpPath.items[prop].enum;
             }
             propDescription = tmpPath.description;
+            */
+
+            // GBFS
+            tmpPath = path.items.properties[mainJsonObject];
+            if(tmpPath.items == undefined ){
+                propType = tmpPath.type;
+                subProperties = tmpPath.properties;
+                propDescription = tmpPath.description;
+                directEnum = tmpPath.enum;
+                oneOf = tmpPath.oneOf;
+
+            }
+            else{
+                propType = tmpPath.type;
+                subItems = tmpPath.items;
+                propDescription = tmpPath.description;
+                directEnum = tmpPath.enum;
+                oneOf = tmpPath.oneOf;
+            }
         }
 
         // Base cases 
@@ -132,7 +182,24 @@ export class JsonProcessor {
         }
         if (propType == 'number'){
             if (this.termMap.has(prop) == false) {
-                this.termMap.set(prop, 'sdm:'+prop);
+                this.termMap.set(prop, this.prefix+':'+prop);
+                this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+prop, 'rdfs:range', 'xsd:integer'));
+                if(propDescription != undefined ){
+                    this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+prop, 'rdfs:label', propDescription.toString()));
+                }
+                // Shacl shape text
+                if (JsonProcessor.isRequired(prop)){
+                    this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedRequiredProperty(prop, RDFTools.getXsdType(propType))+'\n';
+                }
+                else{
+                    this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedProperty(prop, RDFTools.getXsdType(propType))+'\n';
+                }
+            }
+            return;
+        }
+        if (propType == 'integer'){
+            if (this.termMap.has(prop) == false) {
+                this.termMap.set(prop, this.prefix+':'+prop);
                 this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+prop, 'rdfs:range', 'xsd:integer'));
                 if(propDescription != undefined ){
                     this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+prop, 'rdfs:label', propDescription.toString()));
@@ -150,7 +217,7 @@ export class JsonProcessor {
 
         if (propType == 'string'){
             if (this.termMap.has(prop) == false) {
-                this.termMap.set(prop, 'sdm:'+prop);
+                this.termMap.set(prop,  this.prefix+':'+prop);
                 this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+prop, 'rdfs:range', 'xsd:string'));
                 if(propDescription != undefined ){
                     this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+prop, 'rdfs:label', propDescription.toString()));
@@ -169,7 +236,7 @@ export class JsonProcessor {
 
         if (propType == 'boolean'){
             if (this.termMap.has(prop) == false) {
-                this.termMap.set(prop, 'sdm:'+prop);
+                this.termMap.set(prop,  this.prefix+':'+prop);
                 this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+prop, 'rdfs:range', 'xsd:boolean'));
                 if(propDescription != undefined ){
                     this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+prop, 'rdfs:label', propDescription.toString()));
@@ -186,6 +253,27 @@ export class JsonProcessor {
             return;
         }
 
+        // Verify if there is a oneOf defined
+        if (oneOf != undefined){
+            console.log("there is an enum", oneOf);
+            let oneOfValues:NamedNode[] = [];
+            for (const value of oneOf){
+                console.log("oneof value", value);
+                //We get the values from the mapping, else we create new terms
+                if (this.termMap.has(value)) {
+                    oneOfValues.push(namedNode(this.termMap.get(value.toString())));
+                }
+                else{
+                    oneOfValues.push(namedNode(value));
+                }
+            }
+            console.log("this is the list of values", oneOfValues);
+            let subPropQuad = RDFTools.node_node_list(this.prefix+':'+prop, 'owl:oneOf', oneOfValues);
+
+            this.writer.addQuad(subPropQuad);
+            return;
+        }
+        
         // Recursive step
         if(propType == 'object' || propType =='array'){
             if (this.termMap.has(prop) == false) {
@@ -207,7 +295,6 @@ export class JsonProcessor {
                             oneOfValues.push(namedNode(value));
                         }
                     }
-                    console.log("this is the list of values", oneOfValues);
                     let subPropQuad = RDFTools.node_node_list(this.prefix+':'+newClassName, 'owl:oneOf', this.writer.list(oneOfValues));
                     this.writer.addQuad(subPropQuad);
                 }
@@ -219,8 +306,13 @@ export class JsonProcessor {
                     this.shaclFileText = this.shaclFileText+ShaclTools.getShaclProperty(prop)+'\n';
                 }
             }
-            depth += 1;            
+            depth += 1;        
+            
+            
+            //mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
             mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
+
+
             // An object can have sub properties
             if(subProperties != undefined){
                 for (let prop in subProperties){
