@@ -41,7 +41,7 @@ export class JsonProcessor {
         this.properties = this.path[2].properties; // Path to the properties of the main object
 
     }
-    
+
     static callJsonTraverseRecursive(){
         let depth = 0;
         for (let prop in this.properties){
@@ -52,20 +52,20 @@ export class JsonProcessor {
     }
 
     static jsonTraverseRecursive (writer, depth, path, mainJsonObject, prop){
-        
         // We only deal to depths <= 1; the following setups take care of that.
         let tmpPath;
         let propType;
         let subProperties;
+        let subItems;
         let propDescription;
         let directEnum;
         if (depth == 0){
             propType = path[2].properties[prop].type;
             subProperties = path[2].properties[prop].properties; //
+            subItems = path[2].properties[prop].items;
             propDescription = path[2].properties[prop].description;
             directEnum = path[2].properties[prop].enum;
                     //let subSubProperties = path[2].properties[prop].properties;
-                    //let subSubItems = path[2].properties[prop].items;
         }
         if (depth == 1){
             tmpPath = path[2].properties[mainJsonObject]; // adapt the path at depth 1 for the currently mainObject            
@@ -73,13 +73,19 @@ export class JsonProcessor {
             console.log(mainJsonObject);
             console.log("property", prop);
             console.log("prop", tmpPath);
-            propType = tmpPath.properties[prop].type;
+            if(tmpPath.properties != undefined){
+                propType = tmpPath.properties[prop].type;
+                subProperties = tmpPath.properties;
+            }
+            if(tmpPath.items != undefined){
+                propType = tmpPath.items[prop].type;
+                subItems = tmpPath.items[prop];
+                directEnum = tmpPath.items[prop].enum;
+            }
             console.log("proptype", propType);
-            subProperties = tmpPath.properties;
             propDescription = tmpPath.description;
-            directEnum = tmpPath.properties[prop].enum;
+            
                     //let subSubProperties = path.properties[prop].properties;
-                    //let subItems = path.properties[prop].items;
         }
 
 
@@ -119,7 +125,6 @@ export class JsonProcessor {
                 if(propDescription != undefined ){
                         this.writer.addQuad(RDFTools.node_node_literal('sdm:'+prop, 'rdfs:label', propDescription.toString()));
                 }
-
                 if (directEnum != undefined){
                     let oneOfValues:NamedNode[] = [];
                     for (const value of directEnum){
@@ -139,9 +144,20 @@ export class JsonProcessor {
             }
             depth += 1;            
             mainJsonObject = JsonProcessor.getJsonObject('sdm:'+ RDFTools.capitalizeFirstLetter(prop));
-            for (let prop in subProperties){
-                this.jsonTraverseRecursive(this.writer, depth, path, mainJsonObject, prop);
-            } 
+            
+            // An object can have sub properties
+            if(subProperties != undefined){
+                for (let prop in subProperties){
+                    this.jsonTraverseRecursive(this.writer, depth, path, mainJsonObject, prop);
+                } 
+            }
+            if(subItems != undefined){
+                for (let item in subItems){
+                    this.jsonTraverseRecursive(this.writer, depth, path, mainJsonObject, item);
+                }
+
+            }
+            
         }
         return;
     }
