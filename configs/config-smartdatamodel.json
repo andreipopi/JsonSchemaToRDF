@@ -1,5 +1,6 @@
 {
-    
+  "prefix": "sdm",
+  
   "jsonObjects": {
       "sdm:ElectricalMeasurment":  "allOf",
       "sdm:RefDevice": "refDevice",

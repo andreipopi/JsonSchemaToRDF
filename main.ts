@@ -38,23 +38,16 @@ for (let [schema,object] of Array.from(schema_object)){
     RDFTools.writeTurtle(smdPattern.getWriter());
     ShaclTools.writeShacl(smdPattern.getFileName(), smdPattern.getShaclFileText(),);
 }
+
 */
-
-
 // main Function for recursive jsonProcessor
 
 for (let [schema,object] of Array.from(schema_object)){
-
     JsonProcessor.initialise(schema, object);
     RDFTools.initialise(JsonProcessor.getMainObject()); //initialising the filename written by RDF tools with the name of the main object
-
-    //TODO: where to write these ? smdPattern.basicsToQuads();
-
-    //JsonProcessor.callParseJsonRecursive(); //this method will need to recursively call the parse method.
-    
+    //                      filename                   , 
+    ShaclTools.initialise(JsonProcessor.getMainObject(), JsonProcessor.getRequiredProperties(), JsonProcessor.jsonSource, JsonProcessor.mainObject );
     JsonProcessor.callJsonTraverseRecursive();
-
     RDFTools.writeTurtle(JsonProcessor.getWriter());
+    ShaclTools.writeShacl(JsonProcessor.getMainObject(), JsonProcessor.getShaclFileText());
 }
-
-

@@ -15,6 +15,10 @@
 @prefix vso: <http://purl.org/vso/ns#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
+<https://w3id.org/sdm/terms/allOf> rdf:type foaf:Document;
+    rdfs:comment "An electrical  measurement from a system that uses three phase alternating current."@en;
+    vann:preferredNamespaceUri "https://w3id.org/sdm/terms/allOf#".
+<https://w3id.org/sdm/terms/> dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
 sdm:refDevice rdf:type rdf:Property;
     rdfs:range sdm:RefDevice;
     rdfs:label "Relationship. Device(s) used to obtain the measurement."@en.
