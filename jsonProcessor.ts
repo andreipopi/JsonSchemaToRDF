@@ -276,11 +276,17 @@ export class JsonProcessor {
         
         // Recursive step
         if(propType == 'object' || propType =='array'){
+            let newClassName;
             if (this.termMap.has(prop) == false) {
                 this.termMap.set(prop, this.prefix+':'+prop);
                 this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+prop, 'rdf:type', 'rdf:Property')); // Add the property and its label
-                const newClassName = RDFTools.capitalizeFirstLetter(prop); // Since it is an object/array, we give it a new class as a range
+                newClassName = RDFTools.capitalizeFirstLetter(prop); // Since it is an object/array, we give it a new class as a range
                 this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+prop, 'rdfs:range', this.prefix+':'+newClassName));
+
+
+                // the new class becomes the mainobject
+                this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+newClassName, 'rdf:type', 'rdfs:Class'));
+
                 if(propDescription != undefined ){
                         this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+prop, 'rdfs:label', propDescription.toString()));
                 }
@@ -310,7 +316,7 @@ export class JsonProcessor {
             
             
             //mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
-            mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
+            mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ newClassName);
 
 
             // An object can have sub properties

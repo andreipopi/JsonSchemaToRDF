@@ -20,14 +20,18 @@
     vann:preferredNamespaceUri "https://w3id.org/sdm/terms/alerts#".
 <https://w3id.org/sdm/terms/> dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
 gbfs:times rdf:type rdf:Property;
-    rdfs:range gbfs:Times;
-    rdfs:label "Array of objects indicating when the alert is in effect."@en.
+    rdfs:range gbfs:Times.
+gbfs:Times rdf:type rdfs:Class.
+gbfs:times rdfs:label "Array of objects indicating when the alert is in effect."@en.
 gbfs:properties rdf:type rdf:Property;
-    rdfs:range gbfs:Properties;
-    rdfs:label "Array of objects indicating when the alert is in effect."@en.
+    rdfs:range gbfs:Properties.
+gbfs:Properties rdf:type rdfs:Class.
+gbfs:properties rdfs:label "Array of objects indicating when the alert is in effect."@en.
 gbfs:station_ids rdf:type rdf:Property;
-    rdfs:range gbfs:Station_ids;
-    rdfs:label "Array of identifiers of the stations for which this alert applies."@en.
+    rdfs:range gbfs:Station_ids.
+gbfs:Station_ids rdf:type rdfs:Class.
+gbfs:station_ids rdfs:label "Array of identifiers of the stations for which this alert applies."@en.
 gbfs:region_ids rdf:type rdf:Property;
-    rdfs:range gbfs:Region_ids;
-    rdfs:label "Array of identifiers of the regions for which this alert applies."@en.
+    rdfs:range gbfs:Region_ids.
+gbfs:Region_ids rdf:type rdfs:Class.
+gbfs:region_ids rdfs:label "Array of identifiers of the regions for which this alert applies."@en.

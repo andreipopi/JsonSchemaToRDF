@@ -239,11 +239,14 @@ var JsonProcessor = /** @class */ (function () {
         }
         // Recursive step
         if (propType == 'object' || propType == 'array') {
+            var newClassName = void 0;
             if (this.termMap.has(prop) == false) {
                 this.termMap.set(prop, this.prefix + ':' + prop);
                 this.writer.addQuad(rdfTools_1.RDFTools.node_node_node(this.prefix + ':' + prop, 'rdf:type', 'rdf:Property')); // Add the property and its label
-                var newClassName = rdfTools_1.RDFTools.capitalizeFirstLetter(prop); // Since it is an object/array, we give it a new class as a range
+                newClassName = rdfTools_1.RDFTools.capitalizeFirstLetter(prop); // Since it is an object/array, we give it a new class as a range
                 this.writer.addQuad(rdfTools_1.RDFTools.node_node_node(this.prefix + ':' + prop, 'rdfs:range', this.prefix + ':' + newClassName));
+                // the new class becomes the mainobject
+                this.writer.addQuad(rdfTools_1.RDFTools.node_node_node(this.prefix + ':' + newClassName, 'rdf:type', 'rdfs:Class'));
                 if (propDescription != undefined) {
                     this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.prefix + ':' + prop, 'rdfs:label', propDescription.toString()));
                 }
@@ -272,7 +275,7 @@ var JsonProcessor = /** @class */ (function () {
             }
             depth += 1;
             //mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
-            mainJsonObject = JsonProcessor.getJsonObject(this.prefix + ':' + rdfTools_1.RDFTools.capitalizeFirstLetter(prop));
+            mainJsonObject = JsonProcessor.getJsonObject(this.prefix + ':' + newClassName);
             // An object can have sub properties
             if (subProperties != undefined) {
                 for (var prop_1 in subProperties) {

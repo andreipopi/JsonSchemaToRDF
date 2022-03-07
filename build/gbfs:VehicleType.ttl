@@ -28,23 +28,30 @@ gbfs:max_range_meters rdfs:range xsd:integer;
 gbfs:default_reserve_time rdfs:range xsd:integer;
     rdfs:label "Maximum time in minutes that a vehicle can be reserved before a rental begins added in v2.3-RC."@en.
 gbfs:return_type rdf:type rdf:Property;
-    rdfs:range gbfs:Return_type;
-    rdfs:label "The conditions for returning the vehicle at the end of the trip added in v2.3-RC."@en.
+    rdfs:range gbfs:Return_type.
+gbfs:Return_type rdf:type rdfs:Class.
+gbfs:return_type rdfs:label "The conditions for returning the vehicle at the end of the trip added in v2.3-RC."@en.
 gbfs:vehicle_assets rdf:type rdf:Property;
-    rdfs:range gbfs:Vehicle_assets;
-    rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en.
+    rdfs:range gbfs:Vehicle_assets.
+gbfs:Vehicle_assets rdf:type rdfs:Class.
+gbfs:vehicle_assets rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en.
 gbfs:icon_url rdf:type rdf:Property;
-    rdfs:range gbfs:Icon_url;
-    rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en.
+    rdfs:range gbfs:Icon_url.
+gbfs:Icon_url rdf:type rdfs:Class.
+gbfs:icon_url rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en.
 gbfs:icon_url_dark rdf:type rdf:Property;
-    rdfs:range gbfs:Icon_url_dark;
-    rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en.
+    rdfs:range gbfs:Icon_url_dark.
+gbfs:Icon_url_dark rdf:type rdfs:Class.
+gbfs:icon_url_dark rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en.
 gbfs:icon_last_modified rdf:type rdf:Property;
-    rdfs:range gbfs:Icon_last_modified;
-    rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en.
+    rdfs:range gbfs:Icon_last_modified.
+gbfs:Icon_last_modified rdf:type rdfs:Class.
+gbfs:icon_last_modified rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en.
 gbfs:default_pricing_plan_id rdf:type rdf:Property;
-    rdfs:range gbfs:Default_pricing_plan_id;
-    rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en.
+    rdfs:range gbfs:Default_pricing_plan_id.
+gbfs:Default_pricing_plan_id rdf:type rdfs:Class.
+gbfs:default_pricing_plan_id rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en.
 gbfs:pricing_plan_ids rdf:type rdf:Property;
-    rdfs:range gbfs:Pricing_plan_ids;
-    rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en.
+    rdfs:range gbfs:Pricing_plan_ids.
+gbfs:Pricing_plan_ids rdf:type rdfs:Class.
+gbfs:pricing_plan_ids rdfs:label "An object where each key defines one of the items listed below added in v2.3-RC."@en.
