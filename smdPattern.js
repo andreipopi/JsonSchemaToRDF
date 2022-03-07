@@ -3,6 +3,7 @@ exports.__esModule = true;
 exports.SMDPattern = void 0;
 var shaclTools_1 = require("./shaclTools");
 var rdfTools_1 = require("./rdfTools");
+var jsonProcessor_1 = require("./jsonProcessor");
 var N3 = require('n3');
 var DataFactory = N3.DataFactory;
 var namedNode = DataFactory.namedNode, literal = DataFactory.literal, defaultGraph = DataFactory.defaultGraph, quad = DataFactory.quad;
@@ -45,7 +46,7 @@ var SMDPattern = /** @class */ (function () {
         this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'dcterms:creator', this.creator1));
         this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('https://w3id.org/sdm/terms/' + this.mainJsonObject, 'dcterms:creator', this.creator2));
         // Create a ShaclShape object and insert the first entries
-        this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclRoot();
+        //this.shaclFileText = this.shaclFileText+ShaclTools.getShaclRoot();
         this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTargetClass() + '\n';
     };
     /** Creates and writes quads for the main object's properties,
@@ -216,7 +217,7 @@ var SMDPattern = /** @class */ (function () {
                 // The property is available in map, so we do not add it to the vocabulary
             }
             // Write the property to the Shacl shape
-            if (shaclTools_1.ShaclTools.isRequired(term)) {
+            if (jsonProcessor_1.JsonProcessor.isRequired(term)) {
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
                     this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedRequiredProperty(term, rdfTools_1.RDFTools.getXsdType(termType)) + '\n';

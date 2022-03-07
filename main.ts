@@ -46,7 +46,8 @@ for (let [schema,object] of Array.from(schema_object)){
     JsonProcessor.initialise(schema, object);
     RDFTools.initialise(JsonProcessor.getMainObject()); //initialising the filename written by RDF tools with the name of the main object
     //                      filename                   , 
-    ShaclTools.initialise(JsonProcessor.getMainObject(), JsonProcessor.getRequiredProperties(), JsonProcessor.jsonSource, JsonProcessor.mainObject );
+    ShaclTools.initialise(JsonProcessor.getMainObject(), JsonProcessor.mainObject );
+
     JsonProcessor.callJsonTraverseRecursive();
     RDFTools.writeTurtle(JsonProcessor.getWriter());
     ShaclTools.writeShacl(JsonProcessor.getMainObject(), JsonProcessor.getShaclFileText());

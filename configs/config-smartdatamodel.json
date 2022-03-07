@@ -1,6 +1,6 @@
 {
   "prefix": "sdm",
-  
+
   "jsonObjects": {
       "sdm:ElectricalMeasurment":  "allOf",
       "sdm:RefDevice": "refDevice",
@@ -29,6 +29,12 @@
     "sources": {
       "./SmartDataModels/dataModel.json": "sdm:ElectricalMeasurment"
     },
+
+    "shaclTargets": {
+      "sdm:ElectricalMeasurment": "<https://w3id.org/sdm/terms/>"
+    },
+
+    "shaclRoot": "<https://w3id.org/sdm/terms/>",
   
     "prefixes": {
       "sdm": "https://smart-data-models.github.io/dataModel.Energy/ThreePhaseAcMeasurement/terms",

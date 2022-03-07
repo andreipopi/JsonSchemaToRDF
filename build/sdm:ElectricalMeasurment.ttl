@@ -25,6 +25,8 @@ sdm:refDevice rdf:type rdf:Property;
 sdm:refTargetDevice rdf:type rdf:Property;
     rdfs:range sdm:RefTargetDevice;
     rdfs:label "Relationship. Device(s) for which the measurement was taken."@en.
+sdm:dateEnergyMeteringStarted rdfs:range xsd:string;
+    rdfs:label "Property. Model:'http://schema.org/DateTime'. The starting date for metering energy."@en.
 sdm:totalActiveEnergyImport rdfs:range xsd:integer;
     rdfs:label "Property. Model:'https://schema.org/Number'. Units:'kilowatt hour (kWh)'. Total energy imported i.e. consumed since metering started (since `dateEnergyMeteringStarted`)."@en.
 sdm:totalReactiveEnergyImport rdfs:range xsd:integer;

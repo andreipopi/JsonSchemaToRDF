@@ -11,6 +11,20 @@
     "./GBFS/system_hours.json": "gbfs:RentalHour"
   },
 
+  "shaclTargets": {
+    "gbfs:Station": "<https://w3id.org/gbfs/terms/station>",
+    "gbfs:Bike": "<https://w3id.org/gbfs/terms/bike>",
+    "gbfs:Alert": "<https://w3id.org/gbfs/terms/alert>",
+    "gbfs:Region": "<https://w3id.org/gbfs/terms/region>",
+    "gbfs:VehicleType": "<https://w3id.org/gbfs/terms/vehicleType>",
+    "gbfs:PricingPlan": "<https://w3id.org/gbfs/terms/pricingPlan>",
+    "gbfs:Version": "<https://w3id.org/gbfs/terms/version>",
+    "gbfs:Calendar": "<https://w3id.org/gbfs/terms/calendar>",
+    "gbfs:RentalHour": "<https://w3id.org/gbfs/terms/rentalHour>",
+    "gbfs:Feed": "<https://w3id.org/gbfs/terms/feed>"
+  },
+ 
+
   "prefixes": {
     "gbfs": "https://w3id.org/gbfs/terms",
     "schema": "http://schema.org/#",

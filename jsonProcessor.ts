@@ -20,11 +20,15 @@ export class JsonProcessor {
     static properties: any;
     static prefix: any;
     static creators: any[] = [];
-    // Shacl-related
+    // Shacl shape
     static requiredMap = new Map<string, string>();
     static shaclFileText:any;
+    static shaclTargetClass: any;
+    static targets = new Map<string, string>();
+    static shaclRoot: any;
 
     static initialise ( source:string, mainObj: string ){
+        // RDF Vocabulary -------------------------
         // Getting configuration elements
         for (let object in this.config.jsonObjects){
             this.rdf_json_objects.set(object, this.config.jsonObjects[object]);
@@ -32,7 +36,6 @@ export class JsonProcessor {
         for (let object in this.config.terms){
             this.termMap.set(object, this.config.terms[object]);
         }
-        
         this.writer = new N3.Writer({prefixes:this.config.prefixes});
         // Setting up basic info
         this.jsonSource = source; // Needed when creating a ShaclShape object
@@ -43,7 +46,6 @@ export class JsonProcessor {
         // Set path (TODO: set from confi.json)
         this.path = this.jsonSchema[this.mainJsonObject];
         this.properties = this.path[2].properties; // Path to the properties of the main object
-        //
         this.writer.addQuad(RDFTools.node_node_node('https://w3id.org/sdm/terms/'+ this.mainJsonObject, 'rdf:type', 'foaf:Document'));
         this.writer.addQuad(RDFTools.node_node_literal('https://w3id.org/sdm/terms/'+ this.mainJsonObject, 'rdfs:comment', this.jsonSchema.description));
         this.writer.addQuad(RDFTools.node_node_literal('https://w3id.org/sdm/terms/'+ this.mainJsonObject, 'vann:preferredNamespaceUri', 'https://w3id.org/sdm/terms/'+this.mainJsonObject+'#'));
@@ -52,13 +54,24 @@ export class JsonProcessor {
             this.creators.push(creator);
             this.writer.addQuad(RDFTools.node_node_node('https://w3id.org/sdm/terms/', 'dcterms:creator', this.config.creators[creator]));
         }
+        // Shacl shape --------------------------
         // Setting a map containing < requiredProp, existingTermForRequiredProp>.
+        this.shaclRoot = this.config.shaclRoot;
         for (const requiredProp of this.jsonSchema.required){
-            this.requiredMap.set(requiredProp.toString(), this.termMap.get(requiredProp.toString()) );
+            if(this.termMap.has(requiredProp) != false){
+                this.requiredMap.set(requiredProp.toString(), this.termMap.get(requiredProp.toString()));
+            }
+            else{
+                this.requiredMap.set(requiredProp.toString(), requiredProp.toString());
+            }
         }
+        for (let object in this.config.shaclTargets){
+            this.targets.set(object, this.config.shaclTargets[object]);
+        }
+        this.shaclTargetClass = JsonProcessor.getShaclTarget(mainObj);
         // Create a ShaclShape object and insert the first entries
-        this.shaclFileText = this.shaclFileText+ShaclTools.getShaclRoot();
-        this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTargetClass()+'\n';
+        this.shaclFileText = this.shaclFileText+ShaclTools.shapeShaclRoot(this.shaclRoot);
+        this.shaclFileText = this.shaclFileText+'sh:targetClass ' + this.shaclTargetClass+ '; \n';
     }
 
     static callJsonTraverseRecursive(){
@@ -69,7 +82,7 @@ export class JsonProcessor {
         };
         return;
     }
-
+    
     static jsonTraverseRecursive (writer, depth, path, mainJsonObject, prop){
         // We only deal to depths <= 1; the following setups take care of that.
         let tmpPath;
@@ -112,7 +125,7 @@ export class JsonProcessor {
                     this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+prop, 'rdfs:label', propDescription.toString()));
                 }
                 // Shacl shape text
-                if (ShaclTools.isRequired(prop)){
+                if (JsonProcessor.isRequired(prop)){
                     this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedRequiredProperty(prop, RDFTools.getXsdType(propType))+'\n';
                 }
                 else{
@@ -121,6 +134,25 @@ export class JsonProcessor {
             }
             return;
         }
+
+        if (propType == 'string'){
+            if (this.termMap.has(prop) == false) {
+                this.termMap.set(prop, 'sdm:'+prop);
+                this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+prop, 'rdfs:range', 'xsd:string'));
+                if(propDescription != undefined ){
+                    this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+prop, 'rdfs:label', propDescription.toString()));
+                }
+            }
+            // Shacl shape text
+            if (JsonProcessor.isRequired(prop)){
+                this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedRequiredProperty(prop, RDFTools.getXsdType(propType))+'\n';
+            }
+            else{
+                this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedProperty(prop, RDFTools.getXsdType(propType))+'\n';
+            }
+            return;
+        }
+
         if (propType == 'boolean'){
             if (this.termMap.has(prop) == false) {
                 this.termMap.set(prop, 'sdm:'+prop);
@@ -128,13 +160,13 @@ export class JsonProcessor {
                 if(propDescription != undefined ){
                     this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+prop, 'rdfs:label', propDescription.toString()));
                 }
-                // Shacl shape text
-                if (ShaclTools.isRequired(prop)){
-                    this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedRequiredProperty(prop, RDFTools.getXsdType(propType))+'\n';
-                }
-                else{
-                    this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedProperty(prop, RDFTools.getXsdType(propType))+'\n';
-                }
+            }
+            // Shacl shape text
+            if (JsonProcessor.isRequired(prop)){
+                this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedRequiredProperty(prop, RDFTools.getXsdType(propType))+'\n';
+            }
+            else{
+                this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedProperty(prop, RDFTools.getXsdType(propType))+'\n';
             }
             return;
         }
@@ -165,7 +197,7 @@ export class JsonProcessor {
                     this.writer.addQuad(subPropQuad);
                 }
                 // Shacl shape text
-                if (ShaclTools.isRequired(prop)){
+                if (JsonProcessor.isRequired(prop)){
                     this.shaclFileText = this.shaclFileText+ShaclTools.getShaclRequiredProperty(prop)+'\n';
                 }
                 else{ // Else the property is not required
@@ -174,7 +206,6 @@ export class JsonProcessor {
             }
             depth += 1;            
             mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
-            
             // An object can have sub properties
             if(subProperties != undefined){
                 for (let prop in subProperties){
@@ -187,11 +218,9 @@ export class JsonProcessor {
                     this.jsonTraverseRecursive(this.writer, depth, path, mainJsonObject, item);
                 }
             }
-            
         }
         return;
     }
-    
     static getJsonObject(mainObject: string){
         for(let entry of Array.from(this.rdf_json_objects.entries())){
             const key = entry[0];
@@ -204,13 +233,29 @@ export class JsonProcessor {
     static getMainObject(){
         return this.mainObject;
     }
-    static getRequiredProperties(){
-        return this.requiredMap;
+    static getWriter(){
+        return this.writer;
+    }
+    // For the Shacl shape
+    static getShaclTarget (mainObject:string) {
+        for(let entry of Array.from(this.targets.entries())){
+            const key = entry[0];
+            const value = entry[1];
+            if( key == mainObject){
+                return this.targets.get(key);
+            }
+        }
+    }
+    static isRequired (prop:string){
+        if (this.requiredMap.has(prop)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     static getShaclFileText(){
         return this.shaclFileText;
     }
-    static getWriter(){
-        return this.writer;
-    }
+   
 }

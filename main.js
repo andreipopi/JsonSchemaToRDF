@@ -41,7 +41,8 @@ for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
     jsonProcessor_1.JsonProcessor.initialise(schema, object);
     rdfTools_1.RDFTools.initialise(jsonProcessor_1.JsonProcessor.getMainObject()); //initialising the filename written by RDF tools with the name of the main object
     //                      filename                   , 
-    shaclTools_1.ShaclTools.initialise(jsonProcessor_1.JsonProcessor.getMainObject(), jsonProcessor_1.JsonProcessor.getRequiredProperties(), jsonProcessor_1.JsonProcessor.jsonSource, jsonProcessor_1.JsonProcessor.mainObject);
+    shaclTools_1.ShaclTools.initialise(jsonProcessor_1.JsonProcessor.getMainObject(), jsonProcessor_1.JsonProcessor.mainObject);
+    console.log("targetclass", shaclTools_1.ShaclTools.getShaclTargetClass());
     jsonProcessor_1.JsonProcessor.callJsonTraverseRecursive();
     rdfTools_1.RDFTools.writeTurtle(jsonProcessor_1.JsonProcessor.getWriter());
     shaclTools_1.ShaclTools.writeShacl(jsonProcessor_1.JsonProcessor.getMainObject(), jsonProcessor_1.JsonProcessor.getShaclFileText());

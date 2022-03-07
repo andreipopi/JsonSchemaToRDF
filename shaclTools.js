@@ -5,10 +5,8 @@ exports.ShaclTools = void 0;
 var ShaclTools = /** @class */ (function () {
     function ShaclTools() {
     }
-    ShaclTools.initialise = function (filename, required, source, mainObj) {
+    ShaclTools.initialise = function (filename, mainObj) {
         this.fileName = filename;
-        this.targetClass = ShaclTools.getShaclTarget(mainObj);
-        this.requiredProperties = required;
     };
     ShaclTools.writeShacl = function (filename, shaclFileText) {
         // Write the Shacl shape on file
@@ -40,66 +38,10 @@ var ShaclTools = /** @class */ (function () {
     ShaclTools.getShaclTargetClass = function () {
         return 'sh:targetClass ' + this.targetClass + ';';
     };
-    ShaclTools.getShaclTarget = function (mainObject) {
-        switch (mainObject) {
-            case 'gbfs:Station': {
-                return '<https://w3id.org/gbfs/terms/station>';
-                break;
-            }
-            case 'gbfs:Bike': {
-                return '<https://w3id.org/gbfs/terms/bike>';
-                break;
-            }
-            case 'gbfs:Alert': {
-                return '<https://w3id.org/gbfs/terms/alert>';
-                break;
-            }
-            case 'gbfs:Region': {
-                return '<https://w3id.org/gbfs/terms/region>';
-                break;
-            }
-            case 'gbfs:VehicleType': {
-                return '<https://w3id.org/gbfs/terms/vehicleType>';
-                break;
-            }
-            case 'gbfs:PricingPlan': {
-                return '<https://w3id.org/gbfs/terms/pricingPlan>';
-                break;
-            }
-            case 'gbfs:Version': {
-                return '<https://w3id.org/gbfs/terms/version>';
-                break;
-            }
-            case 'gbfs:Calendar': {
-                return '<https://w3id.org/gbfs/terms/calendar>';
-                break;
-            }
-            case 'gbfs:RentalHour': {
-                return '<https://w3id.org/gbfs/terms/rentalHour>';
-                break;
-            }
-            case 'gbfs:Feed': {
-                return '<https://w3id.org/gbfs/terms/feed>';
-                break;
-            }
-            default: {
-                //statements; 
-                break;
-            }
-        }
+    ShaclTools.shapeShaclRoot = function (root) {
+        return this.shaclFileText = root + ' a sh:NodeShape; \n';
     };
-    ShaclTools.getShaclRoot = function () {
-        return this.shaclFileText = this.shaclRoot + ' a sh:NodeShape; \n';
-    };
-    ShaclTools.isRequired = function (prop) {
-        if (this.requiredProperties.has(prop)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    };
-    ShaclTools.shaclRoot = '<https://w3id.org/gbfs/shapes/>';
+    ShaclTools.config = require('./configs/config-smartdatamodel.json');
     ShaclTools.shaclFileText = '';
     ShaclTools.fs = require('fs');
     return ShaclTools;

@@ -6,6 +6,7 @@ import {DataFactory, Literal, Quad, Store} from "n3";
 import literal = DataFactory.literal;
 import { NamedNode } from "n3/lib/N3DataFactory";
 import { off } from "process";
+import { JsonProcessor } from "./jsonProcessor";
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -71,7 +72,7 @@ export class GbfsPattern {
         this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:mbox', 'mailto:pieter.colpaert@imec.be'));
         this.writer.addQuad(RDFTools.node_node_literal(this.creator1, 'foaf:name', 'Pieter Colpaert'));
         // Create a ShaclShape object and insert the first entries
-        this.shaclFileText = this.shaclFileText+ ShaclTools.getShaclRoot();
+        //this.shaclFileText = this.shaclFileText+ ShaclTools.getShaclRoot();
         this.shaclFileText = this.shaclFileText+ ShaclTools.getShaclTargetClass()+'\n';
     }
     
@@ -266,7 +267,7 @@ export class GbfsPattern {
             }
 
             // Write the property to the Shacl shape
-            if (ShaclTools.isRequired(term)){
+            if (JsonProcessor.isRequired(term)){
                 // If the type is primitive
                 if (termType == 'boolean' || termType == 'string' || termType == 'number') {
                     this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedRequiredProperty(term, RDFTools.getXsdType(termType))+'\n';

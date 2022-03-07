@@ -5,17 +5,16 @@ import { stringify } from "querystring";
 export class ShaclTools {
 
     jsonSchema: any;
+    static config = require('./configs/config-smartdatamodel.json');
     static targetClass: any;
-    static shaclRoot = '<https://w3id.org/gbfs/shapes/>';
     static shaclFileText = '';
     static fs = require('fs');
     static fileName: any;
     static requiredProperties: Map<string, string>;
 
-    static initialise(filename, required: Map<string, string>, source: string, mainObj: string){
+    static initialise(filename, mainObj: string){
         this.fileName = filename;
-        this.targetClass = ShaclTools.getShaclTarget(mainObj);
-        this.requiredProperties = required;
+
     }
 
     static writeShacl (filename, shaclFileText){
@@ -50,67 +49,10 @@ export class ShaclTools {
     static getShaclTargetClass(){
         return 'sh:targetClass ' + this.targetClass+ ';';
     }
-    static getShaclTarget (mainObject:string) {
-        switch(mainObject) { 
-            case 'gbfs:Station': { 
-                return '<https://w3id.org/gbfs/terms/station>';
-                break; 
-            } 
-            case 'gbfs:Bike': { 
-               return '<https://w3id.org/gbfs/terms/bike>';
-               break;
-            } 
-            case 'gbfs:Alert': { 
-                return '<https://w3id.org/gbfs/terms/alert>';
-                break;
-            }
-            case 'gbfs:Region': { 
-                return '<https://w3id.org/gbfs/terms/region>';
-                break;
-            }
-            case 'gbfs:VehicleType': { 
-                return '<https://w3id.org/gbfs/terms/vehicleType>';
-                break;
-            }
-            case 'gbfs:PricingPlan': { 
-                return '<https://w3id.org/gbfs/terms/pricingPlan>';
-                break;
-            }
-            case 'gbfs:Version': { 
-                return '<https://w3id.org/gbfs/terms/version>';
-                break;
-            }
-            case 'gbfs:Calendar': { 
-                return '<https://w3id.org/gbfs/terms/calendar>';
-                break;
-            }
-            case 'gbfs:RentalHour': { 
-                return '<https://w3id.org/gbfs/terms/rentalHour>';
-                break;
-            }
-            case 'gbfs:Feed': { 
-                return '<https://w3id.org/gbfs/terms/feed>';
-                break;
-            } 
-
-             
-            default: { 
-               //statements; 
-               break; 
-            } 
-         } 
+    
+    static shapeShaclRoot(root:string){
+        return this.shaclFileText = root+ ' a sh:NodeShape; \n';
     }
 
-    static getShaclRoot(){
-        return this.shaclFileText = this.shaclRoot+ ' a sh:NodeShape; \n';
-    }
-
-    static isRequired (prop:string){
-        if (this.requiredProperties.has(prop)){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+    
 }

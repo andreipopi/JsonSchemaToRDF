@@ -1,5 +1,11 @@
-undefined<https://w3id.org/gbfs/shapes/> a sh:NodeShape; 
-sh:targetClass undefined;
+undefined<https://w3id.org/sdm/terms/> a sh:NodeShape; 
+sh:targetClass <https://w3id.org/sdm/terms/>; 
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
+ ];
 sh:property [ 
  sh:path <refDevice>; 
  sh:maxCount 1; 
@@ -7,6 +13,11 @@ sh:property [
 sh:property [ 
  sh:path <refTargetDevice>; 
  sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <dateEnergyMeteringStarted>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:string; 
  ];
 sh:property [ 
  sh:path <totalActiveEnergyImport>; 
@@ -82,32 +93,152 @@ sh:property [
  sh:maxCount 1; 
  ];
 sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
  sh:path <apparentEnergyImport>; 
  sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <activeEnergyExport>; 
  sh:maxCount 1; 
  ];
 sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
  sh:path <reactiveEnergyExport>; 
  sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <apparentEnergyExport>; 
  sh:maxCount 1; 
  ];
 sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
  sh:path <activePower>; 
  sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <reactivePower>; 
  sh:maxCount 1; 
  ];
 sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
  sh:path <apparentPower>; 
  sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <totalPowerFactor>; 
@@ -119,6 +250,21 @@ sh:property [
  sh:maxCount 1; 
  ];
 sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
  sh:path <totalDisplacementPowerFactor>; 
  sh:maxCount 1; 
  sh:datatype xsd:float; 
@@ -128,8 +274,38 @@ sh:property [
  sh:maxCount 1; 
  ];
 sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
  sh:path <current>; 
  sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <N>; 
@@ -139,6 +315,21 @@ sh:property [
 sh:property [ 
  sh:path <phaseVoltage>; 
  sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];
 sh:property [ 
  sh:path <phaseToPhaseVoltage>; 
@@ -164,6 +355,36 @@ sh:property [
  sh:maxCount 1; 
  ];
 sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
  sh:path <thdCurrent>; 
  sh:maxCount 1; 
+ ];
+sh:property [ 
+ sh:path <L1>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L2>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
+ ];
+sh:property [ 
+ sh:path <L3>; 
+ sh:maxCount 1; 
+ sh:datatype xsd:float; 
  ];

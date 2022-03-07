@@ -10,6 +10,7 @@ var JsonProcessor = /** @class */ (function () {
     function JsonProcessor() {
     }
     JsonProcessor.initialise = function (source, mainObj) {
+        // RDF Vocabulary ------------------
         // Getting configuration elements
         for (var object in this.config.jsonObjects) {
             this.rdf_json_objects.set(object, this.config.jsonObjects[object]);
@@ -36,14 +37,25 @@ var JsonProcessor = /** @class */ (function () {
             this.creators.push(creator);
             this.writer.addQuad(rdfTools_1.RDFTools.node_node_node('https://w3id.org/sdm/terms/', 'dcterms:creator', this.config.creators[creator]));
         }
+        // Shacl shape -------------------
         // Setting a map containing < requiredProp, existingTermForRequiredProp>.
+        this.shaclRoot = this.config.shaclRoot;
         for (var _i = 0, _a = this.jsonSchema.required; _i < _a.length; _i++) {
             var requiredProp = _a[_i];
-            this.requiredMap.set(requiredProp.toString(), this.termMap.get(requiredProp.toString()));
+            if (this.termMap.has(requiredProp) != false) {
+                this.requiredMap.set(requiredProp.toString(), this.termMap.get(requiredProp.toString()));
+            }
+            else {
+                this.requiredMap.set(requiredProp.toString(), requiredProp.toString());
+            }
         }
+        for (var object in this.config.shaclTargets) {
+            this.targets.set(object, this.config.shaclTargets[object]);
+        }
+        this.shaclTargetClass = JsonProcessor.getShaclTarget(mainObj);
         // Create a ShaclShape object and insert the first entries
-        this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclRoot();
-        this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTargetClass() + '\n';
+        this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.shapeShaclRoot(this.shaclRoot);
+        this.shaclFileText = this.shaclFileText + 'sh:targetClass ' + this.shaclTargetClass + '; \n';
     };
     JsonProcessor.callJsonTraverseRecursive = function () {
         var depth = 0;
@@ -93,13 +105,30 @@ var JsonProcessor = /** @class */ (function () {
                 if (propDescription != undefined) {
                     this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.prefix + ':' + prop, 'rdfs:label', propDescription.toString()));
                 }
-                // Shacl shape text
-                if (shaclTools_1.ShaclTools.isRequired(prop)) {
-                    this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedRequiredProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
+            }
+            // Shacl shape text
+            if (JsonProcessor.isRequired(prop)) {
+                this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedRequiredProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
+            }
+            else {
+                this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
+            }
+            return;
+        }
+        if (propType == 'string') {
+            if (this.termMap.has(prop) == false) {
+                this.termMap.set(prop, 'sdm:' + prop);
+                this.writer.addQuad(rdfTools_1.RDFTools.node_node_node(this.prefix + ':' + prop, 'rdfs:range', 'xsd:string'));
+                if (propDescription != undefined) {
+                    this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.prefix + ':' + prop, 'rdfs:label', propDescription.toString()));
                 }
-                else {
-                    this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
-                }
+            }
+            // Shacl shape text
+            if (JsonProcessor.isRequired(prop)) {
+                this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedRequiredProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
+            }
+            else {
+                this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
             }
             return;
         }
@@ -110,13 +139,13 @@ var JsonProcessor = /** @class */ (function () {
                 if (propDescription != undefined) {
                     this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.prefix + ':' + prop, 'rdfs:label', propDescription.toString()));
                 }
-                // Shacl shape text
-                if (shaclTools_1.ShaclTools.isRequired(prop)) {
-                    this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedRequiredProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
-                }
-                else {
-                    this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
-                }
+            }
+            // Shacl shape text
+            if (JsonProcessor.isRequired(prop)) {
+                this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedRequiredProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
+            }
+            else {
+                this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
             }
             return;
         }
@@ -147,7 +176,7 @@ var JsonProcessor = /** @class */ (function () {
                     this.writer.addQuad(subPropQuad);
                 }
                 // Shacl shape text
-                if (shaclTools_1.ShaclTools.isRequired(prop)) {
+                if (JsonProcessor.isRequired(prop)) {
                     this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclRequiredProperty(prop) + '\n';
                 }
                 else { // Else the property is not required
@@ -184,14 +213,30 @@ var JsonProcessor = /** @class */ (function () {
     JsonProcessor.getMainObject = function () {
         return this.mainObject;
     };
-    JsonProcessor.getRequiredProperties = function () {
-        return this.requiredMap;
+    JsonProcessor.getWriter = function () {
+        return this.writer;
+    };
+    // For the Shacl shape
+    JsonProcessor.getShaclTarget = function (mainObject) {
+        for (var _i = 0, _a = Array.from(this.targets.entries()); _i < _a.length; _i++) {
+            var entry = _a[_i];
+            var key = entry[0];
+            var value = entry[1];
+            if (key == mainObject) {
+                return this.targets.get(key);
+            }
+        }
+    };
+    JsonProcessor.isRequired = function (prop) {
+        if (this.requiredMap.has(prop)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     };
     JsonProcessor.getShaclFileText = function () {
         return this.shaclFileText;
-    };
-    JsonProcessor.getWriter = function () {
-        return this.writer;
     };
     // From config.json, we get:
     // prefixes, terms, , schema_objects(in the main)
@@ -199,8 +244,9 @@ var JsonProcessor = /** @class */ (function () {
     JsonProcessor.rdf_json_objects = new Map();
     JsonProcessor.termMap = new Map();
     JsonProcessor.creators = [];
-    // Shacl-related
+    // Shacl shape
     JsonProcessor.requiredMap = new Map();
+    JsonProcessor.targets = new Map();
     return JsonProcessor;
 }());
 exports.JsonProcessor = JsonProcessor;
