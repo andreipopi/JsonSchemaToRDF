@@ -9,6 +9,8 @@ export class JsonProcessor {
     // From config.json, we get:
     // prefixes, terms, , schema_objects(in the main)
     static config = require('./configs/config-gbfs.json');
+    //static config = require('./configs/config-smartdatamodel.json');
+    
     static jsonSource: any;
     static jsonSchema: any;
     static mainObject: any;
@@ -28,6 +30,8 @@ export class JsonProcessor {
     static shaclRoot: any;
 
     static initialise ( source:string, mainObj: string ){
+
+        console.log("CALL INITIALISE");
         // RDF Vocabulary -------------------------
         // Getting configuration elements
         for (let object in this.config.jsonObjects){
@@ -47,10 +51,10 @@ export class JsonProcessor {
         this.prefix = this.config.prefix;
         // Set path (TODO: set from confi.json)
 
-        /* SMD
-        this.path = this.jsonSchema[this.mainJsonObject];
-        this.properties = this.path[2].properties; // Path to the properties of the main object
-        */
+        // SMD
+        //this.path = this.jsonSchema[this.mainJsonObject];
+        //this.properties = this.path[2].properties; // Path to the properties of the main object
+        
 
         // GBFS
         this.path = this.jsonSchema.properties.data.properties[this.mainJsonObject];
@@ -77,10 +81,20 @@ export class JsonProcessor {
         for (let object in this.config.shaclTargets){
             this.targets.set(object, this.config.shaclTargets[object]);
         }
+
+
+
+        this.shaclFileText = ""; // reset in case there are more schemas
+
         this.shaclTargetClass = JsonProcessor.getShaclTarget(mainObj);
         // Create a ShaclShape object and insert the first entries
+    
         this.shaclFileText = this.shaclFileText+ShaclTools.shapeShaclRoot(this.shaclRoot);
+
         this.shaclFileText = this.shaclFileText+'sh:targetClass ' + this.shaclTargetClass+ '; \n';
+
+
+        
     }
 
     /**
@@ -90,12 +104,12 @@ export class JsonProcessor {
     static callJsonTraverseRecursive(){
         let depth = 0;
         for (let prop in this.properties){
-            console.log("prop",prop);
-            console.log("mainobj", this.mainObject);
+            //console.log("prop",prop);
+            //console.log("mainobj", this.mainObject);
             //this.mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
             this.mainJsonObject = JsonProcessor.getJsonObject(this.mainObject);
 
-            console.log("mainjson",this.mainJsonObject);
+            //console.log("mainjson",this.mainJsonObject);
 
             this.jsonTraverseRecursive(this.writer, depth, this.path, this.mainJsonObject, prop);
         };
@@ -124,6 +138,7 @@ export class JsonProcessor {
 
         if (depth == 0){
             // SMD
+            
             /*
             propType = path[2].properties[prop].type;
             subProperties = path[2].properties[prop].properties;
@@ -133,12 +148,14 @@ export class JsonProcessor {
             */
 
             // GBFS
+            
             propType = path.items.properties[prop].type;
             subProperties = path.items.properties[prop].properties;
             subItems = path.items.properties[prop].items;
             propDescription = path.items.properties[prop].description;
             directEnum = path.items.properties[prop].enum;
             oneOf = path.items.properties[prop].oneOf;
+            
         }
         if (depth == 1){
 
@@ -157,6 +174,7 @@ export class JsonProcessor {
             propDescription = tmpPath.description;
             */
 
+            
             // GBFS
             tmpPath = path.items.properties[mainJsonObject];
             if(tmpPath.items == undefined ){
@@ -174,6 +192,7 @@ export class JsonProcessor {
                 directEnum = tmpPath.enum;
                 oneOf = tmpPath.oneOf;
             }
+            
         }
 
         // Base cases 

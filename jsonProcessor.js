@@ -10,6 +10,7 @@ var JsonProcessor = /** @class */ (function () {
     function JsonProcessor() {
     }
     JsonProcessor.initialise = function (source, mainObj) {
+        console.log("CALL INITIALISE");
         // RDF Vocabulary -------------------------
         // Getting configuration elements
         for (var object in this.config.jsonObjects) {
@@ -27,10 +28,9 @@ var JsonProcessor = /** @class */ (function () {
         console.log("MainJsonObject: ", this.mainJsonObject);
         this.prefix = this.config.prefix;
         // Set path (TODO: set from confi.json)
-        /* SMD
-        this.path = this.jsonSchema[this.mainJsonObject];
-        this.properties = this.path[2].properties; // Path to the properties of the main object
-        */
+        // SMD
+        //this.path = this.jsonSchema[this.mainJsonObject];
+        //this.properties = this.path[2].properties; // Path to the properties of the main object
         // GBFS
         this.path = this.jsonSchema.properties.data.properties[this.mainJsonObject];
         this.properties = this.path.items.properties; // Path to the properties of the main object
@@ -56,6 +56,7 @@ var JsonProcessor = /** @class */ (function () {
         for (var object in this.config.shaclTargets) {
             this.targets.set(object, this.config.shaclTargets[object]);
         }
+        this.shaclFileText = ""; // reset in case there are more schemas
         this.shaclTargetClass = JsonProcessor.getShaclTarget(mainObj);
         // Create a ShaclShape object and insert the first entries
         this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.shapeShaclRoot(this.shaclRoot);
@@ -68,11 +69,11 @@ var JsonProcessor = /** @class */ (function () {
     JsonProcessor.callJsonTraverseRecursive = function () {
         var depth = 0;
         for (var prop in this.properties) {
-            console.log("prop", prop);
-            console.log("mainobj", this.mainObject);
+            //console.log("prop",prop);
+            //console.log("mainobj", this.mainObject);
             //this.mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
             this.mainJsonObject = JsonProcessor.getJsonObject(this.mainObject);
-            console.log("mainjson", this.mainJsonObject);
+            //console.log("mainjson",this.mainJsonObject);
             this.jsonTraverseRecursive(this.writer, depth, this.path, this.mainJsonObject, prop);
         }
         ;

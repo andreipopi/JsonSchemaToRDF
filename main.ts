@@ -12,12 +12,19 @@ for( let object in config.sources){
 }
 // main Function for recursive jsonProcessor
 for (let [schema,object] of Array.from(schema_object)){
+
+
     JsonProcessor.initialise(schema, object);
     RDFTools.initialise(JsonProcessor.getMainObject()); //initialising the filename written by RDF tools with the name of the main object
+
+
     //                      filename                   , 
     ShaclTools.initialise(JsonProcessor.getMainObject(), JsonProcessor.mainObject );
 
     JsonProcessor.callJsonTraverseRecursive();
     RDFTools.writeTurtle(JsonProcessor.getWriter());
+
+
+
     ShaclTools.writeShacl(JsonProcessor.getMainObject(), JsonProcessor.getShaclFileText());
 }

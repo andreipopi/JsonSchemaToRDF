@@ -16,11 +16,10 @@ export class ShaclTools {
 
     static initialise(filename, mainObj: string){
         this.fileName = filename;
-
     }
     static writeShacl (filename, shaclFileText){
         // Write the Shacl shape on file
-        this.fs.writeFileSync(`build/${this.fileName}shacl.ttl`, shaclFileText , function(err:any){
+        this.fs.writeFileSync(`build/${filename}shacl.ttl`, shaclFileText , function(err:any){
             if(err){
                 return console.log("error");
             }
