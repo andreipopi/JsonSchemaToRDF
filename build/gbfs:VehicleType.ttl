@@ -20,9 +20,11 @@
     vann:preferredNamespaceUri "https://w3id.org/sdm/terms/vehicle_types#".
 <https://w3id.org/sdm/terms/> dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
 gbfs:form_factor rdfs:range xsd:string;
-    rdfs:label "The vehicle's general form factor."@en.
+    rdfs:label "The vehicle's general form factor."@en;
+    owl:oneOf (vso:bicycle schema:car <moped> <other> <scooter>).
 gbfs:propulsion_type rdfs:range xsd:string;
-    rdfs:label "The primary propulsion type of the vehicle."@en.
+    rdfs:label "The primary propulsion type of the vehicle."@en;
+    owl:oneOf (<human> <electric_assist> <electric> <combustion>).
 gbfs:max_range_meters rdfs:range xsd:integer;
     rdfs:label "The furthest distance in meters that the vehicle can travel without recharging or refueling when it has the maximum amount of energy potential."@en.
 gbfs:default_reserve_time rdfs:range xsd:integer;

@@ -19,6 +19,7 @@
     rdfs:comment "Describes ad-hoc changes to the system."@en;
     vann:preferredNamespaceUri "https://w3id.org/sdm/terms/alerts#".
 <https://w3id.org/sdm/terms/> dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
+gbfs:type owl:oneOf (<SYSTEM_CLOSURE> <STATION_CLOSURE> <STATION_MOVE> <OTHER>).
 gbfs:times rdf:type rdf:Property;
     rdfs:range gbfs:Times.
 gbfs:Times rdf:type rdfs:Class.

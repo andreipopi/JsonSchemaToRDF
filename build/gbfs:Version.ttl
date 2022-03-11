@@ -20,4 +20,5 @@
     vann:preferredNamespaceUri "https://w3id.org/sdm/terms/versions#".
 <https://w3id.org/sdm/terms/> dcterms:creator <https://pietercolpaert.be/#me>, <https://www.linkedin.com/in/andrei-popescu/>.
 gbfs:version rdfs:range xsd:string;
-    rdfs:label "The semantic version of the feed in the form X.Y"@en.
+    rdfs:label "The semantic version of the feed in the form X.Y"@en;
+    owl:oneOf (<1.1> <2.0> <2.1> <2.2> <2.3-RC>).

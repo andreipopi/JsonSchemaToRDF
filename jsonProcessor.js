@@ -198,6 +198,12 @@ var JsonProcessor = /** @class */ (function () {
                     this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
                 }
             }
+            // There might be an enum
+            if (directEnum != undefined) {
+                console.log("directENum", directEnum);
+                var quad_1 = JsonProcessor.getEnumerationQuad(directEnum, prop);
+                this.writer.addQuad(quad_1);
+            }
             return;
         }
         if (propType == 'boolean') {
@@ -251,19 +257,8 @@ var JsonProcessor = /** @class */ (function () {
                     this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.prefix + ':' + prop, 'rdfs:label', propDescription.toString()));
                 }
                 if (directEnum != undefined) {
-                    var oneOfValues = [];
-                    for (var _a = 0, directEnum_1 = directEnum; _a < directEnum_1.length; _a++) {
-                        var value = directEnum_1[_a];
-                        //We get the values from the mapping, else we create new terms
-                        if (this.termMap.get(value) != undefined) {
-                            oneOfValues.push(namedNode(this.termMap.get(value)));
-                        }
-                        else {
-                            oneOfValues.push(namedNode(value));
-                        }
-                    }
-                    var subPropQuad = rdfTools_1.RDFTools.node_node_list(this.prefix + ':' + newClassName, 'owl:oneOf', oneOfValues);
-                    this.writer.addQuad(subPropQuad);
+                    var quad_2 = JsonProcessor.getEnumerationQuad(directEnum, newClassName);
+                    this.writer.addQuad(quad_2);
                 }
                 // Shacl shape text
                 if (JsonProcessor.isRequired(prop)) {
@@ -290,6 +285,22 @@ var JsonProcessor = /** @class */ (function () {
             }
         }
         return;
+    };
+    // Auxiliary Methods
+    JsonProcessor.getEnumerationQuad = function (directEnum, name) {
+        var oneOfValues = [];
+        for (var _i = 0, directEnum_1 = directEnum; _i < directEnum_1.length; _i++) {
+            var value = directEnum_1[_i];
+            //We get the values from the mapping, else we create new terms
+            if (this.termMap.get(value) != undefined) {
+                oneOfValues.push(namedNode(this.termMap.get(value)));
+            }
+            else {
+                oneOfValues.push(namedNode(value));
+            }
+        }
+        var subPropQuad = rdfTools_1.RDFTools.node_node_list(this.prefix + ':' + name, 'owl:oneOf', this.writer.list(oneOfValues));
+        return subPropQuad;
     };
     JsonProcessor.getJsonObject = function (mainObject) {
         for (var _i = 0, _a = Array.from(this.rdf_json_objects.entries()); _i < _a.length; _i++) {

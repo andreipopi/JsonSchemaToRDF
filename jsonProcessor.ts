@@ -239,6 +239,14 @@ export class JsonProcessor {
                     this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedProperty(prop, RDFTools.getXsdType(propType))+'\n';
                 }
             }
+
+            // There might be an enum
+            if (directEnum != undefined){
+
+                console.log("directENum", directEnum);
+                let quad = JsonProcessor.getEnumerationQuad(directEnum, prop);
+                this.writer.addQuad(quad);
+            }
             
             return;
         }
@@ -302,20 +310,11 @@ export class JsonProcessor {
                         this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+prop, 'rdfs:label', propDescription.toString()));
                 }
                 if (directEnum != undefined){
-                    let oneOfValues:NamedNode[] = [];
-                    for (const value of directEnum){
-                        //We get the values from the mapping, else we create new terms
-                        if (this.termMap.get(value)!= undefined) {
-                            oneOfValues.push(namedNode(this.termMap.get(value)));
-                        }
-                        else{
-                            oneOfValues.push(namedNode(value));
-                        }
-                    }
 
-                    let subPropQuad = RDFTools.node_node_list(this.prefix+':'+newClassName, 'owl:oneOf', oneOfValues);
-                    this.writer.addQuad(subPropQuad);
+                    let quad = JsonProcessor.getEnumerationQuad(directEnum, newClassName);
+                    this.writer.addQuad(quad);
                 }
+
                 // Shacl shape text
                 if (JsonProcessor.isRequired(prop)){
                     this.shaclFileText = this.shaclFileText+ShaclTools.getShaclRequiredProperty(prop)+'\n';
@@ -346,6 +345,26 @@ export class JsonProcessor {
         }
         return;
     }
+
+
+    // Auxiliary Methods
+
+    static getEnumerationQuad(directEnum, name){
+        let oneOfValues:NamedNode[] = [];
+        for (const value of directEnum){
+            //We get the values from the mapping, else we create new terms
+            if (this.termMap.get(value)!= undefined) {
+                oneOfValues.push(namedNode(this.termMap.get(value)));
+            }
+            else{
+                oneOfValues.push(namedNode(value));
+            }
+        }
+        let subPropQuad = RDFTools.node_node_list(this.prefix+':'+name, 'owl:oneOf', this.writer.list(oneOfValues));
+    
+        return subPropQuad;
+    }
+
     static getJsonObject(mainObject: string){
         for(let entry of Array.from(this.rdf_json_objects.entries())){
             const key = entry[0];
