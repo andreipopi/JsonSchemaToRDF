@@ -10,7 +10,6 @@ var JsonProcessor = /** @class */ (function () {
     function JsonProcessor() {
     }
     JsonProcessor.initialise = function (source, mainObj) {
-        console.log("CALL INITIALISE");
         // RDF Vocabulary -------------------------
         // Getting configuration elements
         for (var object in this.config.jsonObjects) {
@@ -74,7 +73,7 @@ var JsonProcessor = /** @class */ (function () {
             //this.mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
             this.mainJsonObject = JsonProcessor.getJsonObject(this.mainObject);
             //console.log("mainjson",this.mainJsonObject);
-            this.jsonTraverseRecursive(this.writer, depth, this.path, this.mainJsonObject, prop);
+            this.jsonTraverseRecursive(depth, this.path, this.mainJsonObject, prop);
         }
         ;
         return;
@@ -88,7 +87,7 @@ var JsonProcessor = /** @class */ (function () {
      * @param prop
      * @returns
      */
-    JsonProcessor.jsonTraverseRecursive = function (writer, depth, path, mainJsonObject, prop) {
+    JsonProcessor.jsonTraverseRecursive = function (depth, path, mainJsonObject, prop) {
         // We only deal to depths <= 1; the following setups take care of that.
         var tmpPath;
         var propType;
@@ -224,17 +223,17 @@ var JsonProcessor = /** @class */ (function () {
             var oneOfValues = [];
             for (var _i = 0, oneOf_1 = oneOf; _i < oneOf_1.length; _i++) {
                 var value = oneOf_1[_i];
-                console.log("oneof value", value);
+                var key = Object.keys(value);
                 //We get the values from the mapping, else we create new terms
-                if (this.termMap.has(value)) {
-                    oneOfValues.push(namedNode(this.termMap.get(value.toString())));
+                if (this.termMap.has(value[key[0]])) {
+                    oneOfValues.push(namedNode(this.termMap.get(value[key[0]]).toString()));
                 }
                 else {
-                    oneOfValues.push(namedNode(value));
+                    oneOfValues.push(namedNode(value[key[0].toString()]));
                 }
             }
-            console.log("this is the list of values", oneOfValues);
-            var subPropQuad = rdfTools_1.RDFTools.node_node_list(this.prefix + ':' + prop, 'owl:oneOf', oneOfValues);
+            console.log("oneOfValues", oneOfValues);
+            var subPropQuad = rdfTools_1.RDFTools.node_node_list(this.prefix + ':' + prop, 'owl:oneOf', this.writer.list(oneOfValues));
             this.writer.addQuad(subPropQuad);
             return;
         }
@@ -263,7 +262,7 @@ var JsonProcessor = /** @class */ (function () {
                             oneOfValues.push(namedNode(value));
                         }
                     }
-                    var subPropQuad = rdfTools_1.RDFTools.node_node_list(this.prefix + ':' + newClassName, 'owl:oneOf', this.writer.list(oneOfValues));
+                    var subPropQuad = rdfTools_1.RDFTools.node_node_list(this.prefix + ':' + newClassName, 'owl:oneOf', oneOfValues);
                     this.writer.addQuad(subPropQuad);
                 }
                 // Shacl shape text
@@ -280,13 +279,13 @@ var JsonProcessor = /** @class */ (function () {
             // An object can have sub properties
             if (subProperties != undefined) {
                 for (var prop_1 in subProperties) {
-                    this.jsonTraverseRecursive(this.writer, depth, path, mainJsonObject, prop_1);
+                    this.jsonTraverseRecursive(depth, path, mainJsonObject, prop_1);
                 }
             }
             // An array can have sub items
             if (subItems != undefined) {
                 for (var item in subItems) {
-                    this.jsonTraverseRecursive(this.writer, depth, path, mainJsonObject, item);
+                    this.jsonTraverseRecursive(depth, path, mainJsonObject, item);
                 }
             }
         }

@@ -30,8 +30,6 @@ export class JsonProcessor {
     static shaclRoot: any;
 
     static initialise ( source:string, mainObj: string ){
-
-        console.log("CALL INITIALISE");
         // RDF Vocabulary -------------------------
         // Getting configuration elements
         for (let object in this.config.jsonObjects){
@@ -55,7 +53,6 @@ export class JsonProcessor {
         //this.path = this.jsonSchema[this.mainJsonObject];
         //this.properties = this.path[2].properties; // Path to the properties of the main object
         
-
         // GBFS
         this.path = this.jsonSchema.properties.data.properties[this.mainJsonObject];
         this.properties = this.path.items.properties; // Path to the properties of the main object
@@ -82,21 +79,14 @@ export class JsonProcessor {
             this.targets.set(object, this.config.shaclTargets[object]);
         }
 
-
-
         this.shaclFileText = ""; // reset in case there are more schemas
 
         this.shaclTargetClass = JsonProcessor.getShaclTarget(mainObj);
         // Create a ShaclShape object and insert the first entries
     
         this.shaclFileText = this.shaclFileText+ShaclTools.shapeShaclRoot(this.shaclRoot);
-
         this.shaclFileText = this.shaclFileText+'sh:targetClass ' + this.shaclTargetClass+ '; \n';
-
-
-        
     }
-
     /**
      * 
      * @returns 
@@ -111,7 +101,7 @@ export class JsonProcessor {
 
             //console.log("mainjson",this.mainJsonObject);
 
-            this.jsonTraverseRecursive(this.writer, depth, this.path, this.mainJsonObject, prop);
+            this.jsonTraverseRecursive( depth, this.path, this.mainJsonObject, prop);
         };
         return;
     }
@@ -125,7 +115,7 @@ export class JsonProcessor {
      * @param prop 
      * @returns 
      */
-    static jsonTraverseRecursive (writer, depth, path, mainJsonObject, prop){
+    static jsonTraverseRecursive ( depth, path, mainJsonObject, prop){
         // We only deal to depths <= 1; the following setups take care of that.
         let tmpPath;
         let propType;
@@ -277,18 +267,20 @@ export class JsonProcessor {
             console.log("there is an enum", oneOf);
             let oneOfValues:NamedNode[] = [];
             for (const value of oneOf){
-                console.log("oneof value", value);
+
+                let key = Object.keys(value);
+              
                 //We get the values from the mapping, else we create new terms
-                if (this.termMap.has(value)) {
-                    oneOfValues.push(namedNode(this.termMap.get(value.toString())));
+                if (this.termMap.has(value[key[0]])) {
+                    oneOfValues.push(namedNode(this.termMap.get(value[key[0]]).toString()));
                 }
                 else{
-                    oneOfValues.push(namedNode(value));
+                    oneOfValues.push(namedNode(value[key[0].toString()]));
                 }
             }
-            console.log("this is the list of values", oneOfValues);
-            let subPropQuad = RDFTools.node_node_list(this.prefix+':'+prop, 'owl:oneOf', oneOfValues);
+            console.log("oneOfValues", oneOfValues);
 
+            let subPropQuad = RDFTools.node_node_list(this.prefix+':'+prop, 'owl:oneOf', this.writer.list(oneOfValues));
             this.writer.addQuad(subPropQuad);
             return;
         }
@@ -320,7 +312,8 @@ export class JsonProcessor {
                             oneOfValues.push(namedNode(value));
                         }
                     }
-                    let subPropQuad = RDFTools.node_node_list(this.prefix+':'+newClassName, 'owl:oneOf', this.writer.list(oneOfValues));
+
+                    let subPropQuad = RDFTools.node_node_list(this.prefix+':'+newClassName, 'owl:oneOf', oneOfValues);
                     this.writer.addQuad(subPropQuad);
                 }
                 // Shacl shape text
@@ -341,13 +334,13 @@ export class JsonProcessor {
             // An object can have sub properties
             if(subProperties != undefined){
                 for (let prop in subProperties){
-                    this.jsonTraverseRecursive(this.writer, depth, path, mainJsonObject, prop);
+                    this.jsonTraverseRecursive( depth, path, mainJsonObject, prop);
                 } 
             }
             // An array can have sub items
             if(subItems != undefined){
                 for (let item in subItems){
-                    this.jsonTraverseRecursive(this.writer, depth, path, mainJsonObject, item);
+                    this.jsonTraverseRecursive( depth, path, mainJsonObject, item);
                 }
             }
         }

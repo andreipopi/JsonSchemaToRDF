@@ -16,7 +16,6 @@ for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
     var _b = _a[_i], schema = _b[0], object = _b[1];
     jsonProcessor_1.JsonProcessor.initialise(schema, object);
     rdfTools_1.RDFTools.initialise(jsonProcessor_1.JsonProcessor.getMainObject()); //initialising the filename written by RDF tools with the name of the main object
-    console.log("Filenam", jsonProcessor_1.JsonProcessor.getMainObject());
     //                      filename                   , 
     shaclTools_1.ShaclTools.initialise(jsonProcessor_1.JsonProcessor.getMainObject(), jsonProcessor_1.JsonProcessor.mainObject);
     jsonProcessor_1.JsonProcessor.callJsonTraverseRecursive();
