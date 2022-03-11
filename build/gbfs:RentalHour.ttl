@@ -23,10 +23,12 @@ gbfs:user_types rdf:type rdf:Property;
     rdfs:range gbfs:User_types.
 gbfs:User_types rdf:type rdfs:Class.
 gbfs:user_types rdfs:label "Array of member and nonmember value(s) indicating that this set of rental hours applies to either members or non-members only."@en.
+gbfs:undefined owl:oneOf (<member> <nonmember>), (<member> <nonmember>).
 gbfs:days rdf:type rdf:Property;
     rdfs:range gbfs:Days.
 gbfs:Days rdf:type rdfs:Class.
 gbfs:days rdfs:label "An array of abbreviations (first 3 letters) of English names of the days of the week for which this object applies."@en.
+gbfs:undefined owl:oneOf (<sun> <mon> <tue> <wed> <thu> <fri> <sat>), (<sun> <mon> <tue> <wed> <thu> <fri> <sat>).
 gbfs:start_time rdfs:range xsd:string;
     rdfs:label "Start time for the hours of operation of the system."@en.
 gbfs:end_time rdfs:range xsd:string;

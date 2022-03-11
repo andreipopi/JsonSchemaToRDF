@@ -24,7 +24,6 @@ var JsonProcessor = /** @class */ (function () {
         this.jsonSchema = require(source);
         this.mainObject = mainObj;
         this.mainJsonObject = this.getJsonObject(this.mainObject);
-        console.log("MainJsonObject: ", this.mainJsonObject);
         this.prefix = this.config.prefix;
         // Set path (TODO: set from confi.json)
         // SMD
@@ -96,6 +95,8 @@ var JsonProcessor = /** @class */ (function () {
         var propDescription;
         var directEnum;
         var oneOf;
+        console.log("MainJsonObject: ", mainJsonObject);
+        console.log("Depth", depth);
         if (depth == 0) {
             // SMD
             /*
@@ -114,6 +115,7 @@ var JsonProcessor = /** @class */ (function () {
             oneOf = path.items.properties[prop].oneOf;
         }
         if (depth == 1) {
+            console.log("depth = 1");
             // SMD
             /*
             tmpPath = path[2].properties[mainJsonObject]; // adapt the path at depth 1 for the currently mainObject
@@ -136,13 +138,17 @@ var JsonProcessor = /** @class */ (function () {
                 propDescription = tmpPath.description;
                 directEnum = tmpPath["enum"];
                 oneOf = tmpPath.oneOf;
+                console.log("path", tmpPath);
+                console.log("directEnum", directEnum);
             }
             else {
                 propType = tmpPath.type;
                 subItems = tmpPath.items;
                 propDescription = tmpPath.description;
-                directEnum = tmpPath["enum"];
+                directEnum = subItems["enum"];
                 oneOf = tmpPath.oneOf;
+                console.log("path", tmpPath);
+                console.log("directEnum", directEnum);
             }
         }
         // Base cases 
@@ -164,6 +170,11 @@ var JsonProcessor = /** @class */ (function () {
                     this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
                 }
             }
+            // An enum can be defined within 'whatever' construct
+            if (directEnum != undefined) {
+                var quad_1 = JsonProcessor.getEnumerationQuad(directEnum, prop);
+                this.writer.addQuad(quad_1);
+            }
             return;
         }
         if (propType == 'integer') {
@@ -180,6 +191,11 @@ var JsonProcessor = /** @class */ (function () {
                 else {
                     this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
                 }
+            }
+            // An enum can be defined within 'whatever' construct
+            if (directEnum != undefined) {
+                var quad_2 = JsonProcessor.getEnumerationQuad(directEnum, prop);
+                this.writer.addQuad(quad_2);
             }
             return;
         }
@@ -198,11 +214,10 @@ var JsonProcessor = /** @class */ (function () {
                     this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
                 }
             }
-            // There might be an enum
+            // An enum can be defined within 'whatever' construct
             if (directEnum != undefined) {
-                console.log("directENum", directEnum);
-                var quad_1 = JsonProcessor.getEnumerationQuad(directEnum, prop);
-                this.writer.addQuad(quad_1);
+                var quad_3 = JsonProcessor.getEnumerationQuad(directEnum, prop);
+                this.writer.addQuad(quad_3);
             }
             return;
         }
@@ -221,26 +236,17 @@ var JsonProcessor = /** @class */ (function () {
                     this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclTypedProperty(prop, rdfTools_1.RDFTools.getXsdType(propType)) + '\n';
                 }
             }
+            // An enum can be defined within 'whatever' construct
+            if (directEnum != undefined) {
+                var quad_4 = JsonProcessor.getEnumerationQuad(directEnum, prop);
+                this.writer.addQuad(quad_4);
+            }
             return;
         }
         // Verify if there is a oneOf defined
         if (oneOf != undefined) {
-            console.log("there is an enum", oneOf);
-            var oneOfValues = [];
-            for (var _i = 0, oneOf_1 = oneOf; _i < oneOf_1.length; _i++) {
-                var value = oneOf_1[_i];
-                var key = Object.keys(value);
-                //We get the values from the mapping, else we create new terms
-                if (this.termMap.has(value[key[0]])) {
-                    oneOfValues.push(namedNode(this.termMap.get(value[key[0]]).toString()));
-                }
-                else {
-                    oneOfValues.push(namedNode(value[key[0].toString()]));
-                }
-            }
-            console.log("oneOfValues", oneOfValues);
-            var subPropQuad = rdfTools_1.RDFTools.node_node_list(this.prefix + ':' + prop, 'owl:oneOf', this.writer.list(oneOfValues));
-            this.writer.addQuad(subPropQuad);
+            var quad_5 = JsonProcessor.getOneOfQuad(oneOf, prop);
+            this.writer.addQuad(quad_5);
             return;
         }
         // Recursive step
@@ -256,10 +262,6 @@ var JsonProcessor = /** @class */ (function () {
                 if (propDescription != undefined) {
                     this.writer.addQuad(rdfTools_1.RDFTools.node_node_literal(this.prefix + ':' + prop, 'rdfs:label', propDescription.toString()));
                 }
-                if (directEnum != undefined) {
-                    var quad_2 = JsonProcessor.getEnumerationQuad(directEnum, newClassName);
-                    this.writer.addQuad(quad_2);
-                }
                 // Shacl shape text
                 if (JsonProcessor.isRequired(prop)) {
                     this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclRequiredProperty(prop) + '\n';
@@ -267,6 +269,10 @@ var JsonProcessor = /** @class */ (function () {
                 else { // Else the property is not required
                     this.shaclFileText = this.shaclFileText + shaclTools_1.ShaclTools.getShaclProperty(prop) + '\n';
                 }
+            }
+            if (directEnum != undefined) {
+                var quad_6 = JsonProcessor.getEnumerationQuad(directEnum, newClassName);
+                this.writer.addQuad(quad_6);
             }
             depth += 1;
             //mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
@@ -287,6 +293,35 @@ var JsonProcessor = /** @class */ (function () {
         return;
     };
     // Auxiliary Methods
+    /**
+     * OneOf
+     * @param oneOf
+     * @param name
+     * @returns
+     */
+    JsonProcessor.getOneOfQuad = function (oneOf, name) {
+        var oneOfValues = [];
+        for (var _i = 0, oneOf_1 = oneOf; _i < oneOf_1.length; _i++) {
+            var value = oneOf_1[_i];
+            var key = Object.keys(value);
+            //We get the values from the mapping, else we create new terms
+            if (this.termMap.has(value[key[0]])) {
+                oneOfValues.push(namedNode(this.termMap.get(value[key[0]]).toString()));
+            }
+            else {
+                oneOfValues.push(namedNode(value[key[0].toString()]));
+            }
+        }
+        console.log("oneOfValues", oneOfValues);
+        var subPropQuad = rdfTools_1.RDFTools.node_node_list(this.prefix + ':' + name, 'owl:oneOf', this.writer.list(oneOfValues));
+        return subPropQuad;
+    };
+    /**
+     * Enum
+     * @param directEnum
+     * @param name
+     * @returns
+     */
     JsonProcessor.getEnumerationQuad = function (directEnum, name) {
         var oneOfValues = [];
         for (var _i = 0, directEnum_1 = directEnum; _i < directEnum_1.length; _i++) {

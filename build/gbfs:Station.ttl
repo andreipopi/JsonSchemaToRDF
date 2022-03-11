@@ -25,10 +25,12 @@ gbfs:rental_methods rdf:type rdf:Property;
     rdfs:range gbfs:Rental_methods.
 gbfs:Rental_methods rdf:type rdfs:Class.
 gbfs:rental_methods rdfs:label "Payment methods accepted at this station."@en.
+gbfs:undefined owl:oneOf (<key> schema:CreditCard <paypass> <applepay> <androidpay> <transitcard> <accountnumber> foaf:phone).
 gbfs:enum rdf:type rdf:Property;
     rdfs:range gbfs:Enum.
 gbfs:Enum rdf:type rdfs:Class.
 gbfs:enum rdfs:label "Payment methods accepted at this station."@en.
+gbfs:Enum owl:oneOf (<key> schema:CreditCard <paypass> <applepay> <androidpay> <transitcard> <accountnumber> foaf:phone).
 gbfs:is_virtual_station rdfs:range xsd:boolean;
     rdfs:label "Is this station a location with or without physical infrastructure? (added in v2.1-RC)"@en.
 gbfs:station_area rdf:type rdf:Property;

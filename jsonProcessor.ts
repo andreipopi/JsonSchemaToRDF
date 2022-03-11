@@ -45,7 +45,6 @@ export class JsonProcessor {
         this.jsonSchema = require(source);
         this.mainObject = mainObj; 
         this.mainJsonObject = this.getJsonObject(this.mainObject);
-        console.log("MainJsonObject: ", this.mainJsonObject);
         this.prefix = this.config.prefix;
         // Set path (TODO: set from confi.json)
 
@@ -125,6 +124,10 @@ export class JsonProcessor {
         let directEnum;
         let oneOf;
 
+        console.log("MainJsonObject: ", mainJsonObject);
+        console.log("Depth", depth);
+        
+
 
         if (depth == 0){
             // SMD
@@ -149,6 +152,7 @@ export class JsonProcessor {
         }
         if (depth == 1){
 
+            console.log("depth = 1");
             // SMD
             /*
             tmpPath = path[2].properties[mainJsonObject]; // adapt the path at depth 1 for the currently mainObject            
@@ -173,22 +177,29 @@ export class JsonProcessor {
                 propDescription = tmpPath.description;
                 directEnum = tmpPath.enum;
                 oneOf = tmpPath.oneOf;
+                console.log("path", tmpPath);
+                console.log("directEnum", directEnum);
+
 
             }
             else{
                 propType = tmpPath.type;
                 subItems = tmpPath.items;
                 propDescription = tmpPath.description;
-                directEnum = tmpPath.enum;
+                directEnum = subItems.enum;
                 oneOf = tmpPath.oneOf;
+                console.log("path", tmpPath);
+
+                console.log("directEnum", directEnum);
+
             }
             
         }
-
         // Base cases 
         if(depth > 2){
             return;
         }
+
         if (propType == 'number'){
             if (this.termMap.has(prop) == false) {
                 this.termMap.set(prop, this.prefix+':'+prop);
@@ -203,6 +214,11 @@ export class JsonProcessor {
                 else{
                     this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedProperty(prop, RDFTools.getXsdType(propType))+'\n';
                 }
+            }
+            // An enum can be defined within 'whatever' construct
+            if (directEnum != undefined){
+                let quad = JsonProcessor.getEnumerationQuad(directEnum, prop);
+                this.writer.addQuad(quad);
             }
             return;
         }
@@ -220,6 +236,11 @@ export class JsonProcessor {
                 else{
                     this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedProperty(prop, RDFTools.getXsdType(propType))+'\n';
                 }
+            }
+            // An enum can be defined within 'whatever' construct
+            if (directEnum != undefined){
+                let quad = JsonProcessor.getEnumerationQuad(directEnum, prop);
+                this.writer.addQuad(quad);
             }
             return;
         }
@@ -239,17 +260,16 @@ export class JsonProcessor {
                     this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedProperty(prop, RDFTools.getXsdType(propType))+'\n';
                 }
             }
-
-            // There might be an enum
+            // An enum can be defined within 'whatever' construct
             if (directEnum != undefined){
-
-                console.log("directENum", directEnum);
                 let quad = JsonProcessor.getEnumerationQuad(directEnum, prop);
                 this.writer.addQuad(quad);
             }
-            
             return;
         }
+
+
+        
 
         if (propType == 'boolean'){
             if (this.termMap.has(prop) == false) {
@@ -266,30 +286,18 @@ export class JsonProcessor {
                     this.shaclFileText = this.shaclFileText+ShaclTools.getShaclTypedProperty(prop, RDFTools.getXsdType(propType))+'\n';
                 }
             }
-            
+            // An enum can be defined within 'whatever' construct
+            if (directEnum != undefined){
+                let quad = JsonProcessor.getEnumerationQuad(directEnum, prop);
+                this.writer.addQuad(quad);
+            }
             return;
         }
 
         // Verify if there is a oneOf defined
         if (oneOf != undefined){
-            console.log("there is an enum", oneOf);
-            let oneOfValues:NamedNode[] = [];
-            for (const value of oneOf){
-
-                let key = Object.keys(value);
-              
-                //We get the values from the mapping, else we create new terms
-                if (this.termMap.has(value[key[0]])) {
-                    oneOfValues.push(namedNode(this.termMap.get(value[key[0]]).toString()));
-                }
-                else{
-                    oneOfValues.push(namedNode(value[key[0].toString()]));
-                }
-            }
-            console.log("oneOfValues", oneOfValues);
-
-            let subPropQuad = RDFTools.node_node_list(this.prefix+':'+prop, 'owl:oneOf', this.writer.list(oneOfValues));
-            this.writer.addQuad(subPropQuad);
+            let quad = JsonProcessor.getOneOfQuad(oneOf, prop);
+            this.writer.addQuad(quad);
             return;
         }
         
@@ -309,11 +317,8 @@ export class JsonProcessor {
                 if(propDescription != undefined ){
                         this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+prop, 'rdfs:label', propDescription.toString()));
                 }
-                if (directEnum != undefined){
-
-                    let quad = JsonProcessor.getEnumerationQuad(directEnum, newClassName);
-                    this.writer.addQuad(quad);
-                }
+                
+                
 
                 // Shacl shape text
                 if (JsonProcessor.isRequired(prop)){
@@ -322,6 +327,11 @@ export class JsonProcessor {
                 else{ // Else the property is not required
                     this.shaclFileText = this.shaclFileText+ShaclTools.getShaclProperty(prop)+'\n';
                 }
+            }
+
+            if (directEnum != undefined){
+                let quad = JsonProcessor.getEnumerationQuad(directEnum, newClassName);
+                this.writer.addQuad(quad);
             }
             depth += 1;        
             
@@ -337,6 +347,8 @@ export class JsonProcessor {
                 } 
             }
             // An array can have sub items
+
+
             if(subItems != undefined){
                 for (let item in subItems){
                     this.jsonTraverseRecursive( depth, path, mainJsonObject, item);
@@ -349,6 +361,35 @@ export class JsonProcessor {
 
     // Auxiliary Methods
 
+    /**
+     * OneOf
+     * @param oneOf 
+     * @param name 
+     * @returns 
+     */
+    static getOneOfQuad(oneOf, name){
+        let oneOfValues:NamedNode[] = [];
+        for (const value of oneOf){
+            let key = Object.keys(value);
+            //We get the values from the mapping, else we create new terms
+            if (this.termMap.has(value[key[0]])) {
+                oneOfValues.push(namedNode(this.termMap.get(value[key[0]]).toString()));
+            }
+            else{
+                oneOfValues.push(namedNode(value[key[0].toString()]));
+            }
+        }
+        console.log("oneOfValues", oneOfValues);
+        let subPropQuad = RDFTools.node_node_list(this.prefix+':'+name, 'owl:oneOf', this.writer.list(oneOfValues));
+        return subPropQuad;
+    }
+
+    /**
+     * Enum
+     * @param directEnum 
+     * @param name 
+     * @returns 
+     */
     static getEnumerationQuad(directEnum, name){
         let oneOfValues:NamedNode[] = [];
         for (const value of directEnum){
