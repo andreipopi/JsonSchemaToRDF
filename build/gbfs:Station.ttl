@@ -25,6 +25,7 @@ gbfs:rental_methods rdf:type rdf:Property;
     rdfs:range gbfs:Rental_methods.
 gbfs:Rental_methods rdf:type rdfs:Class.
 gbfs:rental_methods rdfs:label "Payment methods accepted at this station."@en.
+gbfs:Rental_methods owl:oneOf (<key> schema:CreditCard <paypass> <applepay> <androidpay> <transitcard> <accountnumber> foaf:phone).
 gbfs:undefined owl:oneOf (<key> schema:CreditCard <paypass> <applepay> <androidpay> <transitcard> <accountnumber> foaf:phone).
 gbfs:enum rdf:type rdf:Property;
     rdfs:range gbfs:Enum.

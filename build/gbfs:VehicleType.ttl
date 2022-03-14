@@ -33,6 +33,7 @@ gbfs:return_type rdf:type rdf:Property;
     rdfs:range gbfs:Return_type.
 gbfs:Return_type rdf:type rdfs:Class.
 gbfs:return_type rdfs:label "The conditions for returning the vehicle at the end of the trip added in v2.3-RC."@en.
+gbfs:Return_type owl:oneOf (<free_floating> <roundtrip_station> <any_station>).
 gbfs:undefined owl:oneOf (<free_floating> <roundtrip_station> <any_station>), (<free_floating> <roundtrip_station> <any_station>).
 gbfs:vehicle_assets rdf:type rdf:Property;
     rdfs:range gbfs:Vehicle_assets.

@@ -7,6 +7,7 @@ export class ShaclTools {
     jsonSchema: any;
     //static config = require('./configs/config-smartdatamodel.json');
     static config = require('./configs/config-gbfs.json');
+    //static config = require('./configs/config-battery.json');
 
     static targetClass: any;
     static shaclFileText = '';

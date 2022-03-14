@@ -25,10 +25,12 @@ var JsonProcessor = /** @class */ (function () {
         this.mainObject = mainObj;
         this.mainJsonObject = this.getJsonObject(this.mainObject);
         this.prefix = this.config.prefix;
-        // Set path (TODO: set from confi.json)
-        // SMD
-        //this.path = this.jsonSchema[this.mainJsonObject];
-        //this.properties = this.path[2].properties; // Path to the properties of the main object
+        // Set paths (TODO: set from confi.json)
+        // SMD: ElectricalMeasurment and Battery schemas
+        /*
+        this.path = this.jsonSchema[this.mainJsonObject];
+        this.properties = this.path[2].properties; // Path to the properties of the main object
+        */
         // GBFS
         this.path = this.jsonSchema.properties.data.properties[this.mainJsonObject];
         this.properties = this.path.items.properties; // Path to the properties of the main object
@@ -66,13 +68,11 @@ var JsonProcessor = /** @class */ (function () {
      */
     JsonProcessor.callJsonTraverseRecursive = function () {
         var depth = 0;
+        // For each propery of the main object, call the recursive function jsonTraverseRecursive, which will
+        // recursively traverse each property up to depth = 1.
         for (var prop in this.properties) {
-            //console.log("prop",prop);
-            //console.log("mainobj", this.mainObject);
-            //this.mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
-            this.mainJsonObject = JsonProcessor.getJsonObject(this.mainObject);
-            //console.log("mainjson",this.mainJsonObject);
-            this.jsonTraverseRecursive(depth, this.path, this.mainJsonObject, prop);
+            var mainJsonObject = JsonProcessor.getJsonObject(this.prefix + ':' + rdfTools_1.RDFTools.capitalizeFirstLetter(prop));
+            this.jsonTraverseRecursive(depth, this.path, mainJsonObject, prop);
         }
         ;
         return;
@@ -94,9 +94,9 @@ var JsonProcessor = /** @class */ (function () {
         var subItems;
         var propDescription;
         var directEnum;
+        var nestedEnum;
         var oneOf;
-        console.log("MainJsonObject: ", mainJsonObject);
-        console.log("Depth", depth);
+        var anyOf;
         if (depth == 0) {
             // SMD
             /*
@@ -105,6 +105,10 @@ var JsonProcessor = /** @class */ (function () {
             subItems = path[2].properties[prop].items;
             propDescription = path[2].properties[prop].description;
             directEnum = path[2].properties[prop].enum;
+            anyOf = path[2].properties[prop].anyOf;
+            if( subItems != undefined){
+                nestedEnum = subItems.enum;
+            }
             */
             // GBFS
             propType = path.items.properties[prop].type;
@@ -113,10 +117,12 @@ var JsonProcessor = /** @class */ (function () {
             propDescription = path.items.properties[prop].description;
             directEnum = path.items.properties[prop]["enum"];
             oneOf = path.items.properties[prop].oneOf;
+            if (subItems != undefined) {
+                nestedEnum = subItems["enum"];
+            }
         }
         if (depth == 1) {
-            console.log("depth = 1");
-            // SMD
+            // SMD: Electrical measurment and Battery
             /*
             tmpPath = path[2].properties[mainJsonObject]; // adapt the path at depth 1 for the currently mainObject
             if(tmpPath.properties != undefined){
@@ -138,21 +144,17 @@ var JsonProcessor = /** @class */ (function () {
                 propDescription = tmpPath.description;
                 directEnum = tmpPath["enum"];
                 oneOf = tmpPath.oneOf;
-                console.log("path", tmpPath);
-                console.log("directEnum", directEnum);
             }
             else {
                 propType = tmpPath.type;
                 subItems = tmpPath.items;
                 propDescription = tmpPath.description;
-                directEnum = subItems["enum"];
+                directEnum = subItems["enum"]; // look at station_information.json 
                 oneOf = tmpPath.oneOf;
-                console.log("path", tmpPath);
-                console.log("directEnum", directEnum);
             }
         }
         // Base cases 
-        if (depth > 2) {
+        if (depth > 3) {
             return;
         }
         if (propType == 'number') {
@@ -249,6 +251,12 @@ var JsonProcessor = /** @class */ (function () {
             this.writer.addQuad(quad_5);
             return;
         }
+        // first need to write sdm:RefDevice to file 
+        if (anyOf != undefined) {
+            var quad_6 = JsonProcessor.getEnumerationQuad(anyOf, prop);
+            this.writer.addQuad(quad_6);
+            return;
+        }
         // Recursive step
         if (propType == 'object' || propType == 'array') {
             var newClassName = void 0;
@@ -271,8 +279,12 @@ var JsonProcessor = /** @class */ (function () {
                 }
             }
             if (directEnum != undefined) {
-                var quad_6 = JsonProcessor.getEnumerationQuad(directEnum, newClassName);
-                this.writer.addQuad(quad_6);
+                var quad_7 = JsonProcessor.getEnumerationQuad(directEnum, newClassName);
+                this.writer.addQuad(quad_7);
+            }
+            if (nestedEnum != undefined) {
+                var quad_8 = JsonProcessor.getEnumerationQuad(nestedEnum, newClassName);
+                this.writer.addQuad(quad_8);
             }
             depth += 1;
             //mainJsonObject = JsonProcessor.getJsonObject(this.prefix+':'+ RDFTools.capitalizeFirstLetter(prop));
@@ -324,17 +336,24 @@ var JsonProcessor = /** @class */ (function () {
      */
     JsonProcessor.getEnumerationQuad = function (directEnum, name) {
         var oneOfValues = [];
-        for (var _i = 0, directEnum_1 = directEnum; _i < directEnum_1.length; _i++) {
-            var value = directEnum_1[_i];
-            //We get the values from the mapping, else we create new terms
-            if (this.termMap.get(value) != undefined) {
-                oneOfValues.push(namedNode(this.termMap.get(value)));
+        var subPropQuad;
+        if (Array.isArray(directEnum)) {
+            console.log("is array", directEnum);
+            for (var _i = 0, directEnum_1 = directEnum; _i < directEnum_1.length; _i++) {
+                var value = directEnum_1[_i];
+                //We get the values from the mapping, else we create new terms
+                if (this.termMap.get(value) != undefined) {
+                    oneOfValues.push(namedNode(this.termMap.get(value)));
+                }
+                else {
+                    oneOfValues.push(namedNode(value));
+                }
             }
-            else {
-                oneOfValues.push(namedNode(value));
-            }
+            subPropQuad = rdfTools_1.RDFTools.node_node_list(this.prefix + ':' + name, 'owl:oneOf', this.writer.list(oneOfValues));
         }
-        var subPropQuad = rdfTools_1.RDFTools.node_node_list(this.prefix + ':' + name, 'owl:oneOf', this.writer.list(oneOfValues));
+        // trial to manage different anyOf, but they all result in arrays.
+        //if (typeof directEnum === 'object' ){
+        //}
         return subPropQuad;
     };
     JsonProcessor.getJsonObject = function (mainObject) {

@@ -8,6 +8,7 @@ var jsonProcessor_1 = require("./jsonProcessor");
 var schema_object = new Map();
 var config = require('./configs/config-gbfs.json');
 //const config = require('./configs/config-smartdatamodel.json');
+//const config = require('./configs/config-battery.json');
 for (var object in config.sources) {
     schema_object.set(object, config.sources[object]);
 }
