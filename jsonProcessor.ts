@@ -294,8 +294,7 @@ export class JsonProcessor {
             this.writer.addQuad(quad);
             return;
         }
-      
-        
+    
         // Recursive step
         if(propType == 'object' || propType =='array'){
             let newClassName;
@@ -305,16 +304,11 @@ export class JsonProcessor {
                 newClassName = RDFTools.capitalizeFirstLetter(prop); // Since it is an object/array, we give it a new class as a range
                 this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+prop, 'rdfs:range', this.prefix+':'+newClassName));
 
-
                 // the new class becomes the mainobject
                 this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+newClassName, 'rdf:type', 'rdfs:Class'));
-
                 if(propDescription != undefined ){
                         this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+prop, 'rdfs:label', propDescription.toString()));
                 }
-                
-                
-
                 // Shacl shape text
                 if (JsonProcessor.isRequired(prop)){
                     this.shaclFileText = this.shaclFileText+ShaclTools.getShaclRequiredProperty(prop)+'\n';
@@ -347,8 +341,6 @@ export class JsonProcessor {
                 } 
             }
             // An array can have sub items
-
-
             if(subItems != undefined){
                 for (let item in subItems){
                     this.jsonTraverseRecursive( depth, path, mainJsonObject, item);

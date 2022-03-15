@@ -6,3 +6,4 @@ shacl.ttl
 turtleTranslation.ttl
 .json-schema-spec.txt
 .paths.txt
+.schemaToTS.ts
