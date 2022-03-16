@@ -7,3 +7,4 @@ turtleTranslation.ttl
 .json-schema-spec.txt
 .paths.txt
 .schemaToTS.ts
+.schema-traverse.ts

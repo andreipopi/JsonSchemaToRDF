@@ -38,7 +38,6 @@ export class JsonProcessor {
         for (let object in this.config.jsonObjects){
             this.rdf_json_objects.set(object, this.config.jsonObjects[object]);
         }
-
         for (let object in this.config.terms){
             this.termMap.set(object, this.config.terms[object]);
         }
@@ -60,8 +59,6 @@ export class JsonProcessor {
         // GBFS
         this.path = this.jsonSchema.properties.data.properties[this.mainJsonObject];
         this.properties = this.path.items.properties; // Path to the properties of the main object
-    
-
         this.writer.addQuad(RDFTools.node_node_node('https://w3id.org/sdm/terms/'+ this.mainJsonObject, 'rdf:type', 'foaf:Document'));
         this.writer.addQuad(RDFTools.node_node_literal('https://w3id.org/sdm/terms/'+ this.mainJsonObject, 'rdfs:comment', this.jsonSchema.description));
         this.writer.addQuad(RDFTools.node_node_literal('https://w3id.org/sdm/terms/'+ this.mainJsonObject, 'vann:preferredNamespaceUri', 'https://w3id.org/sdm/terms/'+this.mainJsonObject+'#'));

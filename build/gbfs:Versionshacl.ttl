@@ -1,8 +1,0 @@
-<https://w3id.org/gbfs/terms/> a sh:NodeShape; 
-sh:targetClass <https://w3id.org/gbfs/terms/version>; 
-sh:property [ 
- sh:path <version>;  
- sh:minCount 1; 
- sh:maxCount 1; 
- sh:datatype xsd:string; 
- ];

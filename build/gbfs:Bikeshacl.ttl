@@ -1,2 +1,0 @@
-<https://w3id.org/gbfs/terms/> a sh:NodeShape; 
-sh:targetClass <https://w3id.org/gbfs/terms/bike>; 

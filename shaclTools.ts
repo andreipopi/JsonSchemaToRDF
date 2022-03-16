@@ -26,7 +26,7 @@ export class ShaclTools {
             }
         });
     }
-    // Methods
+    // Methodscompile(mySchema, 'MySchema')
     static getShaclTypedProperty (nome: string, type: string) {
         const prop = 'sh:property [ \n sh:path <'+nome+ '>; \n sh:maxCount 1; \n sh:datatype '+ type+'; \n ];';
         return prop;

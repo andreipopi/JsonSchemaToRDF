@@ -1,8 +1,9 @@
-{
+{ 
   "devDependencies": {
     "@types/node": "^16.11.12"
   },
   "dependencies": {
+    "@json-schema-tools/traverse": "^1.8.1",
     "json-schema-to-typescript": "^10.1.5",
     "json-schema-traverse": "^1.0.0",
     "n3": "^1.13.0",

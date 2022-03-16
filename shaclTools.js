@@ -16,7 +16,7 @@ var ShaclTools = /** @class */ (function () {
             }
         });
     };
-    // Methods
+    // Methodscompile(mySchema, 'MySchema')
     ShaclTools.getShaclTypedProperty = function (nome, type) {
         var prop = 'sh:property [ \n sh:path <' + nome + '>; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ];';
         return prop;
