@@ -7,13 +7,13 @@ var namedNode = DataFactory.namedNode, literal = DataFactory.literal, defaultGra
 var config = require('./configs/config-gbfs.json');
 var writer = new N3.Writer({ prefixes: config.prefixes });
 var prefix = "sdm";
-var rdf_json_objects = new Map();
 RDFTools.initialise("ElectricalMeasurement");
+//let schema = require('./GBFS/system_pricing_plan.json');
 //let schema = require('./GBFS/station_information.json');
-var schema = require('./GBFS/station_information.json');
 //let schema = require('./GBFS/system_hours.json');
 //let schema = require('./SmartDataModels/battery.json');
 //let schema = require('./SmartDataModels/dataModel.json');
+var schema = require('./GBFS/minecraft.json');
 function traverse(parentKey, schema, propertyList) {
     if (!schema) {
         return;
@@ -23,29 +23,34 @@ function traverse(parentKey, schema, propertyList) {
         // Base cases
         if (schema.type === 'string') { // Base Case
             console.log("string: ");
+            writer.addQuad(RDFTools.node_node_node(parentKey, 'rdfs:range', 'xsd:string'));
             return parentKey;
         }
         if (schema.type === 'number') { // Base Case
             console.log("number: ");
+            writer.addQuad(RDFTools.node_node_node(parentKey, 'rdfs:range', 'xsd:integer'));
             return parentKey;
         }
         if (schema.type === 'integer') { // Base Case
             console.log("integer: ");
+            writer.addQuad(RDFTools.node_node_node(parentKey, 'rdfs:range', 'xsd:integer'));
             return parentKey;
         }
         if (schema.type === 'boolean') {
             console.log("boolean: ");
-            // Base Case
+            writer.addQuad(RDFTools.node_node_node(parentKey, 'rdfs:range', 'xsd:boolean'));
             return parentKey;
         }
         if (schema["enum"] != undefined) {
             console.log("enum: ");
+            writer.addQuad(getOneOfQuad(schema.items["enum"], parentKey));
             // key oneOf <-,-,-,-,->
             return;
         }
         if (schema.type === 'array') {
             console.log("array: ");
             console.log("array schema", schema);
+            writer.addQuad(RDFTools.node_node_node(parentKey, 'rdf:type', 'rdfs:Class'));
             if (schema.items != undefined) {
                 //
                 if (schema.items.type === 'object') {

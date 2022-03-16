@@ -11,24 +11,16 @@ const { namedNode, literal, defaultGraph, quad } = DataFactory;
 
 
 let config = require('./configs/config-gbfs.json');
-
 let writer = new N3.Writer({prefixes:config.prefixes});
-
 let prefix ="sdm";
-
-let rdf_json_objects = new Map<string, string>();
-
 RDFTools.initialise("ElectricalMeasurement");
 
-
+//let schema = require('./GBFS/system_pricing_plan.json');
 //let schema = require('./GBFS/station_information.json');
-let schema = require('./GBFS/station_information.json');
-
 //let schema = require('./GBFS/system_hours.json');
-
 //let schema = require('./SmartDataModels/battery.json');
-
 //let schema = require('./SmartDataModels/dataModel.json');
+let schema = require('./GBFS/minecraft.json');
 
 
 function traverse (parentKey, schema, propertyList ){
@@ -43,23 +35,28 @@ function traverse (parentKey, schema, propertyList ){
 
         if (schema.type === 'string') {// Base Case
             console.log("string: ")
+            writer.addQuad(RDFTools.node_node_node(parentKey, 'rdfs:range', 'xsd:string'));
             return parentKey;
         }
         if (schema.type === 'number') { // Base Case
             console.log("number: ")
+            writer.addQuad(RDFTools.node_node_node(parentKey, 'rdfs:range', 'xsd:integer'));
             return parentKey;
         }
         if (schema.type === 'integer') {// Base Case
             console.log("integer: ")
+            writer.addQuad(RDFTools.node_node_node(parentKey, 'rdfs:range', 'xsd:integer'));
             return parentKey;
         }
         if (schema.type === 'boolean') {
             console.log("boolean: ")
-            // Base Case
+            writer.addQuad(RDFTools.node_node_node(parentKey, 'rdfs:range', 'xsd:boolean'));
             return parentKey;
         }
         if (schema.enum != undefined){
             console.log("enum: ");
+            writer.addQuad(getOneOfQuad(schema.items.enum, parentKey));
+
             // key oneOf <-,-,-,-,->
             return;
         }
@@ -67,6 +64,8 @@ function traverse (parentKey, schema, propertyList ){
         if (schema.type === 'array'){
             console.log("array: ");
             console.log("array schema", schema);
+
+            writer.addQuad(RDFTools.node_node_node(parentKey, 'rdf:type', 'rdfs:Class' ));
 
             if (schema.items != undefined){
                 //
@@ -77,9 +76,6 @@ function traverse (parentKey, schema, propertyList ){
                         traverse(item, schema.items[item], [])
                     //console.log("item", item);
                     }
-
-                    
-
                 }
                 if(schema.items.enum != undefined){// If there is an enum
                     writer.addQuad(getOneOfQuad(schema.items.enum, parentKey));

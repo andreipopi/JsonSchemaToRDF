@@ -27,18 +27,6 @@
     "gbfs:Pricing_plan_ids": "pricing_plan_ids"
   },
 
-  "sources": {
-    "./GBFS/station_information.json": "gbfs:Station",
-    "./GBFS/free_bike_status.json": "gbfs:Bike",
-    "./GBFS/system_alerts.json": "gbfs:Alert",
-    "./GBFS/system_regions.json": "gbfs:Region",
-    "./GBFS/vehicle_types.json": "gbfs:VehicleType",
-    "./GBFS/system_pricing_plan.json": "gbfs:PricingPlan",
-    "./GBFS/gbfs_versions.json": "gbfs:Version",
-    "./GBFS/system_calendar.json": "gbfs:Calendar",
-    "./GBFS/system_hours.json": "gbfs:RentalHour"
-  },
-
   "shaclTargets": {
     "gbfs:Station": "<https://w3id.org/gbfs/terms/station>",
     "gbfs:Bike": "<https://w3id.org/gbfs/terms/bike>",
@@ -50,6 +38,18 @@
     "gbfs:Calendar": "<https://w3id.org/gbfs/terms/calendar>",
     "gbfs:RentalHour": "<https://w3id.org/gbfs/terms/rentalHour>",
     "gbfs:Feed": "<https://w3id.org/gbfs/terms/feed>"
+  },
+
+  "sources": {
+    "./GBFS/station_information.json": "gbfs:Station",
+    "./GBFS/free_bike_status.json": "gbfs:Bike",
+    "./GBFS/system_alerts.json": "gbfs:Alert",
+    "./GBFS/system_regions.json": "gbfs:Region",
+    "./GBFS/vehicle_types.json": "gbfs:VehicleType",
+    "./GBFS/system_pricing_plan.json": "gbfs:PricingPlan",
+    "./GBFS/gbfs_versions.json": "gbfs:Version",
+    "./GBFS/system_calendar.json": "gbfs:Calendar",
+    "./GBFS/system_hours.json": "gbfs:RentalHour"
   },
  
   "shaclRoot": "<https://w3id.org/gbfs/terms/>",
