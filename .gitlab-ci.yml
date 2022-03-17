@@ -9,7 +9,7 @@ job1:
     - npm install --include=dev
     - npm install -g typescript
     - npm run build
-    - node main.js
+    - node JsonSchemaTORDF.js
   artifacts:
     paths:
       - build
