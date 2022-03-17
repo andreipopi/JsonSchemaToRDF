@@ -9,7 +9,7 @@ It transforms GBFS Json schemas into corresponding RDF vocabularies and Shacl sh
  * Fork on your machine. 
  * Install dependencies using `npm install`
  * Build the typescript using `npm run build`
- * Run by `node JsonSchemaTORDF.js`
+ * Run by `node JsonSchemaToRDF.js`
 
 
 <!--
