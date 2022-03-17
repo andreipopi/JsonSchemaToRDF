@@ -15,20 +15,33 @@
 @prefix vso: <http://purl.org/vso/ns#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
+<last_updated> rdfs:range xsd:integer.
+<ttl> rdfs:range xsd:integer.
+<version> rdfs:range xsd:string.
+<Stations> rdf:type rdfs:Class.
+<station_id> rdfs:range xsd:string.
 <name> rdfs:range xsd:string.
-<ultrawarm> rdfs:range xsd:boolean.
-<natural> rdfs:range xsd:boolean.
-<coordinate_scale> rdfs:range xsd:integer.
-<has_skylight> rdfs:range xsd:boolean.
-<has_ceiling> rdfs:range xsd:boolean.
-<ambient_light> rdfs:range xsd:integer.
-<piglin_safe> rdfs:range xsd:boolean.
-<bed_works> rdfs:range xsd:boolean.
-<respawn_anchor_works> rdfs:range xsd:boolean.
-<has_raids> rdfs:range xsd:boolean.
-<logical_height> rdfs:range xsd:integer.
-<min_y> rdfs:range xsd:integer.
-<height> rdfs:range xsd:integer.
-<infiniburn> rdfs:range xsd:string.
-<effects> rdfs:range xsd:string.
-<sdm:schema> rdfs:hasProperty (<name> <ultrawarm> <natural> <coordinate_scale> <has_skylight> <has_ceiling> <ambient_light> <fixed_time> <piglin_safe> <bed_works> <respawn_anchor_works> <has_raids> <logical_height> <min_y> <height> <infiniburn> <effects>).
+<short_name> rdfs:range xsd:string.
+<lat> rdfs:range xsd:integer.
+<lon> rdfs:range xsd:integer.
+<address> rdfs:range xsd:string.
+<cross_street> rdfs:range xsd:string.
+<region_id> rdfs:range xsd:string.
+<post_code> rdfs:range xsd:string.
+<Rental_methods> rdf:type rdfs:Class.
+<sdm:rental_methods> owl:oneOf (<key> <creditcard> <paypass> <applepay> <androidpay> <transitcard> <accountnumber> <phone>).
+<is_virtual_station> rdfs:range xsd:boolean.
+<type> rdfs:range xsd:string.
+<sdm:type> owl:oneOf (<MultiPolygon>).
+<Coordinates> rdf:type rdfs:Class.
+<sdm:Station_area> rdfs:hasProperty (<type> <coordinates>).
+<capacity> rdfs:range xsd:integer.
+<is_valet_station> rdfs:range xsd:boolean.
+<is_charging_station> rdfs:range xsd:boolean.
+<android> rdfs:range xsd:string.
+<ios> rdfs:range xsd:string.
+<web> rdfs:range xsd:string.
+<sdm:Rental_uris> rdfs:hasProperty (<android> <ios> <web>).
+<sdm:Stations> rdfs:hasProperty (<station_id> <name> <short_name> <lat> <lon> <address> <cross_street> <region_id> <post_code> <rental_methods> <is_virtual_station> <station_area> <capacity> <vehicle_capacity> <is_valet_station> <is_charging_station> <rental_uris> <vehicle_type_capacity>).
+<sdm:Data> rdfs:hasProperty (<stations>).
+<sdm:Schema> rdfs:hasProperty (<last_updated> <ttl> <version> <data>).
