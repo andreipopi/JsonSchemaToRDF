@@ -20,7 +20,7 @@ var Traverse = /** @class */ (function () {
     Traverse.initialise = function (writer) {
         this.writer = writer;
     };
-    Traverse.traverse = function (parentKey, schema, propertyList) {
+    Traverse.traverse = function (parentKey, schema) {
         if (!schema) {
             return;
         }
@@ -63,11 +63,11 @@ var Traverse = /** @class */ (function () {
                 if (schema.items != undefined) {
                     //
                     if (schema.items.type === 'object') {
-                        this.traverse(parentKey, schema.items, []);
+                        this.traverse(parentKey, schema.items);
                         //console.log("schema items", schema.items);
                         for (var _i = 0, _a = Object.keys(schema.items); _i < _a.length; _i++) {
                             var item = _a[_i];
-                            this.traverse(item, schema.items[item], []);
+                            this.traverse(item, schema.items[item]);
                             //console.log("item", item);
                         }
                     }
@@ -82,22 +82,22 @@ var Traverse = /** @class */ (function () {
                 return;
             }
             if (schema.type === 'object') {
-                var propertyList_1 = [];
+                var propertyList = [];
                 console.log("object: ");
                 console.log("object schema", schema);
-                propertyList_1 = [];
+                propertyList = [];
                 if (schema.properties != undefined) {
                     // Recursive Step
                     for (var _b = 0, _c = Object.keys(schema.properties); _b < _c.length; _b++) {
                         var item = _c[_b];
-                        propertyList_1.push(namedNode(item.toString()));
-                        this.traverse(item, schema.properties[item], []);
+                        propertyList.push(namedNode(item.toString()));
+                        this.traverse(item, schema.properties[item]);
                     }
-                    console.log("propertyLIst", propertyList_1);
+                    console.log("propertyLIst", propertyList);
                     // key hasProperties propertyList
                     this.writer.addQuad(RDFTools.node_node_node(prefix + ':' + parentKey, 'rdfs:range', prefix + ":" + RDFTools.capitalizeFirstLetter(parentKey)));
-                    this.writer.addQuad(RDFTools.node_node_list(prefix + ':' + RDFTools.capitalizeFirstLetter(parentKey), 'rdfs:hasProperty', this.writer.list(propertyList_1)));
-                    propertyList_1 = [];
+                    this.writer.addQuad(RDFTools.node_node_list(prefix + ':' + RDFTools.capitalizeFirstLetter(parentKey), 'rdfs:hasProperty', this.writer.list(propertyList)));
+                    propertyList = [];
                 }
                 // if(schema.patternProperties != undefined // No support yet){
                 //}
@@ -117,7 +117,7 @@ var Traverse = /** @class */ (function () {
                 // pass its components recursively to be further parsed
                 for (var _d = 0, _e = Object.keys(schema.allOf); _d < _e.length; _d++) {
                     var item = _e[_d];
-                    this.traverse(item, schema.allOf[item], []);
+                    this.traverse(item, schema.allOf[item]);
                 }
                 return;
             }
@@ -138,7 +138,7 @@ var Traverse = /** @class */ (function () {
             if (schema.properties != undefined) {
                 for (var _f = 0, _g = Object.keys(schema.properties); _f < _g.length; _f++) {
                     var item = _g[_f];
-                    this.traverse(item, schema.properties[item], []);
+                    this.traverse(item, schema.properties[item]);
                 }
             }
         }

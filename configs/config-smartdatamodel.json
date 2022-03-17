@@ -1,33 +1,10 @@
 {
-  "prefix": "sdm",
+    "prefix": "sdm",
 
-  "jsonObjects": {
-      "sdm:ElectricalMeasurment":  "allOf",
-      "sdm:RefDevice": "refDevice",
-      "sdm:RefTargetDevice": "refTargetDevice",
-      "sdm:ActiveEnergyImport": "activeEnergyImport",
-      "sdm:ReactiveEnergyImport": "reactiveEnergyImport",
-      "sdm:ApparentEnergyImport": "apparentEnergyImport",
-      "sdm:ActiveEnergyExport": "activeEnergyExport",
-      "sdm:ReactiveEnergyExport": "reactiveEnergyExport",
-      "sdm:ApparentEnergyExport": "apparentEnergyExport",
-      "sdm:ActivePower":  "activePower",
-      "sdm:ReactivePower": "reactivePower",
-      "sdm:ApparentPower": "apparentPower",
-      "sdm:PowerFactor": "powerFactor",
-      "sdm:DisplacementPowerFactor": "displacementPowerFactor",
-      "sdm:Current": "current",
-      "sdm:PhaseVoltage": "phaseVoltage",
-      "sdm:PhaseToPhaseVoltage": "phaseToPhaseVoltage",
-      "sdm:ThdVoltage":  "thdVoltage",
-      "sdm:ThdCurrent": "thdCurrent",
-      "sdm:L1": "L1",
-      "sdm:L2": "L2",
-      "sdm:L3": "L3"
-    },
-  
     "sources": {
-      "./SmartDataModels/dataModel.json": "sdm:ElectricalMeasurment"
+      "./SmartDataModels/dataModel.json": "sdm:ElectricalMeasurment",
+      "./SmartDataModels/battery.json": "sdm:Battery"
+
     },
 
     "shaclTargets": {

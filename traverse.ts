@@ -28,7 +28,7 @@ static initialise (writer){
     this.writer = writer;
 }
 
-static traverse (parentKey, schema, propertyList){
+static traverse (parentKey, schema){
     if (!schema) { 
         return;
     }
@@ -75,10 +75,10 @@ static traverse (parentKey, schema, propertyList){
             if (schema.items != undefined){
                 //
                 if (schema.items.type === 'object'){
-                    this.traverse(parentKey, schema.items, []);
+                    this.traverse(parentKey, schema.items);
                     //console.log("schema items", schema.items);
                     for(let item of Object.keys(schema.items)){
-                        this.traverse(item, schema.items[item], [])
+                        this.traverse(item, schema.items[item])
                     //console.log("item", item);
                     }
                 }
@@ -102,7 +102,7 @@ static traverse (parentKey, schema, propertyList){
                 // Recursive Step
                 for (let item of Object.keys(schema.properties)){
                     propertyList.push(namedNode(item.toString()));
-                    this.traverse(item,schema.properties[item], [])
+                    this.traverse(item,schema.properties[item])
                 }
                 console.log("propertyLIst", propertyList);
                 // key hasProperties propertyList
@@ -129,7 +129,7 @@ static traverse (parentKey, schema, propertyList){
             // Data must be valid against all its components;
             // pass its components recursively to be further parsed
             for (let item of Object.keys(schema.allOf)){
-                this.traverse(item,schema.allOf[item], [])
+                this.traverse(item,schema.allOf[item])
             }
             return;
         }
@@ -150,7 +150,7 @@ static traverse (parentKey, schema, propertyList){
         */
         if(schema.properties != undefined){
             for (let item of Object.keys(schema.properties)){
-                this.traverse(item,schema.properties[item], [])
+                this.traverse(item,schema.properties[item])
             }
         }
     }
