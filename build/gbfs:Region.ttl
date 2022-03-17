@@ -21,5 +21,15 @@ gbfs:ttl rdf:type xsd:integer;
     rdfs:label "Number of seconds before the data in the feed will be updated again (0 if the data should always be refreshed)."@en.
 gbfs:version rdf:type xsd:string;
     rdfs:label "GBFS version number to which the feed conforms, according to the versioning framework (added in v1.1)."@en.
+gbfs:regions rdfs:range gbfs:Regions.
+gbfs:Regions rdf:type rdfs:Class.
+gbfs:region_id rdf:type xsd:string;
+    rdfs:label "identifier of the region."@en.
+gbfs:name rdf:type xsd:string;
+    rdfs:label "Public name for this region."@en.
+gbfs:regions rdfs:range gbfs:Regions.
+gbfs:Regions rdfs:hasProperty (<region_id> <name>).
+gbfs:data rdfs:range gbfs:Data.
+gbfs:Data rdfs:hasProperty (<regions>).
 gbfs:schema rdfs:range gbfs:Schema.
 gbfs:Schema rdfs:hasProperty (<last_updated> <ttl> <version> <data>).

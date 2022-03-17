@@ -19,6 +19,15 @@ var RDFTools = /** @class */ (function () {
         this.fs = require('fs');
         this.fileName = filename;
     };
+    RDFTools.getOneOfQuad = function (prefix, name, oneOf, writer) {
+        var oneOfValues = [];
+        for (var _i = 0, oneOf_1 = oneOf; _i < oneOf_1.length; _i++) {
+            var value = oneOf_1[_i];
+            oneOfValues.push(namedNode(value.toString()));
+        }
+        var oneOfQuad = RDFTools.node_node_list(prefix + ':' + name, 'owl:oneOf', writer.list(oneOfValues));
+        return oneOfQuad;
+    };
     // Write with the writer that is passed; fileName and fs have been set previously
     RDFTools.writeTurtle = function (writer) {
         var _this = this;

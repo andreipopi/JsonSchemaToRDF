@@ -28,6 +28,16 @@ static initialise (filename: string){
     this.fileName = filename;
 }
 
+
+static getOneOfQuad(prefix, name, oneOf, writer){
+    let oneOfValues:NamedNode[] = [];
+    for (const value of oneOf){
+        oneOfValues.push(namedNode(value.toString()));
+    }
+    let oneOfQuad = RDFTools.node_node_list(prefix+':'+name, 'owl:oneOf', writer.list(oneOfValues));
+    return oneOfQuad;
+}
+
 // Write with the writer that is passed; fileName and fs have been set previously
 static writeTurtle (writer){
     // Write the content of the writer in the .ttl

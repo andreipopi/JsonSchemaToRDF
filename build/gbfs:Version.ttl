@@ -20,6 +20,17 @@ gbfs:last_updated rdf:type xsd:integer;
 gbfs:ttl rdf:type xsd:integer;
     rdfs:label "Number of seconds before the data in the feed will be updated again (0 if the data should always be refreshed)."@en.
 gbfs:version rdf:type xsd:string;
-    rdfs:label "GBFS version number to which the feed conforms, according to the versioning framework (added in v1.1)."@en.
+    rdfs:label "GBFS version number to which the feed conforms, according to the versioning framework."@en.
+gbfs:versions rdfs:range gbfs:Versions.
+gbfs:Versions rdf:type rdfs:Class.
+gbfs:version rdf:type xsd:string;
+    rdfs:label "The semantic version of the feed in the form X.Y"@en.
+gbfs:Version owl:oneOf (<1.1> <2.0> <2.1> <2.2> <2.3-RC>).
+gbfs:url rdf:type xsd:string;
+    rdfs:label "URL of the corresponding gbfs.json endpoint"@en.
+gbfs:versions rdfs:range gbfs:Versions.
+gbfs:Versions rdfs:hasProperty (<version> <url>).
+gbfs:data rdfs:range gbfs:Data.
+gbfs:Data rdfs:hasProperty (<versions>).
 gbfs:schema rdfs:range gbfs:Schema.
 gbfs:Schema rdfs:hasProperty (<last_updated> <ttl> <version> <data>).

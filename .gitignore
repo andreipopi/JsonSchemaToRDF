@@ -8,3 +8,4 @@ turtleTranslation.ttl
 .paths.txt
 .schemaToTS.ts
 schema-traverse.ts
+constraints.txt

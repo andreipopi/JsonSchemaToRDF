@@ -21,5 +21,21 @@ gbfs:ttl rdf:type xsd:integer;
     rdfs:label "Number of seconds before the data in the feed will be updated again (0 if the data should always be refreshed)."@en.
 gbfs:version rdf:type xsd:string;
     rdfs:label "GBFS version number to which the feed conforms, according to the versioning framework (added in v1.1)."@en.
+gbfs:rental_hours rdfs:range gbfs:Rental_hours.
+gbfs:Rental_hours rdf:type rdfs:Class.
+gbfs:user_types rdfs:range gbfs:User_types.
+gbfs:User_types rdf:type rdfs:Class;
+    owl:oneOf (<member> <nonmember>).
+gbfs:days rdfs:range gbfs:Days.
+gbfs:Days rdf:type rdfs:Class;
+    owl:oneOf (<sun> <mon> <tue> <wed> <thu> <fri> <sat>).
+gbfs:start_time rdf:type xsd:string;
+    rdfs:label "Start time for the hours of operation of the system."@en.
+gbfs:end_time rdf:type xsd:string;
+    rdfs:label "End time for the hours of operation of the system."@en.
+gbfs:rental_hours rdfs:range gbfs:Rental_hours.
+gbfs:Rental_hours rdfs:hasProperty (<user_types> <days> <start_time> <end_time>).
+gbfs:data rdfs:range gbfs:Data.
+gbfs:Data rdfs:hasProperty (<rental_hours>).
 gbfs:schema rdfs:range gbfs:Schema.
 gbfs:Schema rdfs:hasProperty (<last_updated> <ttl> <version> <data>).

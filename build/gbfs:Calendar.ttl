@@ -21,5 +21,23 @@ gbfs:ttl rdf:type xsd:integer;
     rdfs:label "Number of seconds before the data in the feed will be updated again (0 if the data should always be refreshed)."@en.
 gbfs:version rdf:type xsd:string;
     rdfs:label "GBFS version number to which the feed conforms, according to the versioning framework (added in v1.1)."@en.
+gbfs:calendars rdfs:range gbfs:Calendars.
+gbfs:Calendars rdf:type rdfs:Class.
+gbfs:start_month rdf:type xsd:integer;
+    rdfs:label "Starting month for the system operations."@en.
+gbfs:start_day rdf:type xsd:integer;
+    rdfs:label "Starting day for the system operations."@en.
+gbfs:start_year rdf:type xsd:integer;
+    rdfs:label "Starting year for the system operations."@en.
+gbfs:end_month rdf:type xsd:integer;
+    rdfs:label "End month for the system operations."@en.
+gbfs:end_day rdf:type xsd:integer;
+    rdfs:label "End day for the system operations."@en.
+gbfs:end_year rdf:type xsd:integer;
+    rdfs:label "End year for the system operations."@en.
+gbfs:calendars rdfs:range gbfs:Calendars.
+gbfs:Calendars rdfs:hasProperty (<start_month> <start_day> <start_year> <end_month> <end_day> <end_year>).
+gbfs:data rdfs:range gbfs:Data.
+gbfs:Data rdfs:hasProperty (<calendars>).
 gbfs:schema rdfs:range gbfs:Schema.
 gbfs:Schema rdfs:hasProperty (<last_updated> <ttl> <version> <data>).
