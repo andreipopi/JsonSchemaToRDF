@@ -15,8 +15,6 @@
 @prefix vso: <http://purl.org/vso/ns#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
-gbfs:last_updated rdf:type xsd:integer;
-    rdfs:label "Last time the data in the feed was updated in POSIX time."@en.
 gbfs:ttl rdf:type xsd:integer;
     rdfs:label "Number of seconds before the data in the feed will be updated again (0 if the data should always be refreshed)."@en.
 gbfs:alerts rdfs:range gbfs:Alerts.
@@ -44,8 +42,6 @@ gbfs:summary rdf:type xsd:string;
     rdfs:label "A short summary of this …played to the customer."@en.
 gbfs:description rdf:type xsd:string;
     rdfs:label "Detailed description of the alert."@en.
-gbfs:last_updated rdf:type xsd:integer;
-    rdfs:label "Indicates the last time the info for the alert was updated."@en.
 gbfs:alerts rdfs:range gbfs:Alerts.
 gbfs:Alerts rdfs:hasProperty (<alert_id> <type> <times> <station_ids> <region_ids> <url> <summary> <description> <last_updated>).
 gbfs:data rdfs:range gbfs:Data.

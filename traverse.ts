@@ -35,18 +35,24 @@ static traverse (parentKey, schema){
             return parentKey;
         }
         if (schema.type === 'number') { // Base Case
-            this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdf:type', 'xsd:integer'));
-            this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+parentKey, 'rdfs:label', schema.description));
+            if (!RDFTools.inMap(parentKey)){
+                this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdf:type', 'xsd:integer'));
+                this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+parentKey, 'rdfs:label', schema.description));
+            }
             return parentKey;
         }
         if (schema.type === 'integer') {// Base Case
-            this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdf:type', 'xsd:integer'));
-            this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+parentKey, 'rdfs:label', schema.description));
+            if (!RDFTools.inMap(parentKey)){
+                this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdf:type', 'xsd:integer'));
+                this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+parentKey, 'rdfs:label', schema.description));
+            }
             return parentKey;
         }
         if (schema.type === 'boolean') {// Base Case
-            this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdf:type', 'xsd:boolean'));
-            this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+parentKey, 'rdfs:label', schema.description));
+            if (!RDFTools.inMap(parentKey)){
+                this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdf:type', 'xsd:boolean'));
+                this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+parentKey, 'rdfs:label', schema.description));
+            }
             return parentKey;
         }
         if (schema.enum != undefined){ // Base Case: schema.enum

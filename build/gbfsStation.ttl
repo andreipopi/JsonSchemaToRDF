@@ -15,8 +15,6 @@
 @prefix vso: <http://purl.org/vso/ns#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
-gbfs:last_updated rdf:type xsd:integer;
-    rdfs:label "Last time the data in the feed was updated in POSIX time."@en.
 gbfs:ttl rdf:type xsd:integer;
     rdfs:label "Number of seconds before the data in the feed will be updated again (0 if the data should always be refreshed)."@en.
 gbfs:version rdf:type xsd:string;
@@ -29,10 +27,6 @@ gbfs:name rdf:type xsd:string;
     rdfs:label "Public name of the station."@en.
 gbfs:short_name rdf:type xsd:string;
     rdfs:label "Short name or other type of identifier."@en.
-gbfs:lat rdf:type xsd:integer;
-    rdfs:label "The latitude of the station."@en.
-gbfs:lon rdf:type xsd:integer;
-    rdfs:label "The longitude fo the station."@en.
 gbfs:address rdf:type xsd:string;
     rdfs:label "Address where station is located."@en.
 gbfs:cross_street rdf:type xsd:string;
@@ -53,8 +47,6 @@ gbfs:coordinates rdfs:range gbfs:Coordinates.
 gbfs:Coordinates rdf:type rdfs:Class.
 gbfs:station_area rdfs:range gbfs:Station_area.
 gbfs:Station_area rdfs:hasProperty (<type> <coordinates>).
-gbfs:capacity rdf:type xsd:integer;
-    rdfs:label "Number of total docking points installed at this station, both available and unavailable."@en.
 gbfs:is_valet_station rdf:type xsd:boolean;
     rdfs:label "Are valet services provided at this station? (added in v2.1-RC)"@en.
 gbfs:is_charging_station rdf:type xsd:boolean;

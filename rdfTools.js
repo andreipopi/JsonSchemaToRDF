@@ -34,26 +34,21 @@ var RDFTools = /** @class */ (function () {
         var oneOfValues = [];
         for (var _i = 0, oneOf_1 = oneOf; _i < oneOf_1.length; _i++) {
             var value = oneOf_1[_i];
-            console.log(RDFTools.inMap(value));
             if (RDFTools.inMap(value) != false) {
-                console.log(RDFTools.inMap(value));
                 oneOfValues.push(namedNode(RDFTools.inMap(value)));
             }
             else {
-                console.log("false");
                 oneOfValues.push(namedNode(value.toString()));
             }
-            //oneOfValues.push(namedNode(value.toString()));
         }
         var oneOfQuad = RDFTools.node_node_list(prefix + ':' + name, 'owl:oneOf', writer.list(oneOfValues));
         return oneOfQuad;
     };
     // Write with the writer that is passed; fileName and fs have been set previously
     RDFTools.writeTurtle = function (writer) {
-        // Write the content of the writer in the .ttl
         var _this = this;
+        // Write the content of the writer in the .ttl
         var filePath = ("build/" + this.fileName + ".ttl").replace(/:/g, '');
-        console.log(filePath);
         writer.end(function (error, result) { return _this.fs.writeFile(filePath, result, function (err) {
             // throws an error, you could also catch it here
             if (err)

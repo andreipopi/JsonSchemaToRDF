@@ -15,18 +15,12 @@
 @prefix vso: <http://purl.org/vso/ns#>.
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
 
-gbfs:last_updated rdf:type xsd:integer;
-    rdfs:label "Last time the data in the feed was updated in POSIX time."@en.
 gbfs:ttl rdf:type xsd:integer;
     rdfs:label "Number of seconds before the data in the feed will be updated again (0 if the data should always be refreshed)."@en.
 gbfs:bikes rdfs:range gbfs:Bikes.
 gbfs:Bikes rdf:type rdfs:Class.
 gbfs:bike_id rdf:type xsd:string;
     rdfs:label "Rotating (as of v2.0) identifier of a vehicle."@en.
-gbfs:lat rdf:type xsd:integer;
-    rdfs:label "The latitude of the vehicle."@en.
-gbfs:lon rdf:type xsd:integer;
-    rdfs:label "The longitude of the vehicle."@en.
 gbfs:bikes rdfs:range gbfs:Bikes.
 gbfs:Bikes rdfs:hasProperty (<bike_id> <lat> <lon> <is_reserved> <is_disabled>).
 gbfs:data rdfs:range gbfs:Data.
