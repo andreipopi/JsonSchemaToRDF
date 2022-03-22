@@ -56,9 +56,10 @@ static traverse (parentKey, schema){
         }
 
         if (schema.type === 'array'){
-    
-            this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdfs:range', this.prefix+":"+RDFTools.capitalizeFirstLetter(parentKey) ));
-            this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+RDFTools.capitalizeFirstLetter(parentKey), 'rdf:type', 'rdfs:Class' ));
+
+            let newClass = this.prefix+":"+RDFTools.capitalizeFirstLetter(parentKey) ;
+            this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdfs:range', newClass));
+            this.writer.addQuad(RDFTools.node_node_node(newClass, 'rdf:type', 'rdfs:Class' ));
 
             if (schema.items != undefined){  // usually an array has items
                 if (schema.items.type === 'object'){    //  but it can happen that it has a nested object
@@ -82,25 +83,20 @@ static traverse (parentKey, schema){
 
         if (schema.type === 'object'){
             let propertyList:NamedNode[] = [];
-            console.log("object: ");
-            console.log("object schema", schema);
-            propertyList = []
+            propertyList = [] 
             if(schema.properties != undefined){
-                // Recursive Step
                 for (let item of Object.keys(schema.properties)){
                     propertyList.push(namedNode(item.toString()));
-                    this.traverse(item,schema.properties[item])
+                    this.traverse(item,schema.properties[item]) // Recursive Step
                 }
-                console.log("propertyLIst", propertyList);
-                // key hasProperties propertyList
-                this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdfs:range', this.prefix+":"+RDFTools.capitalizeFirstLetter(parentKey) ));
-
-                this.writer.addQuad(RDFTools.node_node_list(this.prefix+':'+RDFTools.capitalizeFirstLetter(parentKey), 'rdfs:hasProperty', this.writer.list(propertyList)));
+                let newClass = this.prefix+":"+RDFTools.capitalizeFirstLetter(parentKey);
+                this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdfs:range', newClass ));
+                this.writer.addQuad(RDFTools.node_node_list(newClass, 'rdfs:hasProperty', this.writer.list(propertyList)));
                 propertyList = [];
             }
             // if(schema.patternProperties != undefined // No support yet){
             //}
-            // No return here otherwise the program stops
+            // Don't return here: there might be further things defined in an objcet!?
         }
         if(schema.oneOf != undefined){
             console.log("oneOf");

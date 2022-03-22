@@ -48,13 +48,11 @@ var Traverse = /** @class */ (function () {
                 return parentKey;
             }
             if (schema.type === 'array') {
-                console.log("array: ");
-                console.log("array schema", schema);
-                this.writer.addQuad(RDFTools.node_node_node(this.prefix + ':' + parentKey, 'rdfs:range', this.prefix + ":" + RDFTools.capitalizeFirstLetter(parentKey)));
-                this.writer.addQuad(RDFTools.node_node_node(this.prefix + ':' + RDFTools.capitalizeFirstLetter(parentKey), 'rdf:type', 'rdfs:Class'));
-                if (schema.items != undefined) {
-                    //
-                    if (schema.items.type === 'object') {
+                var newClass = this.prefix + ":" + RDFTools.capitalizeFirstLetter(parentKey);
+                this.writer.addQuad(RDFTools.node_node_node(this.prefix + ':' + parentKey, 'rdfs:range', newClass));
+                this.writer.addQuad(RDFTools.node_node_node(newClass, 'rdf:type', 'rdfs:Class'));
+                if (schema.items != undefined) { // usually an array has items
+                    if (schema.items.type === 'object') { //  but it can happen that it has a nested object
                         this.traverse(parentKey, schema.items);
                         //console.log("schema items", schema.items);
                         for (var _i = 0, _a = Object.keys(schema.items); _i < _a.length; _i++) {
@@ -75,25 +73,21 @@ var Traverse = /** @class */ (function () {
             }
             if (schema.type === 'object') {
                 var propertyList = [];
-                console.log("object: ");
-                console.log("object schema", schema);
                 propertyList = [];
                 if (schema.properties != undefined) {
-                    // Recursive Step
                     for (var _b = 0, _c = Object.keys(schema.properties); _b < _c.length; _b++) {
                         var item = _c[_b];
                         propertyList.push(namedNode(item.toString()));
-                        this.traverse(item, schema.properties[item]);
+                        this.traverse(item, schema.properties[item]); // Recursive Step
                     }
-                    console.log("propertyLIst", propertyList);
-                    // key hasProperties propertyList
-                    this.writer.addQuad(RDFTools.node_node_node(this.prefix + ':' + parentKey, 'rdfs:range', this.prefix + ":" + RDFTools.capitalizeFirstLetter(parentKey)));
-                    this.writer.addQuad(RDFTools.node_node_list(this.prefix + ':' + RDFTools.capitalizeFirstLetter(parentKey), 'rdfs:hasProperty', this.writer.list(propertyList)));
+                    var newClass = this.prefix + ":" + RDFTools.capitalizeFirstLetter(parentKey);
+                    this.writer.addQuad(RDFTools.node_node_node(this.prefix + ':' + parentKey, 'rdfs:range', newClass));
+                    this.writer.addQuad(RDFTools.node_node_list(newClass, 'rdfs:hasProperty', this.writer.list(propertyList)));
                     propertyList = [];
                 }
                 // if(schema.patternProperties != undefined // No support yet){
                 //}
-                // No return here otherwise the program stops
+                // Don't return here: there might be further things defined in an objcet!?
             }
             if (schema.oneOf != undefined) {
                 console.log("oneOf");
