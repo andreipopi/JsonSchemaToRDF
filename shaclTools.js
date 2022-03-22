@@ -10,7 +10,7 @@ var ShaclTools = /** @class */ (function () {
     };
     ShaclTools.writeShacl = function (filename, shaclFileText) {
         // Write the Shacl shape on file
-        this.fs.writeFileSync("build/" + filename + "shacl.ttl", shaclFileText, function (err) {
+        this.fs.writeFileSync("build/".concat(filename, "shacl.ttl"), shaclFileText, function (err) {
             if (err) {
                 return console.log("error");
             }

@@ -32,7 +32,7 @@ var RDFTools = /** @class */ (function () {
     RDFTools.writeTurtle = function (writer) {
         var _this = this;
         // Write the content of the writer in the .ttl
-        writer.end(function (error, result) { return _this.fs.writeFile("build/" + _this.fileName + ".ttl", result, function (err) {
+        writer.end(function (error, result) { return _this.fs.writeFile("build/".concat(_this.fileName, ".ttl"), result, function (err) {
             // throws an error, you could also catch it here
             if (err)
                 throw err;
