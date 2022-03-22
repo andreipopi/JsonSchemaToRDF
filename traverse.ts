@@ -1,5 +1,4 @@
 import {ShaclTools} from './shaclTools';
-import {JsonProcessor} from './jsonProcessor';
 import { NamedNode } from "n3/lib/N3DataFactory";
 import { convertToObject } from 'typescript';
 
