@@ -41,12 +41,20 @@ static getOneOfQuad(prefix, name, oneOf, writer){
 // Write with the writer that is passed; fileName and fs have been set previously
 static writeTurtle (writer){
     // Write the content of the writer in the .ttl
-    writer.end((error:any, result:any) => this.fs.writeFile(`build/${this.fileName}.ttl`, result, (err:any) => {
+
+
+    let filePath = `build/${this.fileName}.ttl`.replace(/:/g,'');
+
+
+    console.log(filePath);
+    writer.end((error:any, result:any) => this.fs.writeFile(filePath, result, (err:any) => {
         // throws an error, you could also catch it here
         if (err) throw err;
         // success case, the file was saved
         console.log('Turtle saved!');}));
 }
+
+
 
 // Create quads of different shape
 static node_node_literal (subj: string, pred:string, obj:string) {

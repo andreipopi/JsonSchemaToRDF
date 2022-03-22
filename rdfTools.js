@@ -30,9 +30,11 @@ var RDFTools = /** @class */ (function () {
     };
     // Write with the writer that is passed; fileName and fs have been set previously
     RDFTools.writeTurtle = function (writer) {
-        var _this = this;
         // Write the content of the writer in the .ttl
-        writer.end(function (error, result) { return _this.fs.writeFile("build/".concat(_this.fileName, ".ttl"), result, function (err) {
+        var _this = this;
+        var filePath = "build/".concat(this.fileName, ".ttl").replace(/:/g, '');
+        console.log(filePath);
+        writer.end(function (error, result) { return _this.fs.writeFile(filePath, result, function (err) {
             // throws an error, you could also catch it here
             if (err)
                 throw err;
