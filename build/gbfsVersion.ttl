@@ -1,0 +1,36 @@
+@prefix gbfs: <https://w3id.org/gbfs/terms>.
+@prefix schema: <http://schema.org/#>.
+@prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>.
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix jsonsc: <https://www.w3.org/2019/wot/json-schema#>.
+@prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
+@prefix vso: <http://purl.org/vso/ns#>.
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
+
+gbfs:last_updated rdf:type xsd:integer;
+    rdfs:label "Last time the data in the feed was updated in POSIX time."@en.
+gbfs:ttl rdf:type xsd:integer;
+    rdfs:label "Number of seconds before the data in the feed will be updated again (0 if the data should always be refreshed)."@en.
+gbfs:version rdf:type xsd:string;
+    rdfs:label "GBFS version number to which the feed conforms, according to the versioning framework."@en.
+gbfs:versions rdfs:range gbfs:Versions.
+gbfs:Versions rdf:type rdfs:Class.
+gbfs:version rdf:type xsd:string;
+    rdfs:label "The semantic version of the feed in the form X.Y"@en.
+gbfs:Version owl:oneOf (<1.1> <2.0> <2.1> <2.2> <2.3-RC>).
+gbfs:url rdf:type xsd:string;
+    rdfs:label "URL of the corresponding gbfs.json endpoint"@en.
+gbfs:versions rdfs:range gbfs:Versions.
+gbfs:Versions rdfs:hasProperty (<version> <url>).
+gbfs:data rdfs:range gbfs:Data.
+gbfs:Data rdfs:hasProperty (<versions>).
+gbfs:schema rdfs:range gbfs:Schema.
+gbfs:Schema rdfs:hasProperty (<last_updated> <ttl> <version> <data>).

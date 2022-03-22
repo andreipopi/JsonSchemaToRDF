@@ -1,0 +1,75 @@
+@prefix gbfs: <https://w3id.org/gbfs/terms>.
+@prefix schema: <http://schema.org/#>.
+@prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>.
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix jsonsc: <https://www.w3.org/2019/wot/json-schema#>.
+@prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
+@prefix vso: <http://purl.org/vso/ns#>.
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
+
+gbfs:last_updated rdf:type xsd:integer;
+    rdfs:label "Last time the data in the feed was updated in POSIX time."@en.
+gbfs:ttl rdf:type xsd:integer;
+    rdfs:label "Number of seconds before the data in the feed will be updated again (0 if the data should always be refreshed)."@en.
+gbfs:version rdf:type xsd:string;
+    rdfs:label "GBFS version number to which the feed conforms, according to the versioning framework (added in v1.1)."@en.
+gbfs:stations rdfs:range gbfs:Stations.
+gbfs:Stations rdf:type rdfs:Class.
+gbfs:station_id rdf:type xsd:string;
+    rdfs:label "Identifier of a station."@en.
+gbfs:name rdf:type xsd:string;
+    rdfs:label "Public name of the station."@en.
+gbfs:short_name rdf:type xsd:string;
+    rdfs:label "Short name or other type of identifier."@en.
+gbfs:lat rdf:type xsd:integer;
+    rdfs:label "The latitude of the station."@en.
+gbfs:lon rdf:type xsd:integer;
+    rdfs:label "The longitude fo the station."@en.
+gbfs:address rdf:type xsd:string;
+    rdfs:label "Address where station is located."@en.
+gbfs:cross_street rdf:type xsd:string;
+    rdfs:label "Cross street or landmark where the station is located."@en.
+gbfs:region_id rdf:type xsd:string;
+    rdfs:label "Identifier of the region where the station is located."@en.
+gbfs:post_code rdf:type xsd:string;
+    rdfs:label "Postal code where station is located."@en.
+gbfs:rental_methods rdfs:range gbfs:Rental_methods.
+gbfs:Rental_methods rdf:type rdfs:Class;
+    owl:oneOf (<key> schema:CreditCard <paypass> <applepay> <androidpay> <transitcard> <accountnumber> foaf:phone).
+gbfs:is_virtual_station rdf:type xsd:boolean;
+    rdfs:label "Is this station a location with or without physical infrastructure? (added in v2.1-RC)"@en.
+gbfs:type rdf:type xsd:string;
+    rdfs:label "undefined"@en.
+gbfs:Type owl:oneOf (<MultiPolygon>).
+gbfs:coordinates rdfs:range gbfs:Coordinates.
+gbfs:Coordinates rdf:type rdfs:Class.
+gbfs:station_area rdfs:range gbfs:Station_area.
+gbfs:Station_area rdfs:hasProperty (<type> <coordinates>).
+gbfs:capacity rdf:type xsd:integer;
+    rdfs:label "Number of total docking points installed at this station, both available and unavailable."@en.
+gbfs:is_valet_station rdf:type xsd:boolean;
+    rdfs:label "Are valet services provided at this station? (added in v2.1-RC)"@en.
+gbfs:is_charging_station rdf:type xsd:boolean;
+    rdfs:label "Does the station support charging of electric vehicles? (added in v2.3-RC)"@en.
+gbfs:android rdf:type xsd:string;
+    rdfs:label "URI that can be passed to an Android app with an intent (added in v1.1)."@en.
+gbfs:ios rdf:type xsd:string;
+    rdfs:label "URI that can be used on iOS to launch the rental app for this station (added in v1.1)."@en.
+gbfs:web rdf:type xsd:string;
+    rdfs:label "URL that can be used by a web browser to show more information about renting a vehicle at this station (added in v1.1)."@en.
+gbfs:rental_uris rdfs:range gbfs:Rental_uris.
+gbfs:Rental_uris rdfs:hasProperty (<android> <ios> <web>).
+gbfs:stations rdfs:range gbfs:Stations.
+gbfs:Stations rdfs:hasProperty (<station_id> <name> <short_name> <lat> <lon> <address> <cross_street> <region_id> <post_code> <rental_methods> <is_virtual_station> <station_area> <capacity> <vehicle_capacity> <is_valet_station> <is_charging_station> <rental_uris> <vehicle_type_capacity>).
+gbfs:data rdfs:range gbfs:Data.
+gbfs:Data rdfs:hasProperty (<stations>).
+gbfs:schema rdfs:range gbfs:Schema.
+gbfs:Schema rdfs:hasProperty (<last_updated> <ttl> <version> <data>).

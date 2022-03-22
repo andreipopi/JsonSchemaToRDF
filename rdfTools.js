@@ -15,15 +15,35 @@ var RDFTools = /** @class */ (function () {
      * First method of this class to be called; RDFTools has to be initialised right after a *Pattern class has been created.
      * @param filename
      */
-    RDFTools.initialise = function (filename) {
+    RDFTools.initialise = function (filename, map) {
         this.fs = require('fs');
         this.fileName = filename;
+        for (var object in map) {
+            this.termMap.set(object, map[object]);
+        }
+    };
+    RDFTools.inMap = function (term) {
+        if (this.termMap.has(term) != false) {
+            return this.termMap.get(term);
+        }
+        else {
+            return false;
+        }
     };
     RDFTools.getOneOfQuad = function (prefix, name, oneOf, writer) {
         var oneOfValues = [];
         for (var _i = 0, oneOf_1 = oneOf; _i < oneOf_1.length; _i++) {
             var value = oneOf_1[_i];
-            oneOfValues.push(namedNode(value.toString()));
+            console.log(RDFTools.inMap(value));
+            if (RDFTools.inMap(value) != false) {
+                console.log(RDFTools.inMap(value));
+                oneOfValues.push(namedNode(RDFTools.inMap(value)));
+            }
+            else {
+                console.log("false");
+                oneOfValues.push(namedNode(value.toString()));
+            }
+            //oneOfValues.push(namedNode(value.toString()));
         }
         var oneOfQuad = RDFTools.node_node_list(prefix + ':' + name, 'owl:oneOf', writer.list(oneOfValues));
         return oneOfQuad;
@@ -32,7 +52,7 @@ var RDFTools = /** @class */ (function () {
     RDFTools.writeTurtle = function (writer) {
         // Write the content of the writer in the .ttl
         var _this = this;
-        var filePath = "build/".concat(this.fileName, ".ttl").replace(/:/g, '');
+        var filePath = ("build/" + this.fileName + ".ttl").replace(/:/g, '');
         console.log(filePath);
         writer.end(function (error, result) { return _this.fs.writeFile(filePath, result, function (err) {
             // throws an error, you could also catch it here
@@ -92,6 +112,7 @@ var RDFTools = /** @class */ (function () {
     RDFTools.capitalizeFirstLetter = function (string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
+    RDFTools.termMap = new Map();
     return RDFTools;
 }());
 exports.RDFTools = RDFTools;

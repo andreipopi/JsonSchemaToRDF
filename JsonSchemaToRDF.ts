@@ -19,7 +19,7 @@ for (let [schemaPath,object] of Array.from(schema_object)){
     let writer = new N3.Writer({prefixes:config.prefixes});
     let prefix = config.prefix;
     Traverse.initialise(writer, prefix);
-    RDFTools.initialise(object); //initialising the filename written by RDF tools with the name of the main object
+    RDFTools.initialise(object, config.terms); //initialising the filename written by RDF tools with the name of the main object
     //                      filename                   , 
     //ShaclTools.initialise(JsonProcessor.getMainObject(), JsonProcessor.mainObject );
     Traverse.traverse('schema', schema);

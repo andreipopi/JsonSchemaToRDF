@@ -17,22 +17,41 @@ export class RDFTools {
 
 
 static fileName: string;
+static termMap = new Map<string,string>() ;
 static fs:any;
 
 /**
  * First method of this class to be called; RDFTools has to be initialised right after a *Pattern class has been created.
  * @param filename 
  */
-static initialise (filename: string){
+static initialise (filename: string, map){
     this.fs = require('fs');
     this.fileName = filename;
+
+    for (let object in map){
+        this.termMap.set(object, map[object]);
+    }
 }
 
+
+static inMap(term: string){
+    if (this.termMap.has(term)!= false) {
+        return this.termMap.get(term);
+    }
+    else{
+        return false;
+    }
+}
 
 static getOneOfQuad(prefix, name, oneOf, writer){
     let oneOfValues:NamedNode[] = [];
     for (const value of oneOf){
-        oneOfValues.push(namedNode(value.toString()));
+        if (RDFTools.inMap(value) != false){
+            oneOfValues.push(namedNode(RDFTools.inMap(value)));
+        }
+        else{
+            oneOfValues.push(namedNode(value.toString()));
+        }
     }
     let oneOfQuad = RDFTools.node_node_list(prefix+':'+name, 'owl:oneOf', writer.list(oneOfValues));
     return oneOfQuad;
@@ -41,20 +60,13 @@ static getOneOfQuad(prefix, name, oneOf, writer){
 // Write with the writer that is passed; fileName and fs have been set previously
 static writeTurtle (writer){
     // Write the content of the writer in the .ttl
-
-
     let filePath = `build/${this.fileName}.ttl`.replace(/:/g,'');
-
-
-    console.log(filePath);
     writer.end((error:any, result:any) => this.fs.writeFile(filePath, result, (err:any) => {
         // throws an error, you could also catch it here
         if (err) throw err;
         // success case, the file was saved
         console.log('Turtle saved!');}));
 }
-
-
 
 // Create quads of different shape
 static node_node_literal (subj: string, pred:string, obj:string) {
