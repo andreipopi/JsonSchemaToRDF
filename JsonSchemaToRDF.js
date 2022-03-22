@@ -15,7 +15,8 @@ for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
     var _b = _a[_i], schemaPath = _b[0], object = _b[1];
     var schema = require(schemaPath.toString());
     var writer = new N3.Writer({ prefixes: config.prefixes });
-    traverse_1.Traverse.initialise(writer);
+    var prefix = config.prefix;
+    traverse_1.Traverse.initialise(writer, prefix);
     rdfTools_1.RDFTools.initialise(object); //initialising the filename written by RDF tools with the name of the main object
     //                      filename                   , 
     //ShaclTools.initialise(JsonProcessor.getMainObject(), JsonProcessor.mainObject );

@@ -1,32 +1,6 @@
 {
   "prefix": "gbfs",
 
-  "jsonObjects": {
-    "gbfs:Station": "stations",
-    "gbfs:Bike": "bikes",
-    "gbfs:Alert": "alerts",
-    "gbfs:Region": "regions",
-    "gbfs:VehicleType": "vehicle_types",
-    "gbfs:PricingPlan": "plans",
-    "gbfs:Version": "versions",
-    "gbfs:Calendar": "calendars",
-    "gbfs:RentalHour": "rental_hours",
-    "gbfs:Feed": "feeds",
-    "gbfs:Per_km_pricing":"per_km_pricing",
-    "gbfs:Per_min_pricing": "per_min_pricing",
-    "gbfs:Times": "times",
-    "gbfs:Station_ids": "station_ids",
-    "gbfs:Region_ids": "region_ids",
-    "gbfs:User_types": "user_types",
-    "gbfs:Days": "days",
-    "gbfs:Rental_methods": "rental_methods",
-    "gbfs:Station_area": "station_area",
-    "gbfs:Rental_uris": "rental_uris",
-    "gbfs:Return_type": "return_type",
-    "gbfs:Vehicle_assets": "vehicle_assets",
-    "gbfs:Pricing_plan_ids": "pricing_plan_ids"
-  },
-
   "shaclTargets": {
     "gbfs:Station": "<https://w3id.org/gbfs/terms/station>",
     "gbfs:Bike": "<https://w3id.org/gbfs/terms/bike>",

@@ -17,7 +17,8 @@ for( let object in config.sources){
 for (let [schemaPath,object] of Array.from(schema_object)){
     let schema = require(schemaPath.toString());
     let writer = new N3.Writer({prefixes:config.prefixes});
-    Traverse.initialise(writer);
+    let prefix = config.prefix;
+    Traverse.initialise(writer, prefix);
     RDFTools.initialise(object); //initialising the filename written by RDF tools with the name of the main object
     //                      filename                   , 
     //ShaclTools.initialise(JsonProcessor.getMainObject(), JsonProcessor.mainObject );
