@@ -8,10 +8,8 @@ var ShaclTools = /** @class */ (function () {
     ShaclTools.initialise = function (filename, mainObj) {
         this.fileName = filename;
         this.shaclFileText = ""; // reset in case there are more schemas
-        console.log("mainObject", mainObj);
         this.targetClass = ShaclTools.getShaclTarget(mainObj);
         this.shaclRoot = this.config.shaclRoot;
-        console.log("targetClass", this.targetClass);
         // Create a ShaclShape object and insert the first entries
         this.shaclFileText = this.shaclFileText + ShaclTools.shapeShaclRoot(this.shaclRoot);
         this.shaclFileText = this.shaclFileText + 'sh:targetClass ' + this.targetClass + '; \n';
@@ -25,8 +23,11 @@ var ShaclTools = /** @class */ (function () {
             }
         });
     };
+    ShaclTools.getRequiredProperties = function () {
+        return this.requiredProperties;
+    };
     ShaclTools.addRequiredTerms = function (termList) {
-        this.requiredProperties.concat(termList);
+        this.requiredProperties = this.requiredProperties + termList;
     };
     ShaclTools.isRequired = function (term) {
         if (this.requiredProperties.includes(term) != false) {
@@ -48,6 +49,9 @@ var ShaclTools = /** @class */ (function () {
                 return this.config.shaclTargets[key];
             }
         }
+    };
+    ShaclTools.addToShape = function (prop) {
+        this.shaclFileText = this.shaclFileText + prop;
     };
     ShaclTools.getShaclTypedProperty = function (nome, type) {
         var prop = 'sh:property [ \n sh:path <' + nome + '>; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ];';

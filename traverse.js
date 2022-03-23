@@ -22,6 +22,12 @@ var Traverse = /** @class */ (function () {
             if (schema.type === 'string') { // Base Case
                 this.writer.addQuad(RDFTools.node_node_node(this.prefix + ':' + parentKey, 'rdf:type', 'xsd:string'));
                 this.writer.addQuad(RDFTools.node_node_literal(this.prefix + ':' + parentKey, 'rdfs:label', schema.description));
+                console.log("parentKey", parentKey);
+                console.log("required in if", shaclTools_1.ShaclTools.getRequiredProperties());
+                if (shaclTools_1.ShaclTools.isRequired(parentKey)) {
+                    console.log("this property is required");
+                    shaclTools_1.ShaclTools.addToShape(shaclTools_1.ShaclTools.getShaclTypedRequiredProperty(parentKey, 'string'));
+                }
                 if (schema["enum"] != undefined) { // schema.enum can also be found in a string schema
                     this.writer.addQuad(RDFTools.getOneOfQuad(this.prefix, RDFTools.capitalizeFirstLetter(parentKey), schema["enum"], this.writer));
                     return;
@@ -33,12 +39,18 @@ var Traverse = /** @class */ (function () {
                     this.writer.addQuad(RDFTools.node_node_node(this.prefix + ':' + parentKey, 'rdf:type', 'xsd:integer'));
                     this.writer.addQuad(RDFTools.node_node_literal(this.prefix + ':' + parentKey, 'rdfs:label', schema.description));
                 }
+                if (shaclTools_1.ShaclTools.isRequired(parentKey)) {
+                    shaclTools_1.ShaclTools.addToShape(shaclTools_1.ShaclTools.getShaclTypedRequiredProperty(parentKey, 'integer'));
+                }
                 return parentKey;
             }
             if (schema.type === 'integer') { // Base Case
                 if (!RDFTools.inMap(parentKey)) {
                     this.writer.addQuad(RDFTools.node_node_node(this.prefix + ':' + parentKey, 'rdf:type', 'xsd:integer'));
                     this.writer.addQuad(RDFTools.node_node_literal(this.prefix + ':' + parentKey, 'rdfs:label', schema.description));
+                }
+                if (shaclTools_1.ShaclTools.isRequired(parentKey)) {
+                    shaclTools_1.ShaclTools.addToShape(shaclTools_1.ShaclTools.getShaclTypedRequiredProperty(parentKey, 'integer'));
                 }
                 return parentKey;
             }
@@ -79,6 +91,11 @@ var Traverse = /** @class */ (function () {
                 return;
             }
             if (schema.type === 'object') {
+                var required = schema.required;
+                shaclTools_1.ShaclTools.addRequiredTerms(required);
+                if (shaclTools_1.ShaclTools.isRequired(parentKey)) {
+                    shaclTools_1.ShaclTools.addToShape(shaclTools_1.ShaclTools.getShaclRequiredProperty(parentKey));
+                }
                 var propertyList = [];
                 propertyList = [];
                 if (schema.properties != undefined) {
@@ -97,11 +114,6 @@ var Traverse = /** @class */ (function () {
                 // Objects can have required properties defined: these will becom Shacl constraints
                 // required:[]
                 // if 
-                var required = schema.required;
-                console.log("Required", required);
-                shaclTools_1.ShaclTools.addRequiredTerms(required);
-                if (shaclTools_1.ShaclTools.isRequired(parentKey)) {
-                }
                 // Don't return here: there might be further things defined in an objcet!?
             }
             if (schema.oneOf != undefined) {

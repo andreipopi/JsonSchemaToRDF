@@ -19,16 +19,13 @@ export class ShaclTools {
     static initialise(filename, mainObj: string){
         this.fileName = filename;
         this.shaclFileText = ""; // reset in case there are more schemas
-
-        console.log("mainObject", mainObj);
         this.targetClass = ShaclTools.getShaclTarget(mainObj);
         this.shaclRoot = this.config.shaclRoot;
-        console.log("targetClass", this.targetClass);
         // Create a ShaclShape object and insert the first entries
         this.shaclFileText = this.shaclFileText+ShaclTools.shapeShaclRoot(this.shaclRoot);
         this.shaclFileText = this.shaclFileText+'sh:targetClass ' + this.targetClass+ '; \n';
-
     }
+
     static writeShacl (){
         // Write the Shacl shape on file
         let filePath = `build/${this.fileName}shacl.ttl`.replace(/:/g,'');
@@ -39,8 +36,11 @@ export class ShaclTools {
         });
     }
 
+    static getRequiredProperties(){
+        return this.requiredProperties;
+    }
     static addRequiredTerms (termList){
-        this.requiredProperties.concat(termList);
+        this.requiredProperties = this.requiredProperties + termList;
     }
 
     static isRequired(term: string){
@@ -53,9 +53,7 @@ export class ShaclTools {
     }
     // Methodscompile(mySchema, 'MySchema')
 
-
     static getShaclTarget (mainObject:string) {
-
         for( let entry of Object.entries(this.config.shaclTargets)){
         //for(let entry of Array.from(this.config.shaclTargets.entries())){
             console.log("entry", entry);
@@ -65,6 +63,10 @@ export class ShaclTools {
                 return this.config.shaclTargets[key];
             }
         }
+    }
+
+    static addToShape(prop){
+        this.shaclFileText = this.shaclFileText+prop;
     }
 
     static getShaclTypedProperty (nome: string, type: string) {

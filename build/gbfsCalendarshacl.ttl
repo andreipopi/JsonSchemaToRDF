@@ -1,2 +1,46 @@
 <https://w3id.org/gbfs/terms/> a sh:NodeShape; 
 sh:targetClass <https://w3id.org/gbfs/terms/calendar>; 
+sh:property [ 
+ sh:path <last_updated>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype integer; 
+ ];sh:property [ 
+ sh:path <ttl>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype integer; 
+ ];sh:property [ 
+ sh:path <version>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype string; 
+ ];sh:property [ 
+ sh:path <data>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ ];sh:property [ 
+ sh:path <calendars>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ ];sh:property [ 
+ sh:path <start_month>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype integer; 
+ ];sh:property [ 
+ sh:path <start_day>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype integer; 
+ ];sh:property [ 
+ sh:path <end_month>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype integer; 
+ ];sh:property [ 
+ sh:path <end_day>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype integer; 
+ ];

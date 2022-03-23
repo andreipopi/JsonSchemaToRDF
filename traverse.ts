@@ -27,6 +27,14 @@ static traverse (parentKey, schema){
             this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdf:type', 'xsd:string'));
             this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+parentKey, 'rdfs:label', schema.description));
 
+            console.log("parentKey", parentKey);
+            console.log("required in if", ShaclTools.getRequiredProperties());
+            if(ShaclTools.isRequired(parentKey)){
+                console.log("this property is required");
+                ShaclTools.addToShape(ShaclTools.getShaclTypedRequiredProperty(parentKey, 'string'));
+
+            }
+
             if (schema.enum != undefined){ // schema.enum can also be found in a string schema
                 this.writer.addQuad(RDFTools.getOneOfQuad(this.prefix, RDFTools.capitalizeFirstLetter(parentKey), schema.enum, this.writer));
                 return;
@@ -38,12 +46,20 @@ static traverse (parentKey, schema){
                 this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdf:type', 'xsd:integer'));
                 this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+parentKey, 'rdfs:label', schema.description));
             }
+            if(ShaclTools.isRequired(parentKey)){
+                ShaclTools.addToShape(ShaclTools.getShaclTypedRequiredProperty(parentKey, 'integer'));
+
+            }
             return parentKey;
         }
         if (schema.type === 'integer') {// Base Case
             if (!RDFTools.inMap(parentKey)){
                 this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdf:type', 'xsd:integer'));
                 this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+parentKey, 'rdfs:label', schema.description));
+            }
+            if(ShaclTools.isRequired(parentKey)){
+                ShaclTools.addToShape(ShaclTools.getShaclTypedRequiredProperty(parentKey, 'integer'));
+
             }
             return parentKey;
         }
@@ -87,6 +103,12 @@ static traverse (parentKey, schema){
         }
 
         if (schema.type === 'object'){
+            let required = schema.required;
+            ShaclTools.addRequiredTerms(required);
+            if(ShaclTools.isRequired(parentKey)){
+                ShaclTools.addToShape(ShaclTools.getShaclRequiredProperty(parentKey));
+
+            }
             let propertyList:NamedNode[] = [];
             propertyList = [] 
             if(schema.properties != undefined){
@@ -107,14 +129,9 @@ static traverse (parentKey, schema){
             // required:[]
             // if 
 
-            let required = schema.required;
-            console.log("Required", required);
+            
 
-            ShaclTools.addRequiredTerms(required);
-            if(ShaclTools.isRequired(parentKey)){
-
-
-            }
+            
 
             // Don't return here: there might be further things defined in an objcet!?
         }
@@ -161,12 +178,7 @@ static traverse (parentKey, schema){
     // If its none of the above: Danger Zone
     return;
 }
-
-
-
     static getWriter (){
         return this.writer;
     }
-
-
 }
