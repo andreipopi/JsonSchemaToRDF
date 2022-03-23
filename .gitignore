@@ -4,8 +4,3 @@ node_modules
 steps.txt
 shacl.ttl
 turtleTranslation.ttl
-.json-schema-spec.txt
-.paths.txt
-.schemaToTS.ts
-schema-traverse.ts
-constraints.txt

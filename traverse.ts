@@ -101,6 +101,21 @@ static traverse (parentKey, schema){
             }
             // if(schema.patternProperties != undefined // No support yet){
             //}
+
+            // Objects can have required properties defined: these will becom Shacl constraints
+
+            // required:[]
+            // if 
+
+            let required = schema.required;
+            console.log("Required", required);
+
+            ShaclTools.addRequiredTerms(required);
+            if(ShaclTools.isRequired(parentKey)){
+
+
+            }
+
             // Don't return here: there might be further things defined in an objcet!?
         }
         if(schema.oneOf != undefined){

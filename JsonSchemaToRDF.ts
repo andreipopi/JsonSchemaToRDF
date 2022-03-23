@@ -21,9 +21,11 @@ for (let [schemaPath,object] of Array.from(schema_object)){
     Traverse.initialise(writer, prefix);
     RDFTools.initialise(object, config.terms); //initialising the filename written by RDF tools with the name of the main object
     //                      filename                   , 
-    //ShaclTools.initialise(JsonProcessor.getMainObject(), JsonProcessor.mainObject );
+    ShaclTools.initialise(object, object );
     Traverse.traverse('schema', schema);
     RDFTools.writeTurtle(Traverse.getWriter());
+    ShaclTools.writeShacl();
+
     //ShaclTools.writeShacl(JsonProcessor.getMainObject(), JsonProcessor.getShaclFileText());
 }
 

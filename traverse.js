@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 exports.Traverse = void 0;
+var shaclTools_1 = require("./shaclTools");
 var RDFTools = require("./rdfTools").RDFTools;
 var N3 = require('n3');
 var DataFactory = N3.DataFactory;
@@ -93,6 +94,14 @@ var Traverse = /** @class */ (function () {
                 }
                 // if(schema.patternProperties != undefined // No support yet){
                 //}
+                // Objects can have required properties defined: these will becom Shacl constraints
+                // required:[]
+                // if 
+                var required = schema.required;
+                console.log("Required", required);
+                shaclTools_1.ShaclTools.addRequiredTerms(required);
+                if (shaclTools_1.ShaclTools.isRequired(parentKey)) {
+                }
                 // Don't return here: there might be further things defined in an objcet!?
             }
             if (schema.oneOf != undefined) {

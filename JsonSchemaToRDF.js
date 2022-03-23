@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var rdfTools_1 = require("./rdfTools");
+var shaclTools_1 = require("./shaclTools");
 var traverse_1 = require("./traverse");
 var N3 = require('n3');
 var DataFactory = N3.DataFactory;
@@ -19,8 +20,9 @@ for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
     traverse_1.Traverse.initialise(writer, prefix);
     rdfTools_1.RDFTools.initialise(object, config.terms); //initialising the filename written by RDF tools with the name of the main object
     //                      filename                   , 
-    //ShaclTools.initialise(JsonProcessor.getMainObject(), JsonProcessor.mainObject );
+    shaclTools_1.ShaclTools.initialise(object, object);
     traverse_1.Traverse.traverse('schema', schema);
     rdfTools_1.RDFTools.writeTurtle(traverse_1.Traverse.getWriter());
+    shaclTools_1.ShaclTools.writeShacl();
     //ShaclTools.writeShacl(JsonProcessor.getMainObject(), JsonProcessor.getShaclFileText());
 }
