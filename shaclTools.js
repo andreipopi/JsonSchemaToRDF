@@ -59,7 +59,7 @@ var ShaclTools = /** @class */ (function () {
     };
     ShaclTools.getShaclTypedRequiredProperty = function (nome, type) {
         console.log(nome);
-        var prop = 'sh:property [ \n sh:path <' + nome + '>;  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ];';
+        var prop = 'sh:property [ \n sh:path <' + nome + '>;  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype ' + type + '; \n ]; \n';
         return prop;
     };
     ShaclTools.getShaclProperty = function (nome) {

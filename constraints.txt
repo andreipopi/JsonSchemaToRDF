@@ -1,0 +1,11 @@
+
+- required properties in an object type
+
+
+
+
+- integer:
+     minimum
+     maximum
+
+

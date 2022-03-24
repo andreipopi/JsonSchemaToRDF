@@ -21,18 +21,13 @@ static traverse (parentKey, schema){
     if (!schema) { 
         return;
     }
+    
     if (schema.type != undefined){ // If the schema/sub-schema has a type
-        console.log("key: ", parentKey);
         if (schema.type === 'string') { // Base Case
             this.writer.addQuad(RDFTools.node_node_node(this.prefix+':'+parentKey, 'rdf:type', 'xsd:string'));
             this.writer.addQuad(RDFTools.node_node_literal(this.prefix+':'+parentKey, 'rdfs:label', schema.description));
-
-            console.log("parentKey", parentKey);
-            console.log("required in if", ShaclTools.getRequiredProperties());
             if(ShaclTools.isRequired(parentKey)){
-                console.log("this property is required");
                 ShaclTools.addToShape(ShaclTools.getShaclTypedRequiredProperty(parentKey, 'string'));
-
             }
 
             if (schema.enum != undefined){ // schema.enum can also be found in a string schema
@@ -107,7 +102,6 @@ static traverse (parentKey, schema){
             ShaclTools.addRequiredTerms(required);
             if(ShaclTools.isRequired(parentKey)){
                 ShaclTools.addToShape(ShaclTools.getShaclRequiredProperty(parentKey));
-
             }
             let propertyList:NamedNode[] = [];
             propertyList = [] 

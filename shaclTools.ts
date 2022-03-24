@@ -7,7 +7,6 @@ export class ShaclTools {
     jsonSchema: any;
     //static config = require('./configs/config-smartdatamodel.json');
     static config = require('./configs/config-gbfs.json');
-    //static config = require('./configs/config-battery.json');
 
     static shaclRoot: any;
     static targetClass: any;
@@ -51,12 +50,10 @@ export class ShaclTools {
             return false;
         }
     }
-    // Methodscompile(mySchema, 'MySchema')
 
     static getShaclTarget (mainObject:string) {
         for( let entry of Object.entries(this.config.shaclTargets)){
         //for(let entry of Array.from(this.config.shaclTargets.entries())){
-            console.log("entry", entry);
             const key = entry[0];
             const value = entry[1];
             if( key == mainObject){
@@ -75,7 +72,7 @@ export class ShaclTools {
     }
     static getShaclTypedRequiredProperty(nome: string, type: string) {
         console.log(nome);
-        const prop = 'sh:property [ \n sh:path <'+nome+ '>;  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype '+ type+'; \n ];';
+        const prop = 'sh:property [ \n sh:path <'+nome+ '>;  \n sh:minCount 1; \n sh:maxCount 1; \n sh:datatype '+ type+'; \n ]; \n';
         return prop;
     }
     static getShaclProperty (nome: string) {
