@@ -1,0 +1,8 @@
+<https://w3id.org/sdm/terms/> a sh:NodeShape; 
+sh:targetClass <https://w3id.org/sdm/terms/>; 
+sh:property [ 
+ sh:path <type>;  
+ sh:minCount 1; 
+ sh:maxCount 1; 
+ sh:datatype string; 
+ ]; 

@@ -6,8 +6,9 @@ var traverse_1 = require("./traverse");
 var N3 = require('n3');
 var DataFactory = N3.DataFactory;
 var schema_object = new Map();
-var config = require('./configs/config-gbfs.json');
-//const config = require('./configs/config-smartdatamodel.json');
+//const config = require('./configs/config-gbfs.json');
+var config = require('./configs/config-smartdatamodel.json');
+//const config = require('./configs/config-persons.json');
 for (var object in config.sources) {
     schema_object.set(object, config.sources[object]);
 }
@@ -24,5 +25,4 @@ for (var _i = 0, _a = Array.from(schema_object); _i < _a.length; _i++) {
     traverse_1.Traverse.traverse('schema', schema);
     rdfTools_1.RDFTools.writeTurtle(traverse_1.Traverse.getWriter());
     shaclTools_1.ShaclTools.writeShacl();
-    //ShaclTools.writeShacl(JsonProcessor.getMainObject(), JsonProcessor.getShaclFileText());
 }

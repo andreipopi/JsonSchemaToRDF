@@ -1,0 +1,37 @@
+@prefix sdm: <https://smart-data-models.github.io/dataModel.Energy/ThreePhaseAcMeasurement/terms>.
+@prefix schema: <http://schema.org/#>.
+@prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>.
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix jsonsc: <https://www.w3.org/2019/wot/json-schema#>.
+@prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
+@prefix vso: <http://purl.org/vso/ns#>.
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
+
+sdm:type rdf:type xsd:string;
+    rdfs:label "Property. NGSI entity type. It has to be TrafficViolation."@en.
+sdm:Type owl:oneOf (<TrafficViolation>).
+sdm:amountCollected rdf:type xsd:integer;
+    rdfs:label "Property. Model:'https://schema.org/Number'. Amount collected towards the service corresponding to this observation."@en.
+sdm:mediaURL rdf:type xsd:string;
+    rdfs:label "Property. Model:'https://schema.org/URL'. URL providing further information of any image(s) or media of the complaint or place."@en.
+sdm:equipmentId rdf:type xsd:string;
+    rdfs:label "Property. Model:'https://schema.org/Text'. Unique Id of the equipment corresponding to this observation."@en.
+sdm:equipmentType rdf:type xsd:string;
+    rdfs:label "Property. Model:'https://schema.org/Text'. Type of equipment or the name of the equipment corresponding to this observation."@en.
+sdm:titleCode rdf:type xsd:string;
+    rdfs:label "Property. Model:'https://schema.org/Text'. The code assigned to the title corresponding to this observation."@en.
+sdm:reportId rdf:type xsd:string;
+    rdfs:label "Property. Model:'https://schema.org/Text'. Unique Id assigned for the issue or report or feedback or transaction corresponding to this observation."@en.
+sdm:observationDateTime rdf:type xsd:string;
+    rdfs:label "Property. Model:'https://schema.org/Text'. Last reported time of observation."@en.
+sdm:paymentStatus rdf:type xsd:string;
+    rdfs:label "Property. Model:'https://schema.org/Text.  The payment status of the fine or violation or challan corresponding to this observation. Enum:'Paid, Unpaid'."@en.
+sdm:PaymentStatus owl:oneOf (<Paid> <Unpaid>).

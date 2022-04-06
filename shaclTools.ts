@@ -5,8 +5,10 @@ import { stringify } from "querystring";
 export class ShaclTools {
 
     jsonSchema: any;
-    //static config = require('./configs/config-smartdatamodel.json');
-    static config = require('./configs/config-gbfs.json');
+    static config = require('./configs/config-smartdatamodel.json');
+    //static config = require('./configs/config-gbfs.json');
+    //static config = require('./configs/config-persons.json');
+
 
     static shaclRoot: any;
     static targetClass: any;

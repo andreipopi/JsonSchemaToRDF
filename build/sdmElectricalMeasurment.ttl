@@ -1,0 +1,182 @@
+@prefix sdm: <https://smart-data-models.github.io/dataModel.Energy/ThreePhaseAcMeasurement/terms>.
+@prefix schema: <http://schema.org/#>.
+@prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>.
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix jsonsc: <https://www.w3.org/2019/wot/json-schema#>.
+@prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
+@prefix vso: <http://purl.org/vso/ns#>.
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
+
+sdm:type rdf:type xsd:string;
+    rdfs:label "Property. It must be equal to `ThreePhaseAcMeasurement`."@en.
+sdm:Type owl:oneOf (<ThreePhaseAcMeasurement>).
+sdm:refDevice rdfs:range sdm:RefDevice.
+sdm:RefDevice rdf:type rdfs:Class.
+sdm:refDevice rdfs:hasProperty <https://smart-data-models.github.io/data-models/common-schema.json#/definitions/EntityIdentifierType>.
+sdm:refTargetDevice rdfs:range sdm:RefTargetDevice.
+sdm:RefTargetDevice rdf:type rdfs:Class.
+sdm:refTargetDevice rdfs:hasProperty <https://smart-data-models.github.io/data-models/common-schema.json#/definitions/EntityIdentifierType>.
+sdm:dateEnergyMeteringStarted rdf:type xsd:string;
+    rdfs:label "Property. Model:'http://schema.org/DateTime'. The starting date for metering energy."@en.
+sdm:totalActiveEnergyImport rdf:type xsd:integer;
+    rdfs:label "Property. Model:'https://schema.org/Number'. Units:'kilowatt hour (kWh)'. Total energy imported i.e. consumed since metering started (since `dateEnergyMeteringStarted`)."@en.
+sdm:totalReactiveEnergyImport rdf:type xsd:integer;
+    rdfs:label "Property. Model:'https://schema.org/Number'. Units:'kilovolt-ampere-reactive-hour (kVArh)'. Total energy imported i.e. consumed (with regards to fundamental frequency reactive power) since the metering start date (`dateEnergyMeteringStarted`)"@en.
+sdm:totalApparentEnergyImport rdf:type xsd:integer;
+    rdfs:label "Property. Model:'https://schema.org/Number'. Units:'kilovolt-ampere-hour (kVAh)'. Total energy imported i.e. consumed (with regards to apparent power) since the metering start date (`dateEnergyMeteringStarted`)"@en.
+sdm:totalActiveEnergyExport rdf:type xsd:integer;
+    rdfs:label "Property. Model:'https://schema.org/Number'. Units:'kilowatt hour (kWh)'. Total energy exported since metering started (since `dateEnergyMeteringStarted`)."@en.
+sdm:totalReactiveEnergyExport rdf:type xsd:integer;
+    rdfs:label "Property. Model:'https://schema.org/Number'. Units:'kilovolt-ampere-reactive-hour (kVArh)'. Total fundamental frequency reactive energy exported since metering started (since `dateEnergyMeteringStarted`)."@en.
+sdm:totalApparentEnergyExport rdf:type xsd:integer;
+    rdfs:label "Property. Model:'https://schema.org/Number'. Units:'kilovolt-ampere-reactive-hour (kVArh)'. Total energy exported (with regards to apparent power) since the metering start date (`dateEnergyMeteringStarted`)"@en.
+sdm:frequency rdf:type xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/Number'. Units:'Hertz (Hz)'. The frequency of the circuit."@en.
+sdm:totalActivePower rdf:type xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/Number'. Units:'watt (W)'. Active power consumed (counting all phases)"@en.
+sdm:totalReactivePower rdf:type xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/Number'. Units:'volt-ampere-reactive (VAr)'. Reactive power consumed (counting all phases)"@en.
+sdm:totalApparentPower rdf:type xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/Number'. Units:'volt-ampere (VA)'. Apparent power consumed (counting all phases)."@en.
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:activeEnergyImport rdfs:range sdm:ActiveEnergyImport.
+sdm:ActiveEnergyImport rdfs:hasProperty (<L1> <L2> <L3>).
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:reactiveEnergyImport rdfs:range sdm:ReactiveEnergyImport.
+sdm:ReactiveEnergyImport rdfs:hasProperty (<L1> <L2> <L3>).
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:apparentEnergyImport rdfs:range sdm:ApparentEnergyImport.
+sdm:ApparentEnergyImport rdfs:hasProperty (<L1> <L2> <L3>).
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:activeEnergyExport rdfs:range sdm:ActiveEnergyExport.
+sdm:ActiveEnergyExport rdfs:hasProperty (<L1> <L2> <L3>).
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:reactiveEnergyExport rdfs:range sdm:ReactiveEnergyExport.
+sdm:ReactiveEnergyExport rdfs:hasProperty (<L1> <L2> <L3>).
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:apparentEnergyExport rdfs:range sdm:ApparentEnergyExport.
+sdm:ApparentEnergyExport rdfs:hasProperty (<L1> <L2> <L3>).
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:activePower rdfs:range sdm:ActivePower.
+sdm:ActivePower rdfs:hasProperty (<L1> <L2> <L3>).
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:reactivePower rdfs:range sdm:ReactivePower.
+sdm:ReactivePower rdfs:hasProperty (<L1> <L2> <L3>).
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:apparentPower rdfs:range sdm:ApparentPower.
+sdm:ApparentPower rdfs:hasProperty (<L1> <L2> <L3>).
+sdm:totalPowerFactor rdf:type xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/Number'. Units:'-1 to +1'. Power factor including all phases"@en.
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:powerFactor rdfs:range sdm:PowerFactor.
+sdm:PowerFactor rdfs:hasProperty (<L1> <L2> <L3>).
+sdm:totalDisplacementPowerFactor rdf:type xsd:integer;
+    rdfs:label "Property. Model:'http://schema.org/Number'. Units:'-1 to +1'. Displacement power factor including all phases. The quantity is based on the fundamental frequency of the system"@en.
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:displacementPowerFactor rdfs:range sdm:DisplacementPowerFactor.
+sdm:DisplacementPowerFactor rdfs:hasProperty (<L1> <L2> <L3>).
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:N rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:current rdfs:range sdm:Current.
+sdm:Current rdfs:hasProperty (<L1> <L2> <L3> <N>).
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:phaseVoltage rdfs:range sdm:PhaseVoltage.
+sdm:PhaseVoltage rdfs:hasProperty (<L1> <L2> <L3>).
+sdm:L12 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L23 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L31 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:phaseToPhaseVoltage rdfs:range sdm:PhaseToPhaseVoltage.
+sdm:PhaseToPhaseVoltage rdfs:hasProperty (<L12> <L23> <L31>).
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:thdVoltage rdfs:range sdm:ThdVoltage.
+sdm:ThdVoltage rdfs:hasProperty (<L1> <L2> <L3>).
+sdm:L1 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L2 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:L3 rdf:type xsd:integer;
+    rdfs:label "undefined"@en.
+sdm:thdCurrent rdfs:range sdm:ThdCurrent.
+sdm:ThdCurrent rdfs:hasProperty (<L1> <L2> <L3>).

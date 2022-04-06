@@ -6,8 +6,9 @@ const { DataFactory } = N3;
 
 
 let schema_object = new Map<string, string>();
-const config = require('./configs/config-gbfs.json');
-//const config = require('./configs/config-smartdatamodel.json');
+//const config = require('./configs/config-gbfs.json');
+const config = require('./configs/config-smartdatamodel.json');
+//const config = require('./configs/config-persons.json');
 
 for( let object in config.sources){
     schema_object.set(object, config.sources[object]);

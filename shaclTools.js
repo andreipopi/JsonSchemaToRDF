@@ -37,12 +37,10 @@ var ShaclTools = /** @class */ (function () {
             return false;
         }
     };
-    // Methodscompile(mySchema, 'MySchema')
     ShaclTools.getShaclTarget = function (mainObject) {
         for (var _i = 0, _a = Object.entries(this.config.shaclTargets); _i < _a.length; _i++) {
             var entry = _a[_i];
             //for(let entry of Array.from(this.config.shaclTargets.entries())){
-            console.log("entry", entry);
             var key = entry[0];
             var value = entry[1];
             if (key == mainObject) {
@@ -74,8 +72,7 @@ var ShaclTools = /** @class */ (function () {
     ShaclTools.shapeShaclRoot = function (root) {
         return this.shaclFileText = root + ' a sh:NodeShape; \n';
     };
-    //static config = require('./configs/config-smartdatamodel.json');
-    ShaclTools.config = require('./configs/config-gbfs.json');
+    ShaclTools.config = require('./configs/config-smartdatamodel.json');
     ShaclTools.shaclFileText = '';
     ShaclTools.fs = require('fs');
     ShaclTools.requiredProperties = [];

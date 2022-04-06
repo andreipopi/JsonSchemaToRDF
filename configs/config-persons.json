@@ -1,22 +1,18 @@
 {
-    "prefix": "sdm",
-
-    "sources": {
-      "./SmartDataModels/electricalMeasurement.json": "sdm:ElectricalMeasurment",
-      "./SmartDataModels/battery.json": "sdm:Battery",
-      "./SmartDataModels/restrictedTrafficArea.json": "sdm:RestrictedTrafficArea",
-      "./SmartDataModels/trafficViolation.json": "sdm:TrafficViolation"
-    },
-
+    "prefix": "terms",
+  
     "shaclTargets": {
-      "sdm:ElectricalMeasurment": "<https://w3id.org/sdm/terms/>",
-      "sdm:Battery": "<https://w3id.org/sdm/terms/>"
+      "terms:Person": "<https://w3id.org/foaf/terms/Person>"
     },
-
-    "shaclRoot": "<https://w3id.org/sdm/terms/>",
+  
+    "sources": {
+      "./persons.json": "terms:Person"
+    },
+   
+    "shaclRoot": "<https://w3id.org/gbfs/terms/>",
   
     "prefixes": {
-      "sdm": "https://smart-data-models.github.io/dataModel.Energy/ThreePhaseAcMeasurement/terms",
+      "gbfs": "https://w3id.org/gbfs/terms",
       "schema": "http://schema.org/#",
       "ebucore": "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#",
       "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -35,6 +31,11 @@
     },
   
     "terms": {
+      "bike_id": "dcterms:identifier",
+      "alert_id": "dcterms:identifier",
+      "station_id":"dcterms:identifier",
+      "vehicle_type_id":"dcterms:identifier",
+      "region_id": "dbpedia-owl:region",
       "description":"dcterms:description",
       "type": "rdf:type",
       "last_updated": "dcterms:modified" ,
@@ -49,13 +50,14 @@
       "capacity": "dbpedia-owl:capacity",
       "creditcard": "schema:CreditCard",
       "phone": "foaf:phone",
-      "car": "schema:car"
+      "car": "schema:car",
+      "bicycle": "vso:bicycle"
     },
-
+  
     "creators": {
       "creator1": "https://pietercolpaert.be/#me",
       "creator2": "https://www.linkedin.com/in/andrei-popescu/"
     }
-
+  
   }
   

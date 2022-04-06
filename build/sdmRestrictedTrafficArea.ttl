@@ -1,0 +1,43 @@
+@prefix sdm: <https://smart-data-models.github.io/dataModel.Energy/ThreePhaseAcMeasurement/terms>.
+@prefix schema: <http://schema.org/#>.
+@prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>.
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix jsonsc: <https://www.w3.org/2019/wot/json-schema#>.
+@prefix airs: <https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#>.
+@prefix vso: <http://purl.org/vso/ns#>.
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/>.
+
+sdm:type rdf:type xsd:string;
+    rdfs:label "Property. NGSI Entity type. It has to be RestrictedTrafficArea"@en.
+sdm:Type owl:oneOf (<RestrictedTrafficArea>).
+sdm:category rdfs:range sdm:Category.
+sdm:Category rdf:type rdfs:Class;
+    owl:oneOf (<barrierAccess> <forBikes> <forCustomers> <forDisabled> <forElectricalVehicles> <forEmployees> <forMembers> <forPedestrian> <forVisitors> <forResidents> <forStudents> <gateAccess> <guarded> <onlyElectricalVehicles> <onlyPedestrian> <onlyResident> <onlyResidents> <onlyWithPermit> <private> <public> <publicPrivate>).
+sdm:notAllowedVehicleType rdfs:range sdm:NotAllowedVehicleType.
+sdm:NotAllowedVehicleType rdf:type rdfs:Class;
+    owl:oneOf (<anyVehicle> <agriculturalVehicle> <bicycle> <bus> schema:car <caravan> <carWithCaravan> <carWithTrailer> <constructionOrMaintenanceVehicle> <dieselCarEuro0> <dieselCarEuro1> <dieselCarEuro2> <dieselCarEuro3> <dieselCarEuro4> <dieselCarEuro5a> <dieselCarEuro5b> <dieselCarEuro6> <freightTransportVehicle> <lorry> <moped> <motorcycle> <motorcycleWithSideCar> <motorscooter> <petrolCarEuro0> <petrolCarEuro1> <petrolCarEuro2> <petrolCarEuro3> <petrolCarEuro4> <petrolCarEuro5> <petrolCarEuro6> <tanker> <trailer> <van>).
+sdm:specialRestrictions rdfs:range sdm:SpecialRestrictions.
+sdm:SpecialRestrictions rdf:type rdfs:Class.
+sdm:specialRestrictions rdfs:hasProperty <https://smart-data-models.github.io/data-models/common-schema.json#/definitions/EntityIdentifierType>.
+sdm:restrictionExceptions rdfs:range sdm:RestrictionExceptions.
+sdm:RestrictionExceptions rdf:type rdfs:Class.
+sdm:restrictionExceptions rdfs:hasProperty <https://smart-data-models.github.io/data-models/common-schema.json#/definitions/EntityIdentifierType>.
+sdm:restrictionValidityHours rdf:type xsd:string;
+    rdfs:label "Property. Days of the week and hours in which the traffic restriction is active."@en.
+sdm:regulation rdf:type xsd:string;
+    rdfs:label "Property. A URL pointing to the regulation for the specific restricted traffic area."@en.
+sdm:validityStartDate rdf:type xsd:string;
+    rdfs:label "Property. The date from which the restriction is applied."@en.
+sdm:validityEndDate rdf:type xsd:string;
+    rdfs:label "Property. The date at which the restriction is dismissed."@en.
+sdm:security rdfs:range sdm:Security.
+sdm:Security rdf:type rdfs:Class;
+    owl:oneOf (<bollard> <camera> <cctv> <dog> <externalSecurity> <fencesareaSeperatedFromSurroundings> <floodLight> <guard24hours> <lighting> <patrolled> <securityStaff>).

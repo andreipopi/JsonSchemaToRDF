@@ -1,7 +1,6 @@
 import {ShaclTools} from './shaclTools';
 import { NamedNode } from "n3/lib/N3DataFactory";
 import { convertToObject } from 'typescript';
-
 const {RDFTools} = require("./rdfTools");
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -18,6 +17,7 @@ static initialise (writer, prefix){
 }
 
 static traverse (parentKey, schema){
+    
     if (!schema) { 
         return;
     }
@@ -98,7 +98,7 @@ static traverse (parentKey, schema){
         }
 
         if (schema.type === 'object'){
-            let required = schema.required;
+            let required = schema.required; // Objects can have required properties defined: these will becom Shacl constraints
             ShaclTools.addRequiredTerms(required);
             if(ShaclTools.isRequired(parentKey)){
                 ShaclTools.addToShape(ShaclTools.getShaclRequiredProperty(parentKey));
@@ -117,18 +117,9 @@ static traverse (parentKey, schema){
             }
             // if(schema.patternProperties != undefined // No support yet){
             //}
-
-            // Objects can have required properties defined: these will becom Shacl constraints
-
-            // required:[]
-            // if 
-
-            
-
-            
-
             // Don't return here: there might be further things defined in an objcet!?
         }
+
         if(schema.oneOf != undefined){
             console.log("oneOf");
             // console.log("oneOf",schema.oneOf);
@@ -147,10 +138,9 @@ static traverse (parentKey, schema){
             }
             return;
         }
-       
     }
     else{
-        //Good luck managing arbitrary schemas.
+        // Arbitrary schemas can happen here 
         /*
         e.g.: properties:{} occuring in a construct with no type
         allOf :[
