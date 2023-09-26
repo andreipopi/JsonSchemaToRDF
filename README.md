@@ -4,6 +4,12 @@ According to Linked-Data best practices, RDF vocabularies and Shacl shapes are d
 This is a component tailored to the current GBFS specification and its json schema structure.
 It transforms GBFS Json schemas into corresponding RDF vocabularies and Shacl shapes.
 
+# Goal
+
+The raison d'etre of this prototype was to have a fully general system, that given any Json schema, would transform it into a Turtle vocabulary.
+The "traverse" script goes in that direction, by recursively checking the content of the Json schema. However, it fails to do that in an universally general way, as underlying assumptions/knowledge about the schema are required.
+
+
 ## How to use
 
  * Fork on your machine. 
